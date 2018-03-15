@@ -850,6 +850,7 @@ if(defaultThin == 1.) then
     par_S_branchMod = param(27) !model for branch litter model
     par_rhof1 = 0.!param(20)
     par_Cr2 = 0.!param(24)
+    par_rhof = par_rhof1 * stand_all(5,ij) + par_rhof2
     BA_tot = BA_thd
     BA = BAr(ij) * BA_thd
     if(par_sarShp==1.) then
@@ -875,18 +876,32 @@ if(defaultThin == 1.) then
     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
     W_stem = (V_scrown + V_bole) * N * par_rhow
     V = (V_scrown + V_bole) * N
-    outt(:,ij,2) = outt(:,ij,2) - V
+    outt(30,ij,2) = outt(30,ij,2) - V
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
+    betab = hb/Lc 
+
     Cw = 2 * hb
 !! calculate litter including residuals from thinned trees
-    S_fol = wf_treeKG_old * Nthd
+    S_fol = stand_all(26,ij) + wf_treeKG_old * Nthd
     S_fr = stand_all(27,ij) + stand_all(25,ij) * Nthd/Nold
     S_branch = stand_all(28,ij) + stand_all(24,ij) * Nthd/Nold
     S_wood = stand_all(29,ij) + (W_stem_old*0.1 + stand_all(32,ij)) * Nthd/Nold
 !!update biomasses
+    if (sitetype <= 1) then
+     par_alfar = par_alfar1
+    else if (sitetype==2) then
+     par_alfar = par_alfar2
+    else if (sitetype==3) then
+     par_alfar = par_alfar3
+    else if (sitetype==4) then
+     par_alfar = par_alfar4
+    else 
+     par_alfar = par_alfar5
+    end if
+
     W_froot = par_alfar * wf_STKG	!fine root biomass
-    W_croot = W_stem * (beta0 - 1.)	!coarse root biomass
+    W_croot = W_stem * (par_beta0 - 1.)	!coarse root biomass
     W_branch = par_rhow * A * Lc * betab * N
   
     outt(11,ij,2)= STAND_tot(11)
