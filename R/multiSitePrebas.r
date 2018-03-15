@@ -1,0 +1,192 @@
+
+multiSitePrebas <- function(nYearsMS,
+                    pCROBAS = pCROB,
+                    pPRELES = pPREL,
+                    etmodel = 0,
+                    pYASSO =pYAS,
+                    siteInfo = NA,
+                    multiInitVar = NA,
+                    multiThin = NA,
+                    multiNthin = NA,
+                    multiInitClearCut = NA,
+                    nLayers = NA,
+                    climIDs=NA,
+                    nSp=NA,
+                    PAR,
+                    TAir,
+                    VPD,
+                    Precip,
+                    CO2,
+                    multiP0=NA,
+                    initVar = NA,
+                    soilC = NA,
+                    weatherYasso = NA,
+                    litterSize = NA,
+                    soilCtot = NA,
+                    defaultThin = 1.,
+                    ClCut = 1.,
+                    inDclct = NA,
+                    inAclct = NA,
+                    yassoRun = 0){
+
+  nSites <- length(nYearsMS)
+  if(all(is.na(nLayers))) nLayers <- rep(3,nSites)
+  if(is.na(nSp)) nSp <- rep(3,nSites)
+  allSp = ncol(pCROBAS)
+  if(is.na(siteInfo)){
+    siteInfo = matrix(c(1,1,3),nSites,3,byrow = T) ###default values for nspecies and site type = 3
+    siteInfo[,1] <- 1:nSites
+  }
+  siteInfo[,2] <- climIDs
+
+  varNam <- getVarNam()
+  nVar <- length(varNam)
+
+  # nClimID <- dim(PAR)[1]
+  if(all(!is.na(climIDs))){
+    nClimID <- length(unique(climIDs))
+    if(!all((1:nClimID) %in% climIDs) | length(climIDs) != nSites) return("check consistency between weather inputs and climIDs")
+  } else{
+    nClimID <- nSites
+    climIDs <- 1:nSites}
+
+  maxYears <- max(nYearsMS)
+  maxNlayers <- max(nLayers)
+  layerNam <- paste("layer",1:maxNlayers)
+  multiOut <- array(0, dim=c(nSites,(maxYears),nVar,maxNlayers,2),
+                    dimnames = list(NULL,NULL,varNam,layerNam,
+                                    c("stand","thinned")))
+  initClearcut = c(1.5,0.5,0.0431969,0.,NA)
+  if (is.na(multiInitClearCut)) multiInitClearCut <- matrix(initClearcut,nSites,5,byrow = T)
+
+  ###process yasso inputs if missing
+  if(is.na(soilC)) soilC <- array(0,dim=c(nSites,maxYears,5,3,nLayers))
+  if(is.na(weatherYasso)) weatherYasso <- array(0,dim=c(nClimID,maxYears,3))
+  if(is.na(litterSize)) litterSize <- array(0,dim=c(nSites,3,nLayers))
+  if(is.na(soilCtot)) soilCtot <- matrix(0,nSites,maxYears)
+
+  if (length(defaultThin) == 1) defaultThin=as.double(rep(defaultThin,nSites))
+  if (length(ClCut) == 1) ClCut=as.double(rep(ClCut,nSites))
+  if (length(inDclct) == 1) inDclct=matrix(inDclct,nSites,allSp)
+  if (length(inAclct) == 1) inAclct=matrix(inAclct,nSites,allSp)
+  if (length(inDclct) == nSites) inDclct=matrix(inDclct,nSites,allSp)
+  if (length(inAclct) == nSites) inAclct=matrix(inAclct,nSites,allSp)
+  if (length(yassoRun) == 1) yassoRun=as.double(rep(yassoRun,nSites))
+
+  ###process ETS
+  multiETS <- matrix(NA,nSites,maxYears)
+  for(i in 1:nSites){
+    climID <- climIDs[i]
+    Temp <- TAir[climID,1:(365*nYearsMS[i])]-5
+    ETS <- pmax(0,Temp,na.rm=T)
+    ETS <- matrix(ETS,365,nYearsMS[i]); ETS <- colSums(ETS)
+    multiETS[i,(1:nYearsMS[i])] <- ETS
+
+    xx <- min(10,nYearsMS[i])
+    Ainit = 6 + 2*3.5 - 0.005*(sum(ETS[1:xx])/xx) + 2.25 ## this is not dependent to site type? check with Annikki
+    # sitesClimID <- which(multiInitVar[,2]==i)
+    if(is.na(multiInitClearCut[i,5])) multiInitClearCut[i, 5] <-  round(Ainit)
+  }
+  ETSthres <- 1000; ETSmean <- rowMeans(multiETS)
+
+    ####process clearcut
+  for(i in 1: nSites){
+    if(ClCut[i]==1 & all(is.na(multiInitVar)) & all(is.na(inDclct[i,]))) inDclct[i,] <-
+        c(ClCutD_Pine(ETSmean[i],ETSthres,siteInfo[i,3]),
+          ClCutD_Spruce(ETSmean[i],ETSthres,siteInfo[i,3]),
+          ClCutD_Birch(ETSmean[i],ETSthres,siteInfo[i,3]))
+    if(ClCut[i]==1 & all(is.na(multiInitVar)) & all(is.na(inAclct[i,]))) inAclct[i,] <-
+        c(ClCutA_Pine(ETSmean[i],ETSthres,siteInfo[i,3]),
+          ClCutA_Spruce(ETSmean[i],ETSthres,siteInfo[i,3]),
+          ClCutA_Birch(ETSmean[i],ETSthres,siteInfo[i,3]))
+    if(any(!is.na(inDclct[i,]))) inDclct[i,is.na(inDclct[i,])] <- max(inDclct[i,],na.rm=T)
+    if(all(is.na(inDclct[i,]))) inDclct[i,] <- 9999999.99
+    if(any(!is.na(inAclct[i,]))) inAclct[i,is.na(inAclct[i,])] <- max(inAclct[i,],na.rm=T)
+    if(all(is.na(inAclct[i,]))) inAclct[i,] <- 9999999.99
+  }
+
+  maxThin <- max(multiNthin)
+  ###thinning if missing.  To improve
+  if(is.na(multiThin)){
+    multiNthin <- rep(0,nSites)
+    maxThin <- 2
+    multiThin <- array(0, dim=c(nSites,maxThin,8))
+  }
+
+###PROCESS weather inputs for prebas
+  multiweather <- array(-999,dim=c(nClimID,maxYears,365,5))
+
+  ##extract weather inputs
+  for(i in 1:nClimID){
+    nYearsX <- max(nYearsMS[which(climIDs==i)])
+    weatherPreles <- array(c(PAR[i,1:(365*nYearsX)],TAir[i,1:(365*nYearsX)],
+                             VPD[i,1:(365*nYearsX)],Precip[i,1:(365*nYearsX)],
+                             CO2[i,1:(365*nYearsX)]),dim=c(365,nYearsX,5))
+
+    weatherPreles <- aperm(weatherPreles, c(2,1,3))
+
+    multiweather[i,(1:nYearsMS[i]),,] <- weatherPreles
+  }
+
+  ### compute P0
+  ###if P0 is not provided use preles to compute P0
+    if(is.na(multiP0)){
+      multiP0 <- matrix(NA,nSites,maxYears)
+      for(i in 1:nSites){
+        climID <- climIDs[i]
+        P0 <- PRELES(DOY=rep(1:365,nYearsMS[i]),PAR=PAR[climID,1:(365*nYearsMS[i])],
+               TAir=TAir[climID,1:(365*nYearsMS[i])],VPD=VPD[climID,1:(365*nYearsMS[i])],
+               Precip=Precip[climID,1:(365*nYearsMS[i])],CO2=rep(380,(365*nYearsMS[i])),
+               fAPAR=rep(1,(365*nYearsMS[i])),LOGFLAG=0,p=pPRELES)$GPP
+        P0 <- matrix(P0,365,nYearsMS[i]); multiP0[i,(1:nYearsMS[i])] <- colSums(P0)
+    }}
+
+  if (is.na(multiInitVar)){
+    multiInitVar <- array(NA,dim=c(nSites,6,maxNlayers))
+      multiInitVar[,1,] <- rep(1:maxNlayers,each=nSites)
+      multiInitVar[,3,] <- initClearcut[1]; multiInitVar[,4,] <- initClearcut[2]
+      multiInitVar[,5,] <- initClearcut[3]/maxNlayers; multiInitVar[,6,] <- initClearcut[4]
+      multiInitVar[,2,] <- matrix(multiInitClearCut[,5],nSites,maxNlayers)
+  }
+
+  prebas <- .Fortran("multiPrebas",
+                     multiOut = as.array(multiOut),
+                     nSites = as.integer(nSites),
+                     nClimID = as.integer(nClimID),
+                     nLayers = as.integer(nLayers),######
+                     nSp = as.integer(nSp),######
+                     maxYears = as.integer(maxYears),
+                     maxThin = as.integer(maxThin),
+                     nYears = as.integer(nYearsMS),
+                     thinning=as.array(multiThin),
+                     pCROBAS = as.matrix(pCROBAS),    ####
+                     allSp = as.integer(allSp),       ####
+                     siteInfo = as.matrix(siteInfo),  ####
+                     maxNlayers = as.integer(maxNlayers), ####
+                     nThinning=as.integer(multiNthin),
+                     fAPAR=matrix(0.7,nSites,maxYears),
+                     initClearcut=as.matrix(multiInitClearCut),
+                     ETSy=as.matrix(multiETS),
+                     P0y=as.matrix(multiP0),
+                     multiInitVar=as.array(multiInitVar),
+                     weather=as.array(multiweather),
+                     DOY= as.integer(1:365),
+                     pPRELES=as.double(pPRELES),
+                     etmodel=as.integer(etmodel),
+                     soilC = as.array(soilC),
+                     pYASSO=as.double(pYASSO),
+                     weatherYasso = as.array(weatherYasso),
+                     litterSize = as.array(litterSize),
+                     soilCtot = as.matrix(soilCtot),
+                     defaultThin=as.double(defaultThin),
+                     ClCut=as.double(ClCut),
+                     inDclct=as.matrix(inDclct),
+                     inAclct=as.matrix(inAclct),
+                     dailyPRELES = array(-999,dim=c(nSites,(maxYears*365),3)),
+                     yassoRun=as.double(yassoRun))
+  class(prebas) <- "multiPrebas"
+  return(prebas)
+}
+
+
+
