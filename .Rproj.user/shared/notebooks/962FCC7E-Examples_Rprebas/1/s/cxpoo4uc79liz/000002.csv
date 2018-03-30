@@ -1,0 +1,7 @@
+"0","weather <- read.csv(""inputs/weather.csv"",header = T)"
+"0","PAR = c(weather$PAR,weather$PAR,weather$PAR)"
+"0","TAir = c(weather$TAir,weather$TAir,weather$TAir)"
+"0","Precip = c(weather$Precip,weather$Precip,weather$Precip)"
+"0","VPD = c(weather$VPD,weather$VPD,weather$VPD)"
+"0","CO2 = c(weather$CO2,weather$CO2,weather$CO2)"
+"0","DOY = c(weather$DOY,weather$DOY,weather$DOY)"

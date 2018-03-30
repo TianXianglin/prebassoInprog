@@ -1,2 +1,2 @@
-useDynLib(Rprebas)
+useDynLib(Rprebasso)
 exportPattern("^[[:alpha:]]+")

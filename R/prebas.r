@@ -2,6 +2,7 @@
 prebas <- function(nYears,
                    pCROBAS = pCROB,
                    pPRELES = pPREL,
+                   PREBASversion = 0,
                    etmodel = 0,
                    pYASSO = pYAS,
                    pAWEN = parsAWEN,
@@ -44,7 +45,7 @@ prebas <- function(nYears,
     nLayers <- ifelse(is.null(ncol(initVar)),1,ncol(initVar))
   }
   nSp = ncol(pCROBAS)
-  if(anyNA(siteInfo)) siteInfo = c(1,1,3) ###default values for nspecies and site type = 3
+  if(anyNA(siteInfo)) siteInfo = c(1,1,3,160,0,0,20) ###default values for nspecies and site type = 3
 
   varNam <- getVarNam()
   nVar <- length(varNam)
@@ -111,7 +112,9 @@ prebas <- function(nYears,
   if(all(is.na(litterSize))) litterSize = matrix(0,3,nLayers)
   if(all(is.na(weatherYasso))) weatherYasso = matrix(0,nYears,3)
 
-  prebas <- .Fortran("prebas",
+  PREBASversion <- paste("prebas_v",PREBASversion,sep='')
+
+  prebas <- .Fortran(PREBASversion,
                      nYears=as.integer(nYears),
                      nLayers=as.integer(nLayers),
                      nSp=as.integer(nSp),

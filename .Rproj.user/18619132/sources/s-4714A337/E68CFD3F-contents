@@ -1,5 +1,5 @@
 
-multiSitePrebas <- function(nYearsMS,
+multiSitePrebas_v2 <- function(nYearsMS,
                     pCROBAS = pCROB,
                     pPRELES = pPREL,
                     PREBASversion = 0,
@@ -26,6 +26,8 @@ multiSitePrebas <- function(nYearsMS,
                     soilCtot = NA,
                     defaultThin = 1.,
                     ClCut = 1.,
+                    HarvLim = NA,
+                    minDharv = 15,
                     inDclct = NA,
                     inAclct = NA,
                     yassoRun = 0){
@@ -35,11 +37,12 @@ multiSitePrebas <- function(nYearsMS,
   if(is.na(nSp)) nSp <- rep(3,nSites)
   allSp = ncol(pCROBAS)
   if(is.na(siteInfo)){
-    siteInfo = matrix(c(1,NA,3,160,0,0,20),nSites,7,byrow = T) ###default values for nspecies and site type = 3
+    siteInfo = matrix(c(1,1,3,160,0,0,20),nSites,7,byrow = T) ###default values for nspecies and site type = 3
     siteInfo[,1] <- 1:nSites
   }
   if(length(climIDs)==1) climIDs <- rep(climIDs,nSites)
   siteInfo[,2] <- climIDs
+  if(is.na(HarvLim) | HarvLim < 0.) HarvLim = 0.
 
   varNam <- getVarNam()
   nVar <- length(varNam)
@@ -86,13 +89,13 @@ multiSitePrebas <- function(nYearsMS,
     multiETS[i,(1:nYearsMS[i])] <- ETS
 
     xx <- min(10,nYearsMS[i])
-    Ainit = 6 + 2*3.5 - 0.005*(sum(ETS[1:xx])/xx) + 2.25 ## this is not dependent to site type? check with Annikki
+    Ainit = 6 + 2*3.5 - 0.005*mean(ETS[1:xx]) + 2.25 ## this is not dependent to site type? check with Annikki
     # sitesClimID <- which(multiInitVar[,2]==i)
     if(is.na(multiInitClearCut[i,5])) multiInitClearCut[i, 5] <-  round(Ainit)
   }
-  ETSthres <- 1000; ETSmean <- rowMeans(multiETS)
+    ETSthres <- 1000; ETSmean <- rowMeans(multiETS)
 
-  ####process clearcut
+    ####process clearcut
   for(i in 1: nSites){
     if(ClCut[i]==1 & all(is.na(inDclct[i,]))) inDclct[i,] <-
         c(ClCutD_Pine(ETSmean[i],ETSthres,siteInfo[i,3]),
@@ -134,16 +137,16 @@ multiSitePrebas <- function(nYearsMS,
 
   ### compute P0
   ###if P0 is not provided use preles to compute P0
-    if(is.na(multiP0)){
-      multiP0 <- matrix(NA,nClimID,maxYears)
-      for(climID in 1:nClimID){
-        nYearsX <- max(nYearsMS[which(climIDs==climID)])
-        P0 <- PRELES(DOY=rep(1:365,nYearsX),PAR=PAR[climID,1:(365*nYearsX)],
-               TAir=TAir[climID,1:(365*nYearsX)],VPD=VPD[climID,1:(365*nYearsX)],
-               Precip=Precip[climID,1:(365*nYearsX)],CO2=rep(380,(365*nYearsX)),
-               fAPAR=rep(1,(365*nYearsX)),LOGFLAG=0,p=pPRELES)$GPP
-        P0 <- matrix(P0,365,nYearsX)
-        multiP0[climID,(1:nYearsX)] <- colSums(P0)
+  if(is.na(multiP0)){
+    multiP0 <- matrix(NA,nClimID,maxYears)
+    for(climID in 1:nClimID){
+      nYearsX <- max(nYearsMS[which(climIDs==climID)])
+      P0 <- PRELES(DOY=rep(1:365,nYearsX),PAR=PAR[climID,1:(365*nYearsX)],
+                   TAir=TAir[climID,1:(365*nYearsX)],VPD=VPD[climID,1:(365*nYearsX)],
+                   Precip=Precip[climID,1:(365*nYearsX)],CO2=rep(380,(365*nYearsX)),
+                   fAPAR=rep(1,(365*nYearsX)),LOGFLAG=0,p=pPRELES)$GPP
+      P0 <- matrix(P0,365,nYearsX)
+      multiP0[climID,(1:nYearsX)] <- colSums(P0)
     }}
 
   if (all(is.na(multiInitVar))){
@@ -154,9 +157,13 @@ multiSitePrebas <- function(nYearsMS,
       multiInitVar[,2,] <- matrix(multiInitClearCut[,5],nSites,maxNlayers)
   }
 
-  prebas <- .Fortran("multiPrebas",
+  siteOrder <- matrix(1:nSites,nSites,maxYears)
+  siteOrder <- apply(siteOrder,2,sample,nSites)
+
+  prebas <- .Fortran("multiPrebas_v2",
                      multiOut = as.array(multiOut),
                      nSites = as.integer(nSites),
+                     siteOrder = as.matrix(siteOrder),
                      nClimID = as.integer(nClimID),
                      nLayers = as.integer(nLayers),######
                      nSp = as.integer(nSp),######
@@ -186,12 +193,15 @@ multiSitePrebas <- function(nYearsMS,
                      soilCtot = as.matrix(soilCtot),
                      defaultThin=as.double(defaultThin),
                      ClCut=as.double(ClCut),
+                     HarvLim = as.double(HarvLim),
+                     minDharv = as.double(minDharv),
                      inDclct=as.matrix(inDclct),
                      inAclct=as.matrix(inAclct),
                      dailyPRELES = array(-999,dim=c(nSites,(maxYears*365),3)),
                      yassoRun=as.double(yassoRun),
                      PREBASversion=as.double(PREBASversion))
   class(prebas) <- "multiPrebas"
+  prebas$totHarv <- apply(prebas$multiOut[,,37,,1],2,sum)
   return(prebas)
 }
 

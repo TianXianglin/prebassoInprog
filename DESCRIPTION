@@ -1,14 +1,11 @@
-Package: Rprebas
+Package: Rprebasso
 Type: Package
-Title: What the Package Does (Title Case)
+Title: PRELES and PREBAS models
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-Depends:
-    Rpreles,
-    sm
+Author: Mikko Peltoniemi and Francesco Minunno
+Maintainer: Francesco Minunno <checcomi@gmail.com> and Mikko Peltoniemi <mikko.peltoniemi@metla.fi>
+Description: Implements PRELES and PREBAS models to be called from R
+Depends: sm
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
