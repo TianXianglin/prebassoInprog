@@ -14,7 +14,7 @@ implicit none
  integer, intent(in) :: nYears,nLayers,nSp
  real (kind=8), intent(in) :: weatherPRELES(nYears,365,5)
  integer, intent(in) :: DOY(365),etmodel
- real (kind=8), intent(in) :: pPRELES(30)
+ real (kind=8), intent(inout) :: pPRELES(30)
  real (kind=8), intent(inout) :: thinning(nThinning,8)
  real (kind=8), intent(inout) :: initClearcut(5)	!initial stand conditions after clear cut. (H,D,totBA,Hc,Ainit)
  real (kind=8), intent(in) :: pCrobas(npar,nSp),pAWEN(12,nSp)
@@ -25,7 +25,8 @@ implicit none
  integer, intent(inout) :: nThinning
  real (kind=8), intent(out) :: fAPAR(nYears)
  real (kind=8), intent(inout) :: dailyPRELES((nYears*365),3)
- real (kind=8), intent(in) :: initVar(6,nLayers),siteInfo(3),P0y(nYears),ETSy(nYears)!
+ real (kind=8), intent(in) :: initVar(6,nLayers),P0y(nYears),ETSy(nYears)!
+ real (kind=8), intent(inout) :: siteInfo(7)
  real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(in) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nLayers) !litterSize dimensions: treeOrgans,species
@@ -62,7 +63,7 @@ implicit none
  real (kind=8) :: LAT, LONG, sitetype, P0, age, meantemp, mintemp, maxtemp, rainfall, ETS
  real (kind=8) :: H, D, B, Hc, Cw, Lc, N, Ntree, Ntot,dNtot
  real (kind=8) :: wf_treeKG, wf_STKG, sar_con, sar_ell, rc, ppow, sar,W_stem
- real (kind=8) ::  lproj, leff,laPer_sar, keff, slc
+ real (kind=8) :: lproj, leff,laPer_sar, keff, slc
  real (kind=8) :: hb, A, B2,beta0, beta1,beta2, betas, betab
  real (kind=8) :: c,dHc,dH,dLc,g0,g1,g2,g3,g4,g5
  real (kind=8) :: npp, p_eff_all
@@ -77,9 +78,8 @@ implicit none
 !fix parameters
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
-!v1 version definitions
-real (kind=8) :: theta
-
+ !v1 version definitions
+ real (kind=8) :: theta
 
 !###initialize model###!
 yearX=0
@@ -88,6 +88,10 @@ soilC = 0.
 countThinning = 1
 pars = pPRELES
 soilC(1,:,:,:) = soilCinout(1,:,:,:)
+pars(24) = siteInfo(4)!SWinit
+pars(25) = siteInfo(5)!CWinit
+pars(26) = siteInfo(6) !SOGinit
+pars(27) = siteInfo(7) !Sinit
 
  do i = 1,nLayers
   modOut(:,4,i,1) = initVar(1,i)  ! assign species
@@ -144,7 +148,7 @@ do year = 1, (nYears)
       
  ! do ki = 1, nSites
  ! calculate self-thinning using all tree classes
-     Ntot = sum(STAND_all(17,:))
+     Ntot = 1200!sum(STAND_all(17,:))
      B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed 
      if(Ntot>0.) then
          Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66) 
@@ -193,7 +197,7 @@ do ij = 1 , nLayers 		!loop Species
 if (year > maxYearSite) then
   STAND(8:21) = 0 !#!#
   STAND(23:37) = 0 !#!#
-  STAND(44) = 0 !#!#
+  STAND(42:44) = 0 !#!#
 
 else
 ! initialize site variables
@@ -232,12 +236,12 @@ if (N>0) then
   wf_STKG = wf_treeKG * N !needle mass per STAND in units C
   ppow=1.6075 
   
-if(year==1) then
-     V_scrown =  A * (par_betas*Lc)
-     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-     V = (V_scrown + V_bole) * N
-     modOut(year,30,ij,1) = V
-endif
+  V_scrown =  A * (par_betas*Lc)
+  V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+  V = (V_scrown + V_bole) * N
+  if(year==1) then
+   modOut(year,30,ij,1) = V
+  endif
 
   !Surface area of the crown
   sar_ell= 4 * pi *  (((((Lc/2)**ppow)*((Cw/2)**ppow)+((Lc/2)**ppow)*((Cw/2)**ppow)+((Cw/2)**ppow)*((Cw/2)**ppow))/3)**(1/ppow))!surface area per tree
@@ -278,10 +282,11 @@ endif
   STAND(33) = wf_STKG
   STAND(34) = wf_treeKG
   STAND(35) = B
+  STAND(30) = V
 else
   STAND(8:21) = 0 !#!#
   STAND(23:37) = 0 !#!#
-  STAND(44) = 0 !#!#
+  STAND(42:44) = 0 !#!#
 endif
 endif
 ! end do !!!!!!!end loop sites
@@ -316,10 +321,10 @@ if (year <= maxYearSite) then
    STAND_all(40,:) = prelesOut(15)  	
    STAND_all(41,:) = prelesOut(16)  	
 
-   pars(24) = prelesOut(3)!SWinit
-   pars(25) = prelesOut(13)!CWinit
-   pars(26) = prelesOut(4) !SOGinit
-   pars(27) = prelesOut(14) !Sinit
+   pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
+   pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
+   pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
+   pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
    STAND_all(10,:) = prelesOut(1)/1000! Photosynthesis in g C m-2 (converted to kg C m-2)
 
@@ -365,7 +370,7 @@ do ij = 1 , nLayers
 if (year > maxYearSite) then
   STAND(8:21) = 0 !#!#
   STAND(23:37) = 0 !#!#
-  STAND(44) = 0 !#!#
+  STAND(42:44) = 0 !#!#
 else
 
 ! initialize site variables
@@ -414,13 +419,13 @@ if (N>0) then
    par_alfar = par_alfar5
   end if
 
-!relate metabolic and structural parameters to site conditions
-theta = 0.02 / (1. + exp(-(age-80)/20))  !!!!v1
+  !relate metabolic and structural parameters to site conditions
+  theta = 0.02 / (1. + exp(-(age-80)/20))  !!!!v1
 
-par_mf = par_mf0* p0 / p0_ref + theta  !!!!v1
-par_mr = par_mr0* p0 / p0_ref + theta  !!!!v1
-par_mw = par_mw0* p0 / p0_ref + theta  !!!!v1
- 
+  par_mf = par_mf0* p0 / p0_ref + theta  !!!!v1
+  par_mr = par_mr0* p0 / p0_ref + theta  !!!!v1
+  par_mw = par_mw0* p0 / p0_ref + theta  !!!!v1
+
   par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
   par_rhof = par_rhof1 * ETS + par_rhof2
   par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
@@ -598,7 +603,7 @@ endif
 else
   STAND(8:21) = 0 !#!#
   STAND(23:37) = 0 !#!#
-  STAND(44) = 0 !#!#
+  STAND(42:44) = 0 !#!#
   STAND(7) = STAND(7) + step
 endif
 endif
@@ -614,7 +619,7 @@ endif
     if(thinning(countThinning,4)==0) then
      STAND(8:21) = 0 !#!#
      STAND(23:37) = 0 !#!#
-     STAND(44) = 0 !#!#
+     STAND(43:44) = 0 !#!#
  !! calculate litter including residuals from thinned trees
      S_fol = wf_STKG
      S_fr = W_froot
@@ -740,7 +745,7 @@ if (ClCut == 1.) then
    S_wood = stand_all(31,ij)* 0.1 + stand_all(32,ij) + stand_all(29,ij) !0.1 takes into account of the stem residuals after clearcuts
    stand_all(8:21,ij) = 0.
    stand_all(23:37,ij) = 0 !#!#
-   stand_all(44,ij) = 0
+   stand_all(43:44,ij) = 0
    stand_all(26,ij) = S_fol
    stand_all(27,ij) = S_fr
    stand_all(28,ij) = S_branch

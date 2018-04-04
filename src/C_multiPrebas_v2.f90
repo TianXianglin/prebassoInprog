@@ -32,10 +32,17 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim,minDh
  real (kind=8), intent(inout) :: multiOut(nSites,maxYears,nVar,maxNlayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nSites,maxYears,5,3,maxNlayers),soilCtotInOut(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(nSites,3,maxNlayers) !litterSize dimensions: treeOrgans,species
- real (kind=8) :: output(1,nVar,maxNlayers,2),totBA, ClCutX, HarvArea,defaultThinX,maxState(nSites),check(maxYears)
+ real (kind=8) :: output(1,nVar,maxNlayers,2),totBA(nSites), relBA(nSites,maxNlayers)
+ real (kind=8) :: ClCutX, HarvArea,defaultThinX,maxState(nSites),check(maxYears)
  integer :: maxYearSite = 300,yearX(nSites),Ainit,sitex,ops(1)
 
+!initialize run
 yearX(:) = 0
+!do i = 1,nSites
+!! totBA(i) = sum(initVar(i,5,:))
+! relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
+!enddo
+
 do ij = 1,maxYears
  HarvArea = 0.
 ! do i = 1,nSites
@@ -53,13 +60,13 @@ do ij = 1,maxYears
 	climID = siteInfo(i,2)
 	if(ij==yearX(i))then
 	 yearX(i) = 0
-	 totBA = sum(multiOut(i,int(ij-initClearcut(i,5)-2),13,1:nLayers(i),1))
+	 
 	 do ijj = 1,nLayers(i)
 	  initVar(i,1,ijj) = multiOut(i,1,4,ijj,1)
 	  initVar(i,2,ijj) = initClearcut(i,5)
 	  initVar(i,3,ijj) = initClearcut(i,1)
 	  initVar(i,4,ijj) = initClearcut(i,2)
-	  initVar(i,5,ijj) = initClearcut(i,3) * multiOut(i,int(ij-initClearcut(i,5)-2),13,ijj,1)/ totBA
+	  initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)!multiOut(i,int(ij-initClearcut(i,5)-2),13,ijj,1)/ totBA(i)
 	  initVar(i,6,ijj) = initClearcut(i,4)
 	  do ki = 1,int(initClearcut(i,5)+1)
 	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
@@ -84,9 +91,14 @@ do ij = 1,maxYears
 	endif
 
 	if(sum(output(1,11,:,1))==0 .and. yearX(i) == 0) then
-	 Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(i,ij:(ij+9)))/10) + 2.25)
+	 Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(i,(ij+1):(ij+10)))/10) + 2.25)
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
+	 if(ij==1) then
+	  relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
+	 else
+	  relBA(i,1:nLayers(i)) = multiOut(i,(ij-1),13,1:nLayers(i),1)/sum(multiOut(i,(ij-1),13,1:nLayers(i),1))
+	 endif
 	endif
 
 	multiOut(i,ij,:,:,:) = output(1,:,:,:)
@@ -121,18 +133,25 @@ if(maxState(i)>minDharv) then
     multiOut(siteX,ij,26,ijj,1) = multiOut(siteX,ij,33,ijj,1) + multiOut(siteX,ij,26,ijj,1)
     multiOut(siteX,ij,27,ijj,1) = multiOut(siteX,ij,25,ijj,1) + multiOut(siteX,ij,27,ijj,1)
     multiOut(siteX,ij,28,ijj,1) = multiOut(siteX,ij,24,ijj,1) + multiOut(siteX,ij,28,ij,1)
-    multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + multiOut(siteX,ij,32,ijj,1) + multiOut(siteX,ij,29,ijj,1) !0.1 takes into account of the stem residuals after clearcuts
+    multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + & 
+	multiOut(siteX,ij,32,ijj,1) + multiOut(siteX,ij,29,ijj,1) !0.1 takes into account of the stem residuals after clearcuts
     multiOut(siteX,ij,8:21,ijj,1) = 0.
     multiOut(siteX,ij,23:36,ijj,1) = 0 !#!#
     multiOut(siteX,ij,43:44,ijj,1) = 0
     multiOut(siteX,ij,38,ijj,1) = sum(multiOut(siteX,1:ij,30,ijj,2)) + &
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
    enddo
-  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(siteX,ij:(ij+9)))/10) + 2.25)
-  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(siteX,ij) + 2.25)
-  yearX(siteX) = Ainit + ij + 1
-  initClearcut(siteX,5) = Ainit
-!  check(ij) = Ainit
+	 Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(siteX,ij:min((ij+9), &
+			nYears(siteX))))/min((nYears(siteX)-ij+1),10)) + 2.25)
+	 yearX(siteX) = Ainit + ij + 1
+	 initClearcut(siteX,5) = Ainit
+	 if(ij==1) then
+	  relBA(siteX,1:nLayers(siteX)) = initVar(siteX,5,1:nLayers(siteX))/ & 
+		sum(initVar(siteX,5,1:nLayers(siteX)))
+	 else
+	  relBA(siteX,1:nLayers(siteX)) = multiOut(siteX,(ij-1),13,1:nLayers(siteX),1)/ & 
+		sum(multiOut(siteX,(ij-1),13,1:nLayers(siteX),1))
+	 endif
 
   initVar(siteX,1,:) = 0. !output(1,4,:,1)
   initVar(siteX,2,:) = 0.!output(1,7,:,1)
