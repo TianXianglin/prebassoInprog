@@ -91,7 +91,11 @@ do ij = 1,maxYears
 	endif
 
 	if(sum(output(1,11,:,1))==0 .and. yearX(i) == 0) then
-	 Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(i,(ij+1):(ij+10)))/10) + 2.25)
+	 if((maxYears-ij)<10) then
+	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(i,ij) + 2.25)
+	 else
+	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(i,(ij+1):(ij+10)))/10) + 2.25)
+	 endif
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
 	 if(ij==1) then
@@ -141,8 +145,11 @@ if(maxState(i)>minDharv) then
     multiOut(siteX,ij,38,ijj,1) = sum(multiOut(siteX,1:ij,30,ijj,2)) + &
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
    enddo
-	 Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(siteX,ij:min((ij+9), &
-			nYears(siteX))))/min((nYears(siteX)-ij+1),10)) + 2.25)
+	 if((maxYears-ij)<10) then
+	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(siteX,ij) + 2.25)
+	 else
+	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(siteX,(ij+1):(ij+10)))/10) + 2.25)
+	 endif
 	 yearX(siteX) = Ainit + ij + 1
 	 initClearcut(siteX,5) = Ainit
 	 if(ij==1) then
@@ -156,9 +163,10 @@ if(maxState(i)>minDharv) then
   initVar(siteX,1,:) = 0. !output(1,4,:,1)
   initVar(siteX,2,:) = 0.!output(1,7,:,1)
   initVar(siteX,3:6,:) = 0.!output(1,11:14,:,1)
-endif
+endif !(maxState(i)>minDharv)
   enddo
- endif
+ endif !HarvArea < HarvLim .and. HarvLim /= 0.
+
 
 end do
 
