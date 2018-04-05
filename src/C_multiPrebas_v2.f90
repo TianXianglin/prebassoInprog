@@ -28,7 +28,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim,minDh
 ! integer, intent(in) :: siteThinning(nSites)
  integer, intent(inout) :: nThinning(nSites)
  real (kind=8), intent(out) :: fAPAR(nSites,maxYears)
- real (kind=8), intent(inout) :: initVar(nSites,6,maxNlayers),P0y(nClimID,maxYears),ETSy(nSites,maxYears)!,par_common
+ real (kind=8), intent(inout) :: initVar(nSites,6,maxNlayers),P0y(nClimID,maxYears),ETSy(nClimID,maxYears)!,par_common
  real (kind=8), intent(inout) :: multiOut(nSites,maxYears,nVar,maxNlayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nSites,maxYears,5,3,maxNlayers),soilCtotInOut(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(nSites,3,maxNlayers) !litterSize dimensions: treeOrgans,species
@@ -77,14 +77,14 @@ do ij = 1,maxYears
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinning(i,:,:),output(1,:,:,:),nThinning(i),maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		ETSy(i,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		ETSy(climID,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
 	  call prebas_v1(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinning(i,:,:),output(1,:,:,:),nThinning(i),maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		ETSy(i,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		ETSy(climID,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))

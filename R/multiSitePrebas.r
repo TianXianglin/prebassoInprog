@@ -77,31 +77,32 @@ multiSitePrebas <- function(nYearsMS,
   if (length(PREBASversion) == 1) PREBASversion=as.double(rep(PREBASversion,nSites))
 
   ###process ETS
-  multiETS <- matrix(NA,nSites,maxYears)
-  for(i in 1:nSites){
-    climID <- climIDs[i]
-    Temp <- TAir[climID,1:(365*nYearsMS[i])]-5
+  multiETS <- matrix(NA,nClimID,maxYears)
+  for(climID in 1:nClimID){
+    nYearsX <- max(nYearsMS[which(climIDs==climID)])
+    Temp <- TAir[climID,1:(365*nYearsX)]-5
     ETS <- pmax(0,Temp,na.rm=T)
-    ETS <- matrix(ETS,365,nYearsMS[i]); ETS <- colSums(ETS)
-    multiETS[i,(1:nYearsMS[i])] <- ETS
+    ETS <- matrix(ETS,365,nYearsX); ETS <- colSums(ETS)
+    multiETS[climID,(1:nYearsX)] <- ETS
 
-    xx <- min(10,nYearsMS[i])
-    Ainit = 6 + 2*3.5 - 0.005*(sum(ETS[1:xx])/xx) + 2.25 ## this is not dependent to site type? check with Annikki
-    # sitesClimID <- which(multiInitVar[,2]==i)
-    if(is.na(multiInitClearCut[i,5])) multiInitClearCut[i, 5] <-  round(Ainit)
+    xx <- min(10,nYearsX)
+    Ainit = 6 + 2*3.5 - 0.005*mean(ETS[1:xx]) + 2.25 ## this is not dependent to site type? check with Annikki
+    sitesClimID <- which(climIDs==climID)
+    multiInitClearCut[sitesClimID,5] <- replace(multiInitClearCut[sitesClimID,5],
+                                                which(is.na(multiInitClearCut[sitesClimID,5])),round(Ainit))
   }
   ETSthres <- 1000; ETSmean <- rowMeans(multiETS)
 
   ####process clearcut
   for(i in 1: nSites){
     if(ClCut[i]==1 & all(is.na(inDclct[i,]))) inDclct[i,] <-
-        c(ClCutD_Pine(ETSmean[i],ETSthres,siteInfo[i,3]),
-          ClCutD_Spruce(ETSmean[i],ETSthres,siteInfo[i,3]),
-          ClCutD_Birch(ETSmean[i],ETSthres,siteInfo[i,3]))
+        c(ClCutD_Pine(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]),
+          ClCutD_Spruce(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]),
+          ClCutD_Birch(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]))
     if(ClCut[i]==1 & all(is.na(inAclct[i,]))) inAclct[i,] <-
-        c(ClCutA_Pine(ETSmean[i],ETSthres,siteInfo[i,3]),
-          ClCutA_Spruce(ETSmean[i],ETSthres,siteInfo[i,3]),
-          ClCutA_Birch(ETSmean[i],ETSthres,siteInfo[i,3]))
+        c(ClCutA_Pine(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]),
+          ClCutA_Spruce(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]),
+          ClCutA_Birch(ETSmean[climIDs[i]],ETSthres,siteInfo[i,3]))
     if(any(!is.na(inDclct[i,]))) inDclct[i,is.na(inDclct[i,])] <- max(inDclct[i,],na.rm=T)
     if(all(is.na(inDclct[i,]))) inDclct[i,] <- 9999999.99
     if(any(!is.na(inAclct[i,]))) inAclct[i,is.na(inAclct[i,])] <- max(inAclct[i,],na.rm=T)
