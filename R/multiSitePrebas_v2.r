@@ -32,6 +32,7 @@ multiSitePrebas_v2 <- function(nYearsMS,
                     inAclct = NA,
                     yassoRun = 0){
 
+  maxYears <- max(nYearsMS)
   nSites <- length(nYearsMS)
   if(all(is.na(nLayers))) nLayers <- rep(3,nSites)
   if(is.na(nSp)) nSp <- rep(3,nSites)
@@ -42,7 +43,8 @@ multiSitePrebas_v2 <- function(nYearsMS,
   }
   if(length(climIDs)==1) climIDs <- rep(climIDs,nSites)
   siteInfo[,2] <- climIDs
-  if(is.na(HarvLim) | HarvLim < 0.) HarvLim = 0.
+  if(length(HarvLim)==1) HarvLim <- rep(HarvLim,maxYears)
+  if(any(is.na(HarvLim))) HarvLim[which(is.na(HarvLim))] <- 0.
 
   varNam <- getVarNam()
   nVar <- length(varNam)
@@ -55,7 +57,7 @@ multiSitePrebas_v2 <- function(nYearsMS,
     nClimID <- nSites
     climIDs <- 1:nSites}
 
-  maxYears <- max(nYearsMS)
+
   maxNlayers <- max(nLayers)
   layerNam <- paste("layer",1:maxNlayers)
   multiOut <- array(0, dim=c(nSites,(maxYears),nVar,maxNlayers,2),

@@ -15,7 +15,7 @@ integer, parameter :: nVar=46,npar=27!, nSp=3
 integer, intent(in) :: nYears(nSites),nLayers(nSites),nSp(nSites),allSP
 integer :: i,climID,ij,iz,ijj,ki,n
 integer, intent(in) :: nSites, maxYears, maxThin,nClimID,maxNlayers,siteOrder(nSites,maxYears)
-real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim,minDharv
+real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYears),minDharv
  integer, intent(in) :: DOY(365),etmodel
  real (kind=8), intent(in) :: pPRELES(30),pCrobas(npar,allSP)
  real (kind=8), intent(inout) :: siteInfo(nSites,7)
@@ -52,7 +52,7 @@ do ij = 1,maxYears
 	defaultThinX = defaultThin(i)
 
 !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
-	if (HarvLim > 0. .and. HarvArea >= HarvLim) then
+	if (HarvLim(ij) > 0. .and. HarvArea >= HarvLim(ij)) then
 	 ClCutX = 0.
 	 defaultThinX = 0.
 	endif
@@ -118,9 +118,9 @@ do ij = 1,maxYears
  end do !iz i
 
  !!! check if the haverst limit of the area has been reached otherwise clearcut the stands sorted by basal area 
- if (HarvArea < HarvLim .and. HarvLim /= 0.) then 
+ if (HarvArea < HarvLim(ij) .and. HarvLim(ij) /= 0.) then 
   n = 0
-  do while(n < nSites .and. HarvArea < HarvLim)
+  do while(n < nSites .and. HarvArea < HarvLim(ij))
    n = n + 1
    do i = 1, nSites
 	maxState(i) = maxval(multiOut(i,ij,12,:,1))
