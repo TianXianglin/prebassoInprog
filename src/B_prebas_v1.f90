@@ -426,13 +426,6 @@ if (N>0) then
   par_mr = par_mr0* p0 / p0_ref + theta  !!!!v1
   par_mw = par_mw0* p0 / p0_ref + theta  !!!!v1
 
-<<<<<<< HEAD
-=======
-par_mf = par_mf0* p0 / p0_ref + theta  !!!!v1
-par_mr = par_mr0* p0 / p0_ref + theta  !!!!v1
-par_mw = par_mw0* p0 / p0_ref + theta  !!!!v1
-
->>>>>>> 1e7a3d67351536ff4383f09bef8d9d1487004555
   par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
   par_rhof = par_rhof1 * ETS + par_rhof2
   par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
