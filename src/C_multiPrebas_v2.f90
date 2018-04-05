@@ -92,9 +92,9 @@ do ij = 1,maxYears
 
 	if(sum(output(1,11,:,1))==0 .and. yearX(i) == 0) then
 	 if((maxYears-ij)<10) then
-	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(i,ij) + 2.25)
+	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(climID,ij) + 2.25)
 	 else
-	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(i,(ij+1):(ij+10)))/10) + 2.25)
+	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(climID,(ij+1):(ij+10)))/10) + 2.25)
 	 endif
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
@@ -127,6 +127,7 @@ do ij = 1,maxYears
    enddo ! i
    ops = maxloc(maxState)
    siteX = int(ops(1))
+   climID = siteInfo(siteX,2)
 
 if(maxState(siteX)>minDharv) then
    !!clearcut!!
@@ -146,9 +147,9 @@ if(maxState(siteX)>minDharv) then
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
    enddo
 	 if((maxYears-ij)<10) then
-	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(siteX,ij) + 2.25)
+	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(climID,ij) + 2.25)
 	 else
-	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(siteX,(ij+1):(ij+10)))/10) + 2.25)
+	  Ainit = nint(6 + 2*3.5 - 0.005*(sum(ETSy(climID,(ij+1):(ij+10)))/10) + 2.25)
 	 endif
 	 yearX(siteX) = Ainit + ij + 1
 	 initClearcut(siteX,5) = Ainit
