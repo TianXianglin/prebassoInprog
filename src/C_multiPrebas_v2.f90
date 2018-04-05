@@ -128,7 +128,7 @@ do ij = 1,maxYears
    ops = maxloc(maxState)
    siteX = int(ops(1))
 
-if(maxState(i)>minDharv) then
+if(maxState(siteX)>minDharv) then
    !!clearcut!!
    HarvArea = HarvArea + sum(multiOut(siteX,ij,30,:,1))
    multiOut(siteX,ij,37,:,1) = multiOut(siteX,ij,37,:,1) + multiOut(siteX,ij,30,:,1)
@@ -136,7 +136,7 @@ if(maxState(i)>minDharv) then
     multiOut(siteX,ij,6:nVar,ijj,2) = multiOut(siteX,ij,6:nVar,ijj,1) 
     multiOut(siteX,ij,26,ijj,1) = multiOut(siteX,ij,33,ijj,1) + multiOut(siteX,ij,26,ijj,1)
     multiOut(siteX,ij,27,ijj,1) = multiOut(siteX,ij,25,ijj,1) + multiOut(siteX,ij,27,ijj,1)
-    multiOut(siteX,ij,28,ijj,1) = multiOut(siteX,ij,24,ijj,1) + multiOut(siteX,ij,28,ij,1)
+    multiOut(siteX,ij,28,ijj,1) = multiOut(siteX,ij,24,ijj,1) + multiOut(siteX,ij,28,ijj,1)
     multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + & 
 	multiOut(siteX,ij,32,ijj,1) + multiOut(siteX,ij,29,ijj,1) !0.1 takes into account of the stem residuals after clearcuts
     multiOut(siteX,ij,8:21,ijj,1) = 0.
