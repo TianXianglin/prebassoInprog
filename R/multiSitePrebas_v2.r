@@ -164,9 +164,11 @@ multiSitePrebas_v2 <- function(nYearsMS,
   siteOrder <- apply(siteOrder,2,sample,nSites)
 
   prebas <- .Fortran("multiPrebas_v2",
+                     siteOrder = as.matrix(siteOrder),
+                     HarvLim = as.double(HarvLim),
+                     minDharv = as.double(minDharv),
                      multiOut = as.array(multiOut),
                      nSites = as.integer(nSites),
-                     siteOrder = as.matrix(siteOrder),
                      nClimID = as.integer(nClimID),
                      nLayers = as.integer(nLayers),######
                      nSp = as.integer(nSp),######
@@ -196,8 +198,6 @@ multiSitePrebas_v2 <- function(nYearsMS,
                      soilCtot = as.matrix(soilCtot),
                      defaultThin=as.double(defaultThin),
                      ClCut=as.double(ClCut),
-                     HarvLim = as.double(HarvLim),
-                     minDharv = as.double(minDharv),
                      inDclct=as.matrix(inDclct),
                      inAclct=as.matrix(inAclct),
                      dailyPRELES = array(-999,dim=c(nSites,(maxYears*365),3)),

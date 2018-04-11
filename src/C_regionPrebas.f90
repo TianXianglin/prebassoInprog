@@ -2,12 +2,12 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 !subroutine bridging  
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine multiPrebas_v2(multiOut,nSites,siteOrder,nClimID,nLayers,nSp,maxYears,maxThin, &
+subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLayers,nSp,maxYears,maxThin, &
 		nYears,thinning,pCrobas,allSP,siteInfo, maxNlayers, &
 		nThinning,fAPAR,initClearcut, ETSy,P0y, initVar,&
 		weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,&
 		pAWEN,weatherYasso,litterSize,soilCtotInOut, &
-		defaultThin,ClCut,HarvLim,minDharv,inDclct,inAclct,dailyPRELES,yassoRun,prebasVersion)
+		defaultThin,ClCut,inDclct,inAclct,dailyPRELES,yassoRun,prebasVersion)
 
 implicit none
 

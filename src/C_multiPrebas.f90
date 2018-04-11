@@ -38,14 +38,14 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
 do i = 1,nSites
 	climID = siteInfo(i,2)
 	if(prebasVersion(i)==0.) then
-	  call prebas_v0(nYears(i),nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+	  call prebas_v0(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinning(i,:,:),output,nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
 		ETSy(climID,:),P0y(climID,:),weatherPRELES(climID,:,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,:,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,:,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,:),&
 		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,:,:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
-	  call prebas_v1(nYears(i),nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+	  call prebas_v1(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinning(i,:,:),output,nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
 		ETSy(climID,:),P0y(climID,:),weatherPRELES(climID,:,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,:,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,:,:),&
