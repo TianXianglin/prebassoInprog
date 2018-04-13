@@ -611,7 +611,7 @@ endif
   !Perform manual thinning or defoliation events for this time period
 ! If (STAND(13) > 0) then
   If (countThinning <= nThinning .and. time==inttimes) Then 
-   If (year == thinning(countThinning,1) .and. ij == thinning(countThinning,3)) Then! .and. siteNo == thinning(countThinning,2)) Then
+   If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
 	STAND_tot = STAND
 
 !    STAND(11) = 
