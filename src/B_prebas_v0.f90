@@ -8,7 +8,7 @@ subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output
 
 implicit none
  
- integer, parameter :: nVar=46,npar=28, inttimes = 1!, nSp=3
+ integer, parameter :: nVar=46,npar=33, inttimes = 1!, nSp=3
  real (kind=8), parameter :: pi = 3.1415927, t=1.,steadystate_pred=0.
 !define arguments
  integer, intent(in) :: nYears,nLayers,nSp
@@ -39,7 +39,7 @@ implicit none
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
  integer :: i, ij, ijj ! tree species 1,2,3 = scots pine, norway spruce, birch
 
- real (kind=8), parameter :: p0_ref = 1.4, ETS_ref = 1250.
+ real (kind=8) :: p0_ref, ETS_ref
  integer :: time, ki, year,yearX=0,Ainit, countThinning,domSp(1)
  real (kind=8) :: step, totBA
 
@@ -53,8 +53,8 @@ implicit none
  real (kind=8) :: par_sarShp, par_S_branchMod
  real (kind=8) :: par_rhof, par_rhor, par_rhow, par_c, par_beta0, par_betab, par_betas
  real (kind=8) :: par_s1, par_p0, par_ksi, par_cr2,par_kRein,Rein, c_mort
- real (kind=8) :: BA, dA, dB, reineke, dN, wf_test
- real (kind=8) :: par_rhof0, par_rhof1, par_rhof2, par_aets,dHcCum,dHCum,pars(30)
+ real (kind=8) :: BA, dA, dB, reineke, dN, wf_test,par_thetaMax, par_Age0, par_gamma
+ real (kind=8) :: par_rhof0, par_rhof1, par_rhof2, par_aETS,dHcCum,dHCum,pars(30)
 
 !management routines
  real (kind=8) :: A_clearcut, D_clearcut, BAr(nLayers), BA_tot,BA_lim, BA_thd, ETSthres = 1000
@@ -186,8 +186,14 @@ do ij = 1 , nLayers 		!loop Species
  par_alfar5 = param(25)
  par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
  par_S_branchMod = param(27) !model for branch litter model
+ p0_ref = param(29) 
+ ETS_ref = param(30)
+ par_thetaMax = param(31)
+ par_Age0 = param(32)
+ par_gamma = param(33)
  par_rhof1 = 0.!param(20)
  par_Cr2 = 0.!param(24)
+
 
 ! do siteNo = 1, nSites  !loop sites
 
@@ -363,6 +369,11 @@ do ij = 1 , nLayers
  par_alfar5 =param(25)
  par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
  par_S_branchMod = param(27) !model for branch litter model
+ p0_ref = param(29) 
+ ETS_ref = param(30)
+ par_thetaMax = param(31)
+ par_Age0 = param(32)
+ par_gamma = param(33)
  par_rhof1 = 0.!param(20)
  par_Cr2 = 0.!param(24)
 
@@ -847,6 +858,11 @@ if(defaultThin == 1.) then
     par_alfar5 =param(25)
     par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
     par_S_branchMod = param(27) !model for branch litter model
+    p0_ref = param(29) 
+    ETS_ref = param(30)
+    par_thetaMax = param(31)
+    par_Age0 = param(32)
+    par_gamma = param(33)
     par_rhof1 = 0.!param(20)
     par_Cr2 = 0.!param(24)
     par_rhof = par_rhof1 * stand_all(5,ij) + par_rhof2
