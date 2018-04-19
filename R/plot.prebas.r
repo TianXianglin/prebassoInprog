@@ -49,7 +49,7 @@ plot.prebas <- function(x,variableIDs=NA,siteIDs=NA,layerIDs=NA,leg=T,
         if (nLayers>1) for(ij in layerIDs[2:nLayers]) lines(x$multiOut[iz,,vars,ij,1],col=ij)
         axis(1, at=seq(1,(dim(x$multiOut)[2]),length.out=6), labels=x$multiOut[iz,seq(1,(dim(x$multiOut)[2]),length.out=6),7,1,1])
         if (leg==TRUE) legend("topleft",c(layerNam[layerIDs]),lty=1,col=layerIDs)
-        if(count%%6==0) title(paste('Site:', x$multiOut[iz,1,1,1,1]), line = -22, outer = TRUE,cex.main=2)
+        if(count%%6==0) title(paste('Site:', x$multiOut[iz,1,1,1,1]), line = -18, outer = TRUE,cex.main=2)
         count <- count + 1
         if (count %% 6 == 0 & vars!=tail(variableIDs,n=1)) pause()
       }
