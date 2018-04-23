@@ -116,6 +116,14 @@ prebas <- function(nYears,
   }
   if(all(is.na(weatherYasso))) weatherYasso = matrix(0,nYears,3)
 
+##process weather inputs for YASSO
+  if(all(is.na(weatherYasso))){
+    weatherYasso = matrix(0,nYears,3)
+    weatherYasso[,1] = aTmean(TAir,nYears)
+    weatherYasso[,2] = aTampl(TAir,nYears)
+    weatherYasso[,3] = aPrecip(Precip,nYears)
+  }
+
   PREBASversion <- paste("prebas_v",PREBASversion,sep='')
 
   prebas <- .Fortran(PREBASversion,

@@ -53,8 +53,15 @@ InitMultiSite <- function(nYearsMS,
 
   ###process yasso inputs if missing
   if(is.na(soilC)) soilC <- array(0,dim=c(nSites,maxYears,5,3,maxNlayers))
-  if(is.na(weatherYasso)) weatherYasso <- array(0,dim=c(nClimID,maxYears,3))
   if(is.na(soilCtot)) soilCtot <- matrix(0,nSites,maxYears)
+
+  ##process weather inputs for YASSO
+  if(all(is.na(weatherYasso))){
+    weatherYasso <- array(0,dim=c(nClimID,maxYears,3))
+    weatherYasso[,,1] <- t(apply(TAir[,1:maxYears*365],1,aTmean,maxYears))
+    weatherYasso[,,2] <- t(apply(TAir[,1:maxYears*365],1,aTampl,maxYears))
+    weatherYasso[,,3] <- t(apply(Precip[,1:maxYears*365],1,aPrecip,maxYears))
+  }
 
   if (length(defaultThin) == 1) defaultThin=as.double(rep(defaultThin,nSites))
   if (length(ClCut) == 1) ClCut=as.double(rep(ClCut,nSites))
@@ -143,7 +150,7 @@ InitMultiSite <- function(nYearsMS,
     multiInitVar[,5,] <- initClearcut[3]/maxNlayers; multiInitVar[,6,] <- initClearcut[4]
     multiInitVar[,2,] <- matrix(multiInitClearCut[,5],nSites,maxNlayers)
   }
-  if(is.na(litterSize)){
+  if(all(is.na(litterSize))){
     litterSize <- array(0,dim=c(nSites,3,maxNlayers))
     litterSize[,2,] <- 2
     for(ij in 1:nSites){
