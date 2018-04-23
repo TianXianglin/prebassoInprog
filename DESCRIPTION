@@ -1,10 +1,10 @@
 Package: Rprebasso
 Type: Package
-Title: PRELES and PREBAS models
+Title: PRELES, YASSO and PREBAS models
 Version: 0.1.0
 Author: Mikko Peltoniemi and Francesco Minunno
 Maintainer: Francesco Minunno <checcomi@gmail.com> and Mikko Peltoniemi <mikko.peltoniemi@metla.fi>
-Description: Implements PRELES and PREBAS models to be called from R
+Description: Implements PRELES,YASSO and PREBAS models to be called from R
 Depends: sm
 License: What license is it under?
 Encoding: UTF-8
