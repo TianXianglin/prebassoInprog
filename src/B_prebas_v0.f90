@@ -29,7 +29,7 @@ implicit none
  real (kind=8), intent(inout) :: siteInfo(7)
  real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
- real (kind=8), intent(in) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nLayers) !litterSize dimensions: treeOrgans,species
+ real (kind=8), intent(inout) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nLayers) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: prelesOut(16),fAPARsite
  real (kind=8) :: leac=0 !leaching parameter for Yasso
  real (kind=8),DIMENSION(nLayers,5) :: fbAWENH,folAWENH,stAWENH
@@ -968,6 +968,10 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    Lst(ijj) = outt(29,ijj,1)
    Lb(ijj) = outt(28,ijj,1)
    Lf(ijj) = outt(26,ijj,1)+outt(27,ijj,1)
+   
+   weatherYasso(year,1) = 0.
+   weatherYasso(year,2) = 500.   
+   weatherYasso(year,3) = 20.
 
    call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,int(outt(4,ijj,1))))   !!!awen partitioning foliage
    call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
