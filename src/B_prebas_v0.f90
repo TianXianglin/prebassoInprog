@@ -980,24 +980,9 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    ! litterSize(2,ijj) = 2.
    ! litterSize(3,ijj) = 0.
    
-   ! call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,int(outt(4,ijj,1))))   !!!awen partitioning foliage
-   ! call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
-   ! call compAWENH(Lst(ijj),stAWENH(ijj,:),pAWEN(9:12,int(outt(4,ijj,1))))         !!!awen partitioning stems
-
-   	folAWENH(ijj,1) = 0.518 * Lf(ijj)
-	folAWENH(ijj,2) = 0.177300 * Lf(ijj)
-	folAWENH(ijj,3) = 0.0887 * Lf(ijj)
-	folAWENH(ijj,4) = 0.216000 * Lf(ijj)
-
-   	fbAWENH(ijj,1) = 0.474660*Lb(ijj)
-	fbAWENH(ijj,2) = 0.019012*Lb(ijj)
-	fbAWENH(ijj,3) = 0.078308*Lb(ijj)
-	fbAWENH(ijj,4) = 0.430248*Lb(ijj)
-
-   	stAWENH(ijj,1) = 0.670000*Lst(ijj)
-	stAWENH(ijj,2) = 0.022500*Lst(ijj)
-	stAWENH(ijj,3) = 0.007500 *Lst(ijj)
-	stAWENH(ijj,4) = 0.2850*Lst(ijj)
+   call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,int(outt(4,ijj,1))))   !!!awen partitioning foliage
+   call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
+   call compAWENH(Lst(ijj),stAWENH(ijj,:),pAWEN(9:12,int(outt(4,ijj,1))))         !!!awen partitioning stems
 
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,1,ijj),stAWENH(ijj,:),litterSize(1,ijj), &
 	leac,soilC((year+1),:,1,ijj),steadystate_pred)

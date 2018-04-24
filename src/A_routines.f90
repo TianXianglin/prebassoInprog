@@ -697,6 +697,7 @@ IMPLICIT NONE
 	AWENH(2) = parsAWEN(2)*Lit
 	AWENH(3) = parsAWEN(3)*Lit
 	AWENH(4) = parsAWEN(4)*Lit
+	AWENH(5) = 0.
     END SUBROUTINE compAWENH
 
 !! Note for Birch Betula pubenscens and brown leaves is used
