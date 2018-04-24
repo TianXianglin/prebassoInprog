@@ -984,20 +984,20 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    ! call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
    ! call compAWENH(Lst(ijj),stAWENH(ijj,:),pAWEN(9:12,int(outt(4,ijj,1))))         !!!awen partitioning stems
 
-   	folAWENH(ijj,1) = pAWEN(1,int(outt(4,ijj,1)))*Lf(ijj)
-	folAWENH(ijj,2) = pAWEN(2,int(outt(4,ijj,1)))*Lf(ijj)
-	folAWENH(ijj,3) = pAWEN(3,int(outt(4,ijj,1)))*Lf(ijj)
-	folAWENH(ijj,4) = pAWEN(4,int(outt(4,ijj,1)))*Lf(ijj)
+   	folAWENH(ijj,1) = 0.518 * Lf(ijj)
+	folAWENH(ijj,2) = 0.177300 * Lf(ijj)
+	folAWENH(ijj,3) = 0.0887 * Lf(ijj)
+	folAWENH(ijj,4) = 0.216000 * Lf(ijj)
 
-   	fbAWENH(ijj,1) = pAWEN(5,int(outt(4,ijj,1)))*Lb(ijj)
-	fbAWENH(ijj,2) = pAWEN(6,int(outt(4,ijj,1)))*Lb(ijj)
-	fbAWENH(ijj,3) = pAWEN(7,int(outt(4,ijj,1)))*Lb(ijj)
-	fbAWENH(ijj,4) = pAWEN(8,int(outt(4,ijj,1)))*Lb(ijj)
+   	fbAWENH(ijj,1) = 0.474660*Lb(ijj)
+	fbAWENH(ijj,2) = 0.019012*Lb(ijj)
+	fbAWENH(ijj,3) = 0.078308*Lb(ijj)
+	fbAWENH(ijj,4) = 0.430248*Lb(ijj)
 
-   	stAWENH(ijj,1) = pAWEN(9,int(outt(4,ijj,1)))*Lst(ijj)
-	stAWENH(ijj,2) = pAWEN(10,int(outt(4,ijj,1)))*Lst(ijj)
-	stAWENH(ijj,3) = pAWEN(11,int(outt(4,ijj,1)))*Lst(ijj)
-	stAWENH(ijj,4) = pAWEN(12,int(outt(4,ijj,1)))*Lst(ijj)
+   	stAWENH(ijj,1) = 0.670000*Lst(ijj)
+	stAWENH(ijj,2) = 0.022500*Lst(ijj)
+	stAWENH(ijj,3) = 0.007500 *Lst(ijj)
+	stAWENH(ijj,4) = 0.2850*Lst(ijj)
 
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,1,ijj),stAWENH(ijj,:),litterSize(1,ijj), &
 	leac,soilC((year+1),:,1,ijj),steadystate_pred)
