@@ -79,6 +79,9 @@ implicit none
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
 !###initialize model###!
+fbAWENH = 0.
+folAWENH = 0.
+stAWENH = 0.
 yearX=0
 modOut = 0.
 soilC = 0.
