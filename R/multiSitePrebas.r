@@ -58,9 +58,9 @@ InitMultiSite <- function(nYearsMS,
   ##process weather inputs for YASSO
   if(all(is.na(weatherYasso))){
     weatherYasso <- array(0,dim=c(nClimID,maxYears,3))
-    weatherYasso[,,1] <- t(apply(TAir[,1:maxYears*365],1,aTmean,maxYears))
-    weatherYasso[,,3] <- t(apply(TAir[,1:maxYears*365],1,aTampl,maxYears))
-    weatherYasso[,,2] <- t(apply(Precip[,1:maxYears*365],1,aPrecip,maxYears))
+    weatherYasso[,,1] <- t(apply(TAir[,1:(maxYears*365)],1,aTmean,maxYears))
+    weatherYasso[,,3] <- t(apply(TAir[,1:(maxYears*365)],1,aTampl,maxYears))
+    weatherYasso[,,2] <- t(apply(Precip[,1:(maxYears*365)],1,aPrecip,maxYears))
   }
 
   if (length(defaultThin) == 1) defaultThin=as.double(rep(defaultThin,nSites))
