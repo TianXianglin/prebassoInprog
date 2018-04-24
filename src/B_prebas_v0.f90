@@ -965,9 +965,9 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
 !!!!run Yasso
  if(yassoRun==1.) then
   do ijj = 1, nLayers
-   Lst(ijj) = 10.!outt(29,ijj,1)
-   Lb(ijj) = 10.!outt(28,ijj,1)
-   Lf(ijj) = 10.!outt(26,ijj,1)+outt(27,ijj,1)
+   Lst(ijj) = outt(29,ijj,1)
+   Lb(ijj) = outt(28,ijj,1)
+   Lf(ijj) = outt(26,ijj,1)+outt(27,ijj,1)
 
    call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,int(outt(4,ijj,1))))   !!!awen partitioning foliage
    call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches

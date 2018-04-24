@@ -114,7 +114,6 @@ prebas <- function(nYears,
     litterSize[2,] <- 2
     for (i in 1:nLayers) litterSize[1,i] <- ifelse(initVar[1,i]==3,10,30)
   }
-  if(all(is.na(weatherYasso))) weatherYasso = matrix(0,nYears,3)
 
 ##process weather inputs for YASSO
   if(all(is.na(weatherYasso))){
