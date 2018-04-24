@@ -969,9 +969,9 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    Lb(ijj) = outt(28,ijj,1)
    Lf(ijj) = outt(26,ijj,1)+outt(27,ijj,1)
    
-   weatherYasso(year,1) = 0.
-   weatherYasso(year,2) = 500.   
-   weatherYasso(year,3) = 20.
+   ! weatherYasso(year,1) = 0.
+   ! weatherYasso(year,2) = 500.   
+   ! weatherYasso(year,3) = 20.
    soilC((year),:,:,ijj) = 100.
    stAWENH(ijj,:) = 100.
    fbAWENH(ijj,:) = 100.
