@@ -53,6 +53,10 @@ do ij = 1,maxYears
 	thinningX(:,:) = -999
 	az = 0
 
+	if(ij > 1) then
+	 soilCinOut(i,ij,:,:,1:nLayers(i)) = soilCinOut(i,(ij-1),:,:,1:nLayers(i))
+	endif
+	
 !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
 	if (HarvLim(ij) > 0. .and. HarvArea >= HarvLim(ij)) then
 	 ClCutX = 0.
@@ -118,7 +122,6 @@ do ij = 1,maxYears
 	endif
 
 	multiOut(i,ij,:,:,:) = output(1,:,:,:)
-	if(ij<maxYears) soilCinOut(i,(ij+1),:,:,:) = soilCinOut(i,(ij),:,:,:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
