@@ -693,10 +693,10 @@ IMPLICIT NONE
         INTEGER,PARAMETER :: n = 5
         REAL (kind=8),DIMENSION(n),INTENT(OUT) :: AWENH
         REAL (kind=8),INTENT(IN) :: Lit,parsAWEN(4)
-	AWENH(1) = 0.518*Lit
-	AWENH(2) = 0.1773*Lit
-	AWENH(3) =  0.088700*Lit
-	AWENH(4) = 0.216000*Lit
+	AWENH(1) = parsAWEN(1)*Lit
+	AWENH(2) = parsAWEN(2)*Lit
+	AWENH(3) = parsAWEN(3)*Lit
+	AWENH(4) = parsAWEN(4)*Lit
     END SUBROUTINE compAWENH
 
 !! Note for Birch Betula pubenscens and brown leaves is used
