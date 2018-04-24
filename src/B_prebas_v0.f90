@@ -980,10 +980,10 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    ! litterSize(2,ijj) = 2.
    ! litterSize(3,ijj) = 0.
    
-   	stAWENH(1) = pAWEN(9,1)*Lst
-	stAWENH(2) = pAWEN(10,1)*Lst
-	stAWENH(3) = pAWEN(11,1)*Lst
-	stAWENH(4) = pAWEN(12,1)*Lst
+   	stAWENH(ijj,1) = pAWEN(9,1)*Lst
+	stAWENH(ijj,2) = pAWEN(10,1)*Lst
+	stAWENH(ijj,3) = pAWEN(11,1)*Lst
+	stAWENH(ijj,4) = pAWEN(12,1)*Lst
    
    ! call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,int(outt(4,ijj,1))))   !!!awen partitioning foliage
    ! call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
