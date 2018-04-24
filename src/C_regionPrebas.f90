@@ -118,6 +118,7 @@ do ij = 1,maxYears
 	endif
 
 	multiOut(i,ij,:,:,:) = output(1,:,:,:)
+	if(ij<maxYears) soilCinOut(i,(ij+1),:,:,:) = soilCinOut(i,(ij),:,:,:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
