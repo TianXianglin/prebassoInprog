@@ -35,9 +35,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
  real (kind=8) :: output(maxYears,nVar,maxNlayers,2)
  integer :: maxYearSite = 300
 
- soilCinOut=0.
- soilCtotInOut=0.
-do i = 1,nSites
+ do i = 1,nSites
 	climID = siteInfo(i,2)
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
