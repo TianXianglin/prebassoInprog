@@ -20,11 +20,6 @@
     return(Tampl)
   }
 
-  test <- function(ciao,ciaociao){
-    ops <- ciao + ciaociao
-    return(ops)
-  }
-
   aPrecip <- function(Precip,nYears){
     aP = colSums(matrix(Precip,365,nYears))
     return(aP)
