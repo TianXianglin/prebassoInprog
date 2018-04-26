@@ -33,7 +33,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
  real (kind=8), intent(inout) :: soilCinOut(nSites,maxYears,5,3,maxNlayers),soilCtotInOut(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(nSites,3,maxNlayers) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: output(maxYears,nVar,maxNlayers,2)
- integer :: maxYearSite = 300
+ integer :: maxYearSite = 100000000
 
  do i = 1,nSites
 	climID = siteInfo(i,2)
