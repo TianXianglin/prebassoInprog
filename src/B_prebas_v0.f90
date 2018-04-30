@@ -3,7 +3,8 @@
 !subroutine bridging  
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output,nThinning,maxYearSite,fAPAR,initClearcut,&
-		ETSy,P0y,weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,pAWEN,weatherYasso,litterSize,soilCtotInOut,&
+		fixBAinitClarcut,initCLcutRatio,ETSy,P0y,weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,pAWEN,weatherYasso,&
+		litterSize,soilCtotInOut,&
 		defaultThin,ClCut,inDclct,inAclct,dailyPRELES,yassoRun)
 
 implicit none
@@ -19,13 +20,13 @@ implicit none
  real (kind=8), intent(inout) :: initClearcut(5)	!initial stand conditions after clear cut. (H,D,totBA,Hc,Ainit)
  real (kind=8), intent(in) :: pCrobas(npar,nSp),pAWEN(12,nSp)
  integer, intent(in) :: maxYearSite
- real (kind=8), intent(in) :: defaultThin,ClCut,yassoRun
+ real (kind=8), intent(in) :: defaultThin,ClCut,yassoRun,fixBAinitClarcut
  real (kind=8), intent(in) :: inDclct(nSp),inAclct(nSp)
 ! integer, intent(in) :: siteThinning(nSites)
  integer, intent(inout) :: nThinning
  real (kind=8), intent(out) :: fAPAR(nYears)
  real (kind=8), intent(inout) :: dailyPRELES((nYears*365),3)
- real (kind=8), intent(in) :: initVar(6,nLayers),P0y(nYears),ETSy(nYears)!
+ real (kind=8), intent(in) :: initVar(6,nLayers),P0y(nYears),ETSy(nYears),initCLcutRatio(nLayers)!
  real (kind=8), intent(inout) :: siteInfo(7)
  real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
@@ -117,8 +118,12 @@ do year = 1, (nYears)
   if(year==yearX)then
       totBA = sum(modOut((year-Ainit-1),13,:,1))
    do ijj = 1,nLayers
-     modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
-     modOut(year,11,ijj,1) = initClearcut(1)
+	 if(fixBAinitClarcut==1) then
+	  modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
+	 else
+      modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
+     endif
+	 modOut(year,11,ijj,1) = initClearcut(1)
      modOut(year,12,ijj,1) = initClearcut(2)
      modOut(year,14,ijj,1) = initClearcut(4)
      modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))

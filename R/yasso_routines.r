@@ -307,6 +307,118 @@ yasso <- function(input,pYasso,yassoOut){
   # run yasso for foliage in birch stands
   yassoOut[9,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
                                     Precipitation, yassoOut[9,], LitterFb, 0, Steadystate_pred)
+  return(yassoOut)
+}
+
+
+compAWENH <- function(Lit,parsAWEN,spec,litType){
+  #litType if 1 uses Foliage pars, 2 branches, 3 woody
+  #spec vector with species
+  #parsAWEN matrix with parameters and columns = species
+  #Lit litter
+  AWENH = numeric(5)
+  AWENH[1] = parsAWEN[(litType)+1,spec]*Lit
+  AWENH[2] = parsAWEN[(litType)+2,spec]*Lit
+  AWENH[3] = parsAWEN[(litType)+3,spec]*Lit
+  AWENH[4] = parsAWEN[(litType)+4,spec]*Lit
+  return(AWENH)
+}
+
+
+#YAsso function that to be used in R function apply
+yassoStSt <- function(SimulationTime,Steadystate_pred,
+                   MeanTemperature,TemperatureAmplitude,Precipitation,
+                   Lit.W,lit.fW,litt.F,InitialCPool,
+                   pYasso){
+
+  apply(ciao,stem.AWEN,1)
+  LitterWp <- c(stem.AWEN(input[9],1),0)
+  LitterfWp <- c(branches.AWEN(input[10]),0)
+  LitterFp <- c(foliage.AWEN(input[11],1),0)
+  LitterWsp <- c(stem.AWEN(input[12],2),0)
+  LitterfWsp <- c(branches.AWEN(input[13]),0)
+  LitterFsp <- c(foliage.AWEN(input[14],2),0)
+  LitterWb <- c(stem.AWEN(input[15],3),0)
+  LitterfWb <- c(branches.AWEN(input[16]),0)
+  LitterFb <- c(foliage.AWEN(input[17],3),0)
+  sizeWp <- input[18]
+  sizefWp <- input[19]
+  sizeWsp <- input[20]
+  sizefWsp <- input[21]
+  sizeWb <- input[22]
+  sizefWb <- input[23]
+
+  # run yasso for Woody in pine stands
+  yassoOut[1,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[1,], LitterWp, sizeWp, Steadystate_pred)
+  # run yasso for fine Woody in pine stands
+  yassoOut[2,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[2,], LitterfWp, sizefWp, Steadystate_pred)
+  # run yasso for foliage in pine stands
+  yassoOut[3,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[3,], LitterFp, 0, Steadystate_pred)
+  # run yasso for Woody in spruce stands
+  yassoOut[4,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[4,], LitterWsp, sizeWsp, Steadystate_pred)
+  # run yasso for fine Woody in spruce stands
+  yassoOut[5,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[5,], LitterfWsp, sizefWsp, Steadystate_pred)
+  # run yasso for foliage in spruce stands
+  yassoOut[6,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[6,], LitterFsp, 0, Steadystate_pred)
+  # run yasso for Woody in birch stands
+  yassoOut[7,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[7,], LitterWb, sizeWb, Steadystate_pred)
+  # run yasso for fine Woody in birch stands
+  yassoOut[8,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[8,], LitterfWb, sizefWb, Steadystate_pred)
+  # run yasso for foliage in birch stands
+  yassoOut[9,] <- Yasso15_R_version(pYasso, SimulationTime, MeanTemperature, TemperatureAmplitude,
+                                    Precipitation, yassoOut[9,], LitterFb, 0, Steadystate_pred)
 
   return(yassoOut)
 }
+
+
+
+
+StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType){
+  AWEN <- compAWENH(litter,parsAWEN,spec,litType)
+
+  soilC <- Yasso15_R_version(pYasso, SimulationTime=1, Tmean,
+                                 Tamp, Precip,rep(0,5),
+                                 AWEN, litterSize,
+                                 Steadystate_pred=1)
+  return(soilC)
+}
+
+
+
+soilCstst <- function(x,rot=1,years=NA){
+## x is a prebas output; rot = 1 the steady state soilC is calculated on the rotation length;
+## years = number of years from which compute the average annual litter inputs;
+##
+  if(inherits(x,"prebas")){
+    if (rot==1) {nYearsStst = which(x$output[,30,1,1]==0)[1]} else if(!is.na(years)){
+        nYearsStst=years}else{
+        nYearsStst=length(x$output[,30,1,1])
+      }
+    litterSize <- x$litterSize
+    input <-  rbind(colSums(colSums(x$output[1:nYearsStst,26:27,,1])),colSums(x$output[1:nYearsStst,28:29,,1]))/nYearsStst#array(0.,3,nLayers)
+    litter <- data.table(input)
+    for(j in 1:nLayers) litter[,paste("litterSize",j):=litterSize[3:1,j]][]
+    litter[,litType:=1:3]
+
+    soilC = array(0,dim = c(5,3,nLayers))
+
+    layersNam <- names(litter[,1:nLayers])
+    litterSizeNam <- names(litter[,(nLayers+1):(nLayers*2)])
+
+    for(j in 1:nLayers) soilC[,,j] <- matrix(unlist(litter[,.(list(StStYasso(get(layersNam[j]),
+                                    parsAWEN,initVar[1,j],Tmean,Tamp,Precip,
+                                    get(litterSizeNam[j]),`litType`))),
+                                    by=1:nrow(litter)][,2]),5,3)
+    return(soilC)
+  }
+}
+

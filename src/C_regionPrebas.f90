@@ -4,7 +4,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLayers,nSp,maxYears,maxThin, &
 		nYears,thinning,pCrobas,allSP,siteInfo, maxNlayers, &
-		nThinning,fAPAR,initClearcut, ETSy,P0y, initVar,&
+		nThinning,fAPAR,initClearcut,fixBAinitClarcut,initCLcutRatio,ETSy,P0y, initVar,&
 		weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,&
 		pAWEN,weatherYasso,litterSize,soilCtotInOut, &
 		defaultThin,ClCut,inDclct,inAclct,dailyPRELES,yassoRun,prebasVersion)
@@ -21,7 +21,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
  real (kind=8), intent(inout) :: siteInfo(nSites,7)
  real (kind=8), intent(in) :: thinning(nSites,maxThin,8),pAWEN(12,allSP)
  real (kind=8), intent(inout) :: dailyPRELES(nSites,(maxYears*365),3)
- real (kind=8), intent(inout) :: initClearcut(nSites,5)	!initial stand conditions after clear cut. (H,D,totBA,Hc,Ainit)
+ real (kind=8), intent(inout) :: initClearcut(nSites,5),fixBAinitClarcut(nSites),initCLcutRatio(nSites,maxNlayers)	!initial stand conditions after clear cut. (H,D,totBA,Hc,Ainit)
 ! real (kind=8), intent(in) :: pSp1(npar),pSp2(npar),pSp3(npar)!,par_common
  real (kind=8), intent(in) :: defaultThin(nSites),ClCut(nSites),yassoRun(nSites),prebasVersion(nSites)
  real (kind=8), intent(in) :: inDclct(nSites,allSP),inAclct(nSites,allSP)
@@ -72,7 +72,11 @@ do ij = 1,maxYears
 	  initVar(i,2,ijj) = initClearcut(i,5)
 	  initVar(i,3,ijj) = initClearcut(i,1)
 	  initVar(i,4,ijj) = initClearcut(i,2)
-	  initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)!multiOut(i,int(ij-initClearcut(i,5)-2),13,ijj,1)/ totBA(i)
+	  if(fixBAinitClarcut(i)==1) then
+	   initVar(i,5,ijj) = initClearcut(i,3) * initCLcutRatio(i,ijj)
+	  else
+	   initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
+      endif
 	  initVar(i,6,ijj) = initClearcut(i,4)
 	  do ki = 1,int(initClearcut(i,5)+1)
 	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
@@ -93,14 +97,16 @@ do ij = 1,maxYears
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,:,:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		ETSy(climID,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
+		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
 	  call prebas_v1(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,:,:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		ETSy(climID,ij),P0y(climID,ij),weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
+		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))

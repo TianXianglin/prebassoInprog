@@ -10,6 +10,8 @@ InitMultiSite <- function(nYearsMS,
                           multiThin = NA,
                           multiNthin = NA,
                           multiInitClearCut = NA,
+                          fixBAinitClarcut = 1.,
+                          initCLcutRatio = NA,
                           PAR,
                           TAir,
                           VPD,
@@ -32,6 +34,11 @@ InitMultiSite <- function(nYearsMS,
     siteInfo[,1] <- 1:nSites
   }
   nLayers <- siteInfo[,4]
+  if(length(fixBAinitClarcut)==1) fixBAinitClarcut=rep(fixBAinitClarcut,nSites)
+  if(all(is.na(initCLcutRatio))){
+    initCLcutRatio <- matrix(NA,nSites,max(nLayers))
+    for(iz in 1:nSites) initCLcutRatio[iz,1:nLayers[iz]] <- rep(1/nLayers[iz],nLayers[iz])
+  }
   nSp <- siteInfo[,5]
   climIDs <- siteInfo[,2]
   # if(all(is.na(multiInitVar)) & all(is.na(nSp)) nSp <- rep(3,nSites)
@@ -171,11 +178,12 @@ InitMultiSite <- function(nYearsMS,
     pCROBAS = pCROBAS,
     allSp = allSp,
     siteInfo = siteInfo,
-
     maxNlayers = maxNlayers,
     nThinning = multiNthin,
     fAPAR = matrix(0.7,nSites,maxYears),
     initClearcut = multiInitClearCut,
+    fixBAinitClarcut=fixBAinitClarcut,
+    initCLcutRatio = initCLcutRatio,
     ETSy = multiETS,
     P0y = multiP0,
     multiInitVar = multiInitVar,
@@ -217,6 +225,8 @@ multiPrebas <- function(multiSiteInit){
                      nThinning=as.integer(multiSiteInit$nThinning),
                      fAPAR=as.matrix(multiSiteInit$fAPAR),
                      initClearcut=as.matrix(multiSiteInit$initClearcut),
+                     fixBAinitClarcut = as.double(multiSiteInit$fixBAinitClarcut),
+                     initCLcutRatio = as.matrix(multiSiteInit$initCLcutRatio),
                      ETSy=as.matrix(multiSiteInit$ETSy),
                      P0y=as.matrix(multiSiteInit$P0y),
                      multiInitVar=as.array(multiSiteInit$multiInitVar),
@@ -272,6 +282,8 @@ regionPrebas <- function(multiSiteInit,
                    nThinning=as.integer(multiSiteInit$nThinning),
                    fAPAR=as.matrix(multiSiteInit$fAPAR),
                    initClearcut=as.matrix(multiSiteInit$initClearcut),
+                   fixBAinitClarcut = as.double(multiSiteInit$fixBAinitClarcut),
+                   initCLcutRatio = as.matrix(multiSiteInit$initCLcutRatio),
                    ETSy=as.matrix(multiSiteInit$ETSy),
                    P0y=as.matrix(multiSiteInit$P0y),
                    multiInitVar=as.array(multiSiteInit$multiInitVar),

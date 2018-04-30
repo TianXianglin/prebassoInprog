@@ -9,6 +9,8 @@ prebas <- function(nYears,
                    siteInfo = NA,
                    thinning=NA,
                    initClearcut = c(1.5,0.5,0.0431969,0.,0.),
+                   fixBAinitClarcut = 1.,
+                   initCLcutRatio = NA,
                    PAR,TAir,VPD,Precip,CO2,
                    P0=NA,
                    initVar = NA,
@@ -46,6 +48,10 @@ prebas <- function(nYears,
   }
   nSp = ncol(pCROBAS)
   if(anyNA(siteInfo)) siteInfo = c(1,1,3,160,0,0,20) ###default values for nspecies and site type = 3
+
+  if(all(is.na(initCLcutRatio))){
+    initCLcutRatio <- rep(1/nLayers,nLayers)
+  }
 
   varNam <- getVarNam()
   nVar <- length(varNam)
@@ -138,6 +144,8 @@ prebas <- function(nYears,
                      maxYearSite=as.integer(nYears),
                      fAPAR=as.numeric(fAPAR),
                      initClearcut=as.numeric(initClearcut),
+                     fixBAinitClarcut=as.numeric(fixBAinitClarcut),
+                     initCLcutRatio = as.double(initCLcutRatio),
                      ETS = as.numeric(ETS),
                      P0 = as.numeric(P0),
                      weather=as.array(weatherPreles),
