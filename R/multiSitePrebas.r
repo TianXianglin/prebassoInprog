@@ -304,7 +304,7 @@ regionPrebas <- function(multiSiteInit,
                    dailyPRELES = as.array(multiSiteInit$dailyPRELES),
                    yassoRun=as.double(multiSiteInit$yassoRun),
                    PREBASversion=as.double(multiSiteInit$PREBASversion))
-class(prebas) <- "multiPrebas"
+class(prebas) <- "regionPrebas"
 prebas$totHarv <- apply(prebas$multiOut[,,37,,1],2,sum)
 return(prebas)
 }

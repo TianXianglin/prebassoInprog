@@ -382,7 +382,7 @@ yassoStSt <- function(SimulationTime,Steadystate_pred,
 
 
 
-StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType){
+StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType,pYasso){
   AWEN <- compAWENH(litter,parsAWEN,spec,litType)
 
   soilC <- Yasso15_R_version(pYasso, SimulationTime=1, Tmean,
@@ -392,31 +392,73 @@ StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType)
   return(soilC)
 }
 
-
-
-soilCstst <- function(x,rot=1,years=NA){
-## x is a prebas output; rot = 1 the steady state soilC is calculated on the rotation length;
-## years = number of years from which compute the average annual litter inputs;
-##
+ageEndRot <- function(x){
   if(inherits(x,"prebas")){
-    if (rot==1) {nYearsStst = which(x$output[,30,1,1]==0)[1]} else if(!is.na(years)){
-        nYearsStst=years}else{
+    nYearsStst = x$output[(which(x$output[,30,1,1]==0)[1]),7,1,1]
+  }
+  if(inherits(x,"multiPrebas") | inherits(x,"regionPrebas")){
+    endRot <- apply(x$multiOut[,,30,1,1],1,function(aa) which(aa==0)[1])
+    index <- matrix(c(1:x$nSites,endRot,rep(7,x$nSites),rep(1,x$nSites),rep(1,x$nSites)),7,5)
+    nYearsStst <- x$multiOut[index]
+  }
+  return(nYearsStst)
+}
+
+
+LitterforYassoStSt <- function(x,rot=1,years=NA){
+  ###Function to extract litter from PREBAS output and
+  ###compute the average litter input for YASSO
+  ## x is a prebas output; rot = 1 the steady state soilC is calculated
+  ##on the rotation length;
+  ## years = number of years from which compute the average annual litter inputs;
+  if(inherits(x,"prebas")){
+    if (rot==1) {nYearsStst = ageEndRot(x)} else if(!is.na(years)){
+      nYearsStst=years}else{
         nYearsStst=length(x$output[,30,1,1])
       }
     litterSize <- x$litterSize
+    nLayers <- x$nLayers
     input <-  rbind(colSums(colSums(x$output[1:nYearsStst,26:27,,1])),colSums(x$output[1:nYearsStst,28:29,,1]))/nYearsStst#array(0.,3,nLayers)
     litter <- data.table(input)
     for(j in 1:nLayers) litter[,paste("litterSize",j):=litterSize[3:1,j]][]
     litter[,litType:=1:3]
+#    class(litter) <- "litterPrebas"
+    return(litter)
+  }
+  # if(inherits(x,"multiPrebas")){
+  #   nSites <- x$nSites
+  #   if (rot==1) {nYearsStst = ageEndRot(x)} else if(!is.na(years)){
+  #     nYearsStst=years}else{
+  #       nYearsStst=length(x$output[,30,1,1])
+  #     }
+  #   litterSize <- x$litterSize
+  #   nLayers <- x$nLayers
+  #   folLit <- x$multiOut[,,26,,1] + x$multiOut[,,27,,1]
+  #   litter <-
+  #   input <-  apply(x$multiOut,1,function(ops) rbind(colSums(colSums(ops[1:nYearsStst,26:27,,1])),colSums(ops[1:nYearsStst,28:29,,1])))#/nYearsStst#array(0.,3,nLayers)
+  #   litter <- data.table(input)
+  #   for(j in 1:nLayers) litter[,paste("litterSize",j):=litterSize[3:1,j]][]
+  #   litter[,litType:=1:3]
+  #   #    class(litter) <- "litterPrebas"
+  #   return(litter)
+  # }
+}
 
+
+
+
+soilCstst <- function(litter,pYasso=pYAS,Tmean,Tamp,Precip){
+  if(length(dim(litter))==2){
+    nLayers <- (ncol(litter)-1)/2
     soilC = array(0,dim = c(5,3,nLayers))
 
     layersNam <- names(litter[,1:nLayers])
     litterSizeNam <- names(litter[,(nLayers+1):(nLayers*2)])
 
-    for(j in 1:nLayers) soilC[,,j] <- matrix(unlist(litter[,.(list(StStYasso(get(layersNam[j]),
+    for(j in 1:nLayers) soilC[,,j] <- matrix(unlist(litter[,
+                                    .(list(StStYasso(get(layersNam[j]),
                                     parsAWEN,initVar[1,j],Tmean,Tamp,Precip,
-                                    get(litterSizeNam[j]),`litType`))),
+                                    get(litterSizeNam[j]),`litType`,pYasso))),
                                     by=1:nrow(litter)][,2]),5,3)
     return(soilC)
   }
