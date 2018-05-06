@@ -317,10 +317,10 @@ compAWENH <- function(Lit,parsAWEN,spec,litType){
   #parsAWEN matrix with parameters and columns = species
   #Lit litter
   AWENH = numeric(5)
-  AWENH[1] = parsAWEN[(litType)+1,spec]*Lit
-  AWENH[2] = parsAWEN[(litType)+2,spec]*Lit
-  AWENH[3] = parsAWEN[(litType)+3,spec]*Lit
-  AWENH[4] = parsAWEN[(litType)+4,spec]*Lit
+  AWENH[1] = parsAWEN[((litType-1)*4)+1,spec]*Lit
+  AWENH[2] = parsAWEN[((litType-1)*4)+2,spec]*Lit
+  AWENH[3] = parsAWEN[((litType-1)*4)+3,spec]*Lit
+  AWENH[4] = parsAWEN[((litType-1)*4)+4,spec]*Lit
   return(AWENH)
 }
 
@@ -382,13 +382,16 @@ yassoStSt <- function(SimulationTime,Steadystate_pred,
 
 
 
-StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType,pYasso){
+####below are the functions to compute soil steady state carbon from prebas output
+
+StStYasso <- function(litter,parsAWEN,spec,Tmean,Tamp,Precip,litterSize,litType,pYasso,
+                      t=1, stst=1,soilCin=rep(0,5)){
   AWEN <- compAWENH(litter,parsAWEN,spec,litType)
 
-  soilC <- Yasso15_R_version(pYasso, SimulationTime=1, Tmean,
-                                 Tamp, Precip,rep(0,5),
+  soilC <- Yasso15_R_version(pYasso, SimulationTime=t, Tmean,
+                                 Tamp, Precip,soilCin,
                                  AWEN, litterSize,
-                                 Steadystate_pred=1)
+                                 Steadystate_pred=stst)
   return(soilC)
 }
 
@@ -447,9 +450,12 @@ LitterforYassoStSt <- function(x,rot=1,years=NA){
 
 
 
-soilCstst <- function(litter,pYasso=pYAS,Tmean,Tamp,Precip){
+soilCstst <- function(litter,Tmean,Tamp,Precip,
+                      pAWEN = parsAWEN,pYasso=pYAS,
+                      t=1,stst=1,soilCin=NA){
   if(length(dim(litter))==2){
     nLayers <- (ncol(litter)-1)/2
+    if(is.na(soilCin)) soilCin <- array(0,dim=c(5,3,nLayers))
     soilC = array(0,dim = c(5,3,nLayers))
 
     layersNam <- names(litter[,1:nLayers])
@@ -457,8 +463,9 @@ soilCstst <- function(litter,pYasso=pYAS,Tmean,Tamp,Precip){
 
     for(j in 1:nLayers) soilC[,,j] <- matrix(unlist(litter[,
                                     .(list(StStYasso(get(layersNam[j]),
-                                    parsAWEN,initVar[1,j],Tmean,Tamp,Precip,
-                                    get(litterSizeNam[j]),`litType`,pYasso))),
+                                    parsAWEN=pAWEN,spec=initVar[1,j],Tmean,Tamp,Precip,
+                                    get(litterSizeNam[j]),`litType`,pYasso,
+                                    t=t,stst=stst,soilCin = soilCin[,,j]))),
                                     by=1:nrow(litter)][,2]),5,3)
     return(soilC)
   }
