@@ -471,3 +471,15 @@ soilCstst <- function(litter,Tmean,Tamp,Precip,
   }
 }
 
+
+
+sCststPrebasOut <- function(x){
+    litter <- LitterforYassoStSt(x)[]
+    Tmean <- mean(x$weatherYasso[,1])
+    Tamp <- mean(x$weatherYasso[,3])
+    Precip <- mean(x$weatherYasso[,2])
+    soilStSt <- soilCstst(litter, Tmean,Tamp,Precip)
+    return(soilStSt)
+}
+
+
