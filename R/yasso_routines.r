@@ -421,12 +421,21 @@ LitterforYassoStSt <- function(x,rot=1,years=NA){
       }
     litterSize <- x$litterSize
     nLayers <- x$nLayers
+    if(nLayers==1){
+      input <-  c(sum(colSums(x$output[1:nYearsStst,26:27,,1])),colSums(x$output[1:nYearsStst,28:29,,1]))/nYearsStst#array(0.,3,nLayers)
+      litter <- data.table(input)
+      setnames(litter,"layer 1")
+      litter[,"litterSize 1":=litterSize[3:1,1]][]
+      litter[,litType:=1:3]
+      #    class(litter) <- "litterPrebas"
+      return(litter)
+    } else{
     input <-  rbind(colSums(colSums(x$output[1:nYearsStst,26:27,,1])),colSums(x$output[1:nYearsStst,28:29,,1]))/nYearsStst#array(0.,3,nLayers)
     litter <- data.table(input)
     for(j in 1:nLayers) litter[,paste("litterSize",j):=litterSize[3:1,j]][]
     litter[,litType:=1:3]
 #    class(litter) <- "litterPrebas"
-    return(litter)
+    return(litter)}
   }
   # if(inherits(x,"multiPrebas")){
   #   nSites <- x$nSites
