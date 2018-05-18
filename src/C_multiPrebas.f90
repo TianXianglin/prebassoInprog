@@ -31,15 +31,16 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
  real (kind=8), intent(in) :: initVar(nSites,6,maxNlayers),P0y(nClimID,maxYears),ETSy(nClimID,maxYears)!,par_common
  real (kind=8), intent(inout) :: multiOut(nSites,maxYears,nVar,maxNlayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nSites,maxYears,5,3,maxNlayers),soilCtotInOut(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
- real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(nSites,3,maxNlayers) !litterSize dimensions: treeOrgans,species
+ real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(nSites,3,allSP) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: output(maxYears,nVar,maxNlayers,2)
  integer :: maxYearSite = 100000000
 
+ multiOut = 0.
  do i = 1,nSites
 	climID = siteInfo(i,2)
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
-		thinning(i,1:nThinning(i),:),output,nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
+		thinning(i,1:nThinning(i),:),output(:,:,1:nLayers(i),:),nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,:),P0y(climID,:),&
 		weatherPRELES(climID,:,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,:,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,:,:),&
@@ -47,14 +48,14 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
 		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,:,:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
 	  call prebas_v1(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
-		thinning(i,1:nThinning(i),:),output,nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
+		thinning(i,1:nThinning(i),:),output(:,:,1:nLayers(i),:),nThinning(i),maxYearSite,fAPAR(i,:),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,:),P0y(climID,:),&
 		weatherPRELES(climID,:,:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,:,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,:,:),&
 		litterSize(i,:,1:nLayers(i)),soilCtotInOut(i,:),&
 		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,:,:),yassoRun(i))
 	endif
-	multiOut(i,:,:,:,:) = output
+	multiOut(i,:,:,1:nLayers(i),:) = output(:,:,1:nLayers(i),:)
 end do
 
 end subroutine

@@ -36,7 +36,7 @@ InitMultiSite <- function(nYearsMS,
   nLayers <- siteInfo[,4]
   if(length(fixBAinitClarcut)==1) fixBAinitClarcut=rep(fixBAinitClarcut,nSites)
   if(all(is.na(initCLcutRatio))){
-    initCLcutRatio <- matrix(NA,nSites,max(nLayers))
+    initCLcutRatio <- matrix(0.,nSites,max(nLayers))
     for(iz in 1:nSites) initCLcutRatio[iz,1:nLayers[iz]] <- rep(1/nLayers[iz],nLayers[iz])
   }
   nSp <- siteInfo[,5]
@@ -158,11 +158,12 @@ InitMultiSite <- function(nYearsMS,
     multiInitVar[,2,] <- matrix(multiInitClearCut[,5],nSites,maxNlayers)
   }
   if(all(is.na(litterSize))){
-    litterSize <- array(0,dim=c(nSites,3,maxNlayers))
+    litterSize <- array(0,dim=c(nSites,3,allSp))
     litterSize[,2,] <- 2
     for(ij in 1:nSites){
       for(i in 1:nLayers[ij]) litterSize[ij,1,i] <- ifelse(multiInitVar[ij,1,i]==3,10,30)
     }
+    siteInfo <- siteInfo[,-c(4,5)]
   }
 
   multiSiteInit <- list(

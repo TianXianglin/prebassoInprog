@@ -30,7 +30,7 @@ implicit none
  real (kind=8), intent(inout) :: siteInfo(7)
  real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
- real (kind=8), intent(inout) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nLayers) !litterSize dimensions: treeOrgans,species
+ real (kind=8), intent(inout) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nSp) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: prelesOut(16),fAPARsite
  real (kind=8) :: leac=0 !leaching parameter for Yasso
  real (kind=8),DIMENSION(nLayers,5) :: fbAWENH,folAWENH,stAWENH
@@ -992,11 +992,11 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,int(outt(4,ijj,1))))   !!!awen partitioning branches
    call compAWENH(Lst(ijj),stAWENH(ijj,:),pAWEN(9:12,int(outt(4,ijj,1))))         !!!awen partitioning stems
 
-   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,1,ijj),stAWENH(ijj,:),litterSize(1,ijj), &
+   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,1,ijj),stAWENH(ijj,:),litterSize(1,int(outt(4,ijj,1))), &
 	leac,soilC((year+1),:,1,ijj),steadystate_pred)
-   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,2,ijj),fbAWENH(ijj,:),litterSize(2,ijj), &
+   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,2,ijj),fbAWENH(ijj,:),litterSize(2,int(outt(4,ijj,1))), &
 	leac,soilC((year+1),:,2,ijj),steadystate_pred)
-   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,3,ijj),folAWENH(ijj,:),litterSize(3,ijj), &
+   call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,3,ijj),folAWENH(ijj,:),litterSize(3,int(outt(4,ijj,1))), &
 	leac,soilC((year+1),:,3,ijj),steadystate_pred)
   enddo
 
