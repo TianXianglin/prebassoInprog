@@ -10,8 +10,8 @@ subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output
 implicit none
  
  integer, parameter :: nVar=46,npar=33, inttimes = 1!, nSp=3
- real (kind=8), parameter :: pi = 3.1415927, t=1.,
- logical steadystate_pred= .false.
+ real (kind=8), parameter :: pi = 3.1415927, t=1.
+ ! logical steadystate_pred= .false.
 !define arguments
  integer, intent(in) :: nYears,nLayers,nSp
  real (kind=8), intent(in) :: weatherPRELES(nYears,365,5)
