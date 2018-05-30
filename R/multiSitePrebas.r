@@ -158,11 +158,9 @@ InitMultiSite <- function(nYearsMS,
     multiInitVar[,2,] <- matrix(multiInitClearCut[,5],nSites,maxNlayers)
   }
   if(all(is.na(litterSize))){
-    litterSize <- array(0,dim=c(nSites,3,allSp))
-    litterSize[,2,] <- 2
-    for(ij in 1:nSites){
-      for(i in 1:nLayers[ij]) litterSize[ij,1,i] <- ifelse(multiInitVar[ij,1,i]==3,10,30)
-    }
+    litterSize <- matrix(0,3,allSp)
+    litterSize[2,] <- 2
+    litterSize[1,] <- c(30,30,10)
     # siteInfo <- siteInfo[,-c(4,5)]
   }
 
