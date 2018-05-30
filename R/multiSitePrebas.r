@@ -30,16 +30,16 @@ InitMultiSite <- function(nYearsMS,
 
   nSites <- length(nYearsMS)
   if(all(is.na(siteInfo))){
-    siteInfo = matrix(c(1,1,3,3,3,160,0,0,20),nSites,9,byrow = T) ###default values for nspecies and site type = 3
+    siteInfo = matrix(c(1,1,3,160,0,0,20,3,3),nSites,9,byrow = T) ###default values for nspecies and site type = 3
     siteInfo[,1] <- 1:nSites
   }
-  nLayers <- siteInfo[,4]
+  nLayers <- siteInfo[,8]
   if(length(fixBAinitClarcut)==1) fixBAinitClarcut=rep(fixBAinitClarcut,nSites)
   if(all(is.na(initCLcutRatio))){
     initCLcutRatio <- matrix(0.,nSites,max(nLayers))
     for(iz in 1:nSites) initCLcutRatio[iz,1:nLayers[iz]] <- rep(1/nLayers[iz],nLayers[iz])
   }
-  nSp <- siteInfo[,5]
+  nSp <- siteInfo[,9]
   climIDs <- siteInfo[,2]
   # if(all(is.na(multiInitVar)) & all(is.na(nSp)) nSp <- rep(3,nSites)
   allSp = ncol(pCROBAS)
@@ -163,7 +163,7 @@ InitMultiSite <- function(nYearsMS,
     for(ij in 1:nSites){
       for(i in 1:nLayers[ij]) litterSize[ij,1,i] <- ifelse(multiInitVar[ij,1,i]==3,10,30)
     }
-    siteInfo <- siteInfo[,-c(4,5)]
+    # siteInfo <- siteInfo[,-c(4,5)]
   }
 
   multiSiteInit <- list(
@@ -221,7 +221,7 @@ multiPrebas <- function(multiSiteInit){
                      thinning=as.array(multiSiteInit$thinning),
                      pCROBAS = as.matrix(multiSiteInit$pCROBAS),    ####
                      allSp = as.integer(multiSiteInit$allSp),       ####
-                     siteInfo = as.matrix(multiSiteInit$siteInfo),  ####
+                     siteInfo = as.matrix(multiSiteInit$siteInfo[,1:7]),  ####
                      maxNlayers = as.integer(multiSiteInit$maxNlayers), ####
                      nThinning=as.integer(multiSiteInit$nThinning),
                      fAPAR=as.matrix(multiSiteInit$fAPAR),
@@ -278,7 +278,7 @@ regionPrebas <- function(multiSiteInit,
                    thinning=as.array(multiSiteInit$thinning),
                    pCROBAS = as.matrix(multiSiteInit$pCROBAS),    ####
                    allSp = as.integer(multiSiteInit$allSp),       ####
-                   siteInfo = as.matrix(multiSiteInit$siteInfo),  ####
+                   siteInfo = as.matrix(multiSiteInit$siteInfo[,1:7]),  ####
                    maxNlayers = as.integer(multiSiteInit$maxNlayers), ####
                    nThinning=as.integer(multiSiteInit$nThinning),
                    fAPAR=as.matrix(multiSiteInit$fAPAR),
