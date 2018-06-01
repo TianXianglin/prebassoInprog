@@ -224,7 +224,7 @@ multiPrebas <- function(multiSiteInit){
                      nThinning=as.integer(multiSiteInit$nThinning),
                      fAPAR=as.matrix(multiSiteInit$fAPAR),
                      initClearcut=as.matrix(multiSiteInit$initClearcut),
-                     fixBAinitClarcut = as.double(multiSiteInit$fixBAinitClarcut),
+                     fixBAinitClearcut = as.double(multiSiteInit$fixBAinitClarcut),
                      initCLcutRatio = as.matrix(multiSiteInit$initCLcutRatio),
                      ETSy=as.matrix(multiSiteInit$ETSy),
                      P0y=as.matrix(multiSiteInit$P0y),

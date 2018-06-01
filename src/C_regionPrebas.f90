@@ -114,7 +114,7 @@ do ij = 1,maxYears
 		litterSize,soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	endif
-	fAPAR(i,ij) = thinningX(int(az),3)
+	! fAPAR(i,ij) = thinningX(int(az),3)
 	if(sum(output(1,11,1:nLayers(i),1))==0 .and. yearX(i) == 0) then
 	 if((maxYears-ij)<15) then
 	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(climID,ij) + 2.25)
