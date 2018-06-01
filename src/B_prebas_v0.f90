@@ -39,7 +39,7 @@ implicit none
 ! real (kind=8),DIMENSION(nLayers) :: speciesIDs
 
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
- integer :: i, ij, ijj,species ! tree species 1,2,3 = scots pine, norway spruce, birch
+ integer :: i, ij, ijj,species,layer ! tree species 1,2,3 = scots pine, norway spruce, birch
 
  real (kind=8) :: p0_ref, ETS_ref
  integer :: time, ki, year,yearX=0,Ainit, countThinning,domSp(1)
@@ -166,7 +166,8 @@ do year = 1, (nYears)
 do ij = 1 , nLayers 		!loop Species
 
  STAND=STAND_all(:,ij)
- param = pCrobas(:,int(stand_all(4,ij)))
+ species = int(stand_all(4,ij))
+ param = pCrobas(:,species)
 
  par_cR=param(1)
  par_rhow=param(2)
@@ -349,7 +350,8 @@ endif
 
 do ij = 1 , nLayers
  STAND=STAND_all(:,ij)
- param = pCrobas(:,int(stand_all(4,ij)))
+ species = int(stand_all(4,ij))
+ param = pCrobas(:,species)
 
  par_cR=param(1)
  par_rhow=param(2)
@@ -748,12 +750,13 @@ end do !!!!end loop species
 
 !!!!test for clearcut!!!!
  domSp = maxloc(STAND_all(13,:))
-
+ layer = int(domSp(1))
 if (ClCut == 1.) then
-	D_clearcut = inDclct(int(stand_all(4,domSp(1))))
-	A_clearcut = inAclct(int(stand_all(4,domSp(1))))
-	D = stand_all(12,domSp(1))
-	age = stand_all(7,domSp(1))
+	species = int(stand_all(4,domSp(1)))
+	D_clearcut = inDclct(species)
+	A_clearcut = inAclct(species)
+	D = stand_all(12,layer)
+	age = stand_all(7,layer)
 
  if ((D > D_clearcut) .or. (age > A_clearcut)) then
   do ij = 1, nLayers
@@ -786,7 +789,8 @@ if(defaultThin == 1.) then
  domSp = maxloc(STAND_all(13,:))
  H = stand_all(11,domSp(1))
  if(H>12.) then
-  if(pCrobas(28,int(stand_all(4,int(domSp(1)))))==1.) then
+  species = int(stand_all(4,int(domSp(1))))
+  if(pCrobas(28,species)==1.) then
    if(sitetype < 3) then
     if(H<20.) then
      BA_lim = -0.0893*H**2. + 4.0071*H - 11.343
@@ -824,7 +828,7 @@ if(defaultThin == 1.) then
     endif
    endif
 !!!!!!!for decidous dominated stands!!!!!!
-  elseif(pCrobas(28,int(stand_all(4,int(domSp(1)))))==2.) then
+  elseif(pCrobas(28,species)==2.) then
    if(H<20.) then
     BA_lim = -0.0179*H**2. + 1.2214*H + 3.7714
     BA_thd = -0.0536*H**2. + 2.4643*H - 12.886
@@ -839,7 +843,8 @@ if(defaultThin == 1.) then
 !ij=1
    if(stand_all(17,ij)>0.) then
     STAND_tot = stand_all(:,ij)
-    param = pCrobas(:,int(stand_all(4,ij)))
+	species = int(stand_all(4,ij))
+    param = pCrobas(:,species)
     par_cR=param(1)
     par_rhow=param(2)
     par_sla =param(3)
