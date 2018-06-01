@@ -40,7 +40,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
 yearX = 0
 ! multiOut = 0.
 ! output = 0.
-write(*,*) 'start'
+open (unit = 7, file = "scores.txt")
 do i = 1,nSites
 !! totBA(i) = sum(initVar(i,5,:))
 relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
@@ -51,7 +51,7 @@ do ij = 1,maxYears
 ! do i = 1,nSites
  do iz = 1,nSites
 	i=siteOrder(iz,ij)
-write(*,*) ij,i
+ write(7,*) ij,i
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999
@@ -196,7 +196,7 @@ endif !(maxState(i)>minDharv)
 
 
 end do
-
+close(7)
 end subroutine
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
