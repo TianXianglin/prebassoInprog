@@ -40,13 +40,14 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
 yearX = 0
 ! multiOut = 0.
 ! output = 0.
-
+write(*,*) 'start'
 do i = 1,nSites
 !! totBA(i) = sum(initVar(i,5,:))
 relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
 enddo
 
 do ij = 1,maxYears
+write(*,*) ij
  HarvArea = 0.
 ! do i = 1,nSites
  do iz = 1,nSites
