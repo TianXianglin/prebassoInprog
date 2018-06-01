@@ -196,6 +196,9 @@ endif !(maxState(i)>minDharv)
 
 
 end do
+open (unit = 10, file = "soilCtot.txt")
+write(10,*) soilCtotInOut
+close(10)
 close(7)
 end subroutine
 
