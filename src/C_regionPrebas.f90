@@ -47,11 +47,11 @@ relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
 enddo
 
 do ij = 1,maxYears
-write(*,*) ij
  HarvArea = 0.
 ! do i = 1,nSites
  do iz = 1,nSites
 	i=siteOrder(iz,ij)
+write(*,*) ij,i
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999
