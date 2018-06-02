@@ -630,115 +630,115 @@ endif
 endif
 
 
-  ! !Perform manual thinning or defoliation events for this time period
-! ! If (STAND(13) > 0) then
-  ! If (countThinning <= nThinning .and. time==inttimes) Then 
-   ! If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
-	! STAND_tot = STAND
+  !Perform manual thinning or defoliation events for this time period
+! If (STAND(13) > 0) then
+  If (countThinning <= nThinning .and. time==inttimes) Then 
+   If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
+	STAND_tot = STAND
 
-! !    STAND(11) = 
-    ! if(thinning(countThinning,4)==0) then
-     ! STAND(8:21) = 0 !#!#
-     ! STAND(23:37) = 0 !#!#
-     ! STAND(43:44) = 0 !#!#
- ! !! calculate litter including residuals from thinned trees
-     ! S_fol = wf_STKG
-     ! S_fr = W_froot
-     ! S_branch = W_branch
-     ! S_wood = S_wood + W_stem* 0.1 + W_croot !0.1 takes into account of the stem residuals after thinnings
-     ! STAND(26) = S_fol
-     ! STAND(27) = S_fr
-     ! STAND(28) = S_branch
-     ! STAND(29) = S_wood
-    ! else
-     ! if(thinning(countThinning,8)==1.) then
-	! if(thinning(countThinning,4) < 2. .and. thinning(countThinning,4) > 0.) then
-	 ! thinning(countThinning,4) = H * thinning(countThinning,4) 
-	! endif
-	! if(thinning(countThinning,5) < 2. .and. thinning(countThinning,5) > 0.) then
-	 ! thinning(countThinning,5) = D * thinning(countThinning,5) 
-	! endif
-	! if(thinning(countThinning,6) < 1. .and. thinning(countThinning,6) > 0.) then
-	 ! thinning(countThinning,6) = BA * thinning(countThinning,6) 
-	! endif
-	! if(thinning(countThinning,7) < 2. .and. thinning(countThinning,7) > 0.) then
-	 ! thinning(countThinning,7) = Hc * thinning(countThinning,7) 
-	! endif
-     ! endif
-     ! if (thinning(countThinning,4) /= -999) H = thinning(countThinning,4)
-     ! if (thinning(countThinning,7) /= -999) Hc = thinning(countThinning,7)
-     ! if (thinning(countThinning,5) /= -999) D = thinning(countThinning,5) 
-     ! BA = thinning(countThinning,6)
-     ! Lc = H - Hc !Lc
-     ! rc = Lc / (H-1.3) !crown ratio
-     ! Nold = N 
-     ! wf_treeKG_old = wf_treeKG
-     ! W_stem_old = W_stem
-     ! N = BA/(pi*((D/2/100)**2)) ! N
-     ! Nthd = Nold-N ! number of cutted trees
-     ! B = BA/N!(pi*((D/2/100)**2))
-     ! A = rc * B
-     ! wf_treeKG = par_rhof * A
+!    STAND(11) = 
+    if(thinning(countThinning,4)==0) then
+     STAND(8:21) = 0 !#!#
+     STAND(23:37) = 0 !#!#
+     STAND(43:44) = 0 !#!#
+ !! calculate litter including residuals from thinned trees
+     S_fol = wf_STKG
+     S_fr = W_froot
+     S_branch = W_branch
+     S_wood = S_wood + W_stem* 0.1 + W_croot !0.1 takes into account of the stem residuals after thinnings
+     STAND(26) = S_fol
+     STAND(27) = S_fr
+     STAND(28) = S_branch
+     STAND(29) = S_wood
+    else
+     if(thinning(countThinning,8)==1.) then
+	if(thinning(countThinning,4) < 2. .and. thinning(countThinning,4) > 0.) then
+	 thinning(countThinning,4) = H * thinning(countThinning,4) 
+	endif
+	if(thinning(countThinning,5) < 2. .and. thinning(countThinning,5) > 0.) then
+	 thinning(countThinning,5) = D * thinning(countThinning,5) 
+	endif
+	if(thinning(countThinning,6) < 1. .and. thinning(countThinning,6) > 0.) then
+	 thinning(countThinning,6) = BA * thinning(countThinning,6) 
+	endif
+	if(thinning(countThinning,7) < 2. .and. thinning(countThinning,7) > 0.) then
+	 thinning(countThinning,7) = Hc * thinning(countThinning,7) 
+	endif
+     endif
+     if (thinning(countThinning,4) /= -999) H = thinning(countThinning,4)
+     if (thinning(countThinning,7) /= -999) Hc = thinning(countThinning,7)
+     if (thinning(countThinning,5) /= -999) D = thinning(countThinning,5) 
+     BA = thinning(countThinning,6)
+     Lc = H - Hc !Lc
+     rc = Lc / (H-1.3) !crown ratio
+     Nold = N 
+     wf_treeKG_old = wf_treeKG
+     W_stem_old = W_stem
+     N = BA/(pi*((D/2/100)**2)) ! N
+     Nthd = Nold-N ! number of cutted trees
+     B = BA/N!(pi*((D/2/100)**2))
+     A = rc * B
+     wf_treeKG = par_rhof * A
 
-     ! V_scrown =  A * (par_betas*Lc)
-     ! V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-     ! W_stem = (V_scrown + V_bole) * N * par_rhow
-     ! RelSize_thinTree = (W_stem/N)/(W_stem_old/Nold)
-     ! V = (V_scrown + V_bole) * N
-     ! wf_STKG = N * wf_treeKG
-     ! hb = par_betab * Lc ** par_x
-     ! Cw = 2 * hb
-! !! calculate litter including residuals from thinned trees
-     ! S_fol = S_fol + wf_treeKG_old * Nthd
-     ! S_fr = S_fr + W_froot * Nthd/Nold
-     ! S_branch = S_branch + W_branch * Nthd/Nold
-     ! S_wood = S_wood + (W_stem_old*0.1 + W_croot) * Nthd/Nold
-! !!update biomasses
-     ! W_froot = par_alfar * wf_STKG	!fine root biomass
-     ! W_croot = W_stem * (beta0 - 1.)	!coarse root biomass
-     ! W_branch = par_rhow * A * Lc * betab * N
+     V_scrown =  A * (par_betas*Lc)
+     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+     W_stem = (V_scrown + V_bole) * N * par_rhow
+     RelSize_thinTree = (W_stem/N)/(W_stem_old/Nold)
+     V = (V_scrown + V_bole) * N
+     wf_STKG = N * wf_treeKG
+     hb = par_betab * Lc ** par_x
+     Cw = 2 * hb
+!! calculate litter including residuals from thinned trees
+     S_fol = S_fol + wf_treeKG_old * Nthd
+     S_fr = S_fr + W_froot * Nthd/Nold
+     S_branch = S_branch + W_branch * Nthd/Nold
+     S_wood = S_wood + (W_stem_old*0.1 + W_croot) * Nthd/Nold
+!!update biomasses
+     W_froot = par_alfar * wf_STKG	!fine root biomass
+     W_croot = W_stem * (beta0 - 1.)	!coarse root biomass
+     W_branch = par_rhow * A * Lc * betab * N
 
-     ! outt(11,ij,2) = STAND_tot(11)
-     ! outt(12,ij,2) = STAND_tot(12)
-     ! outt(13,ij,2) = STAND_tot(13) - BA
-     ! outt(14,ij,2) = STAND_tot(14)
-     ! outt(15,ij,2) = STAND_tot(15)
-     ! outt(16,ij,2) = STAND_tot(16)
-     ! outt(17,ij,2) = Nthd
-     ! outt(18:23,ij,2) = -999 
-     ! outt(24,ij,2) = STAND_tot(24) - W_branch
-     ! outt(25,ij,2) = STAND_tot(25) - W_froot
-     ! outt(26:29,ij,2) = -999 
-     ! outt(30,ij,2) = STAND_tot(30) - V
-     ! outt(31,ij,2) = STAND_tot(31) - W_stem
-     ! outt(32,ij,2) = Nthd * W_croot/N
-     ! outt(33,ij,2) = STAND_tot(33) - wf_STKG
-     ! outt(34,ij,2) = (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
-     ! outt(35,ij,2) = -999; outt(36,ij,2)= -999
+     outt(11,ij,2) = STAND_tot(11)
+     outt(12,ij,2) = STAND_tot(12)
+     outt(13,ij,2) = STAND_tot(13) - BA
+     outt(14,ij,2) = STAND_tot(14)
+     outt(15,ij,2) = STAND_tot(15)
+     outt(16,ij,2) = STAND_tot(16)
+     outt(17,ij,2) = Nthd
+     outt(18:23,ij,2) = -999 
+     outt(24,ij,2) = STAND_tot(24) - W_branch
+     outt(25,ij,2) = STAND_tot(25) - W_froot
+     outt(26:29,ij,2) = -999 
+     outt(30,ij,2) = STAND_tot(30) - V
+     outt(31,ij,2) = STAND_tot(31) - W_stem
+     outt(32,ij,2) = Nthd * W_croot/N
+     outt(33,ij,2) = STAND_tot(33) - wf_STKG
+     outt(34,ij,2) = (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
+     outt(35,ij,2) = -999; outt(36,ij,2)= -999
 
-     ! STAND(11) = H
-     ! STAND(12) = D
-     ! STAND(13) = BA
-     ! STAND(14) = Hc  ! stand Hc
-     ! STAND(15) = Cw
-     ! STAND(16) = Lc  ! stand Lc
-     ! STAND(17) = N
-     ! STAND(26) = S_fol
-     ! STAND(27) = S_fr
-     ! STAND(28) = S_branch
-     ! STAND(29) = S_wood
-     ! STAND(30) = V  ! 
-     ! STAND(31) = W_stem
-     ! STAND(32) = W_croot 
-     ! STAND(33) = wf_STKG
-     ! STAND(34) = wf_treeKG
-     ! STAND(35) = B
-    ! endif
+     STAND(11) = H
+     STAND(12) = D
+     STAND(13) = BA
+     STAND(14) = Hc  ! stand Hc
+     STAND(15) = Cw
+     STAND(16) = Lc  ! stand Lc
+     STAND(17) = N
+     STAND(26) = S_fol
+     STAND(27) = S_fr
+     STAND(28) = S_branch
+     STAND(29) = S_wood
+     STAND(30) = V  ! 
+     STAND(31) = W_stem
+     STAND(32) = W_croot 
+     STAND(33) = wf_STKG
+     STAND(34) = wf_treeKG
+     STAND(35) = B
+    endif
 
-	! countThinning = countThinning + 1
+	countThinning = countThinning + 1
 
-   ! End If
-  ! End If
+   End If
+  End If
 
 	STAND_all(:,ij)=STAND
 end do !!!!end loop species
