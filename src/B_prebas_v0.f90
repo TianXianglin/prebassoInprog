@@ -328,11 +328,11 @@ if (year <= maxYearSite) then
 
    fAPARprel(:) = fAPARsite
    fAPAR(year) = fAPARsite
-   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
-		dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
-		dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
-		dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
-		etmodel)		!type of ET model
+   ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+		! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
+		! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
+		! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
+		! etmodel)		!type of ET model
 
    STAND_all(22,:) = prelesOut(2)  	!ET
    STAND_all(40,:) = prelesOut(15)  	
@@ -632,113 +632,113 @@ endif
 
   !Perform manual thinning or defoliation events for this time period
 ! If (STAND(13) > 0) then
-  ! If (countThinning <= nThinning .and. time==inttimes) Then 
-   ! If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
-	! STAND_tot = STAND
+  If (countThinning <= nThinning .and. time==inttimes) Then 
+   If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
+	STAND_tot = STAND
 
-! !    STAND(11) = 
-    ! if(thinning(countThinning,4)==0) then
-     ! STAND(8:21) = 0 !#!#
-     ! STAND(23:37) = 0 !#!#
-     ! STAND(43:44) = 0 !#!#
- ! !! calculate litter including residuals from thinned trees
-     ! S_fol = wf_STKG
-     ! S_fr = W_froot
-     ! S_branch = W_branch
-     ! S_wood = S_wood + W_stem* 0.1 + W_croot !0.1 takes into account of the stem residuals after thinnings
-     ! STAND(26) = S_fol
-     ! STAND(27) = S_fr
-     ! STAND(28) = S_branch
-     ! STAND(29) = S_wood
-    ! else
-     ! if(thinning(countThinning,8)==1.) then
-	! if(thinning(countThinning,4) < 2. .and. thinning(countThinning,4) > 0.) then
-	 ! thinning(countThinning,4) = H * thinning(countThinning,4) 
-	! endif
-	! if(thinning(countThinning,5) < 2. .and. thinning(countThinning,5) > 0.) then
-	 ! thinning(countThinning,5) = D * thinning(countThinning,5) 
-	! endif
-	! if(thinning(countThinning,6) < 1. .and. thinning(countThinning,6) > 0.) then
-	 ! thinning(countThinning,6) = BA * thinning(countThinning,6) 
-	! endif
-	! if(thinning(countThinning,7) < 2. .and. thinning(countThinning,7) > 0.) then
-	 ! thinning(countThinning,7) = Hc * thinning(countThinning,7) 
-	! endif
-     ! endif
-     ! if (thinning(countThinning,4) /= -999) H = thinning(countThinning,4)
-     ! if (thinning(countThinning,7) /= -999) Hc = thinning(countThinning,7)
-     ! if (thinning(countThinning,5) /= -999) D = thinning(countThinning,5) 
-     ! BA = thinning(countThinning,6)
-     ! Lc = H - Hc !Lc
-     ! rc = Lc / (H-1.3) !crown ratio
-     ! Nold = N 
-     ! wf_treeKG_old = wf_treeKG
-     ! W_stem_old = W_stem
-     ! N = BA/(pi*((D/2/100)**2)) ! N
-     ! Nthd = Nold-N ! number of cutted trees
-     ! B = BA/N!(pi*((D/2/100)**2))
-     ! A = rc * B
-     ! wf_treeKG = par_rhof * A
+!    STAND(11) = 
+    if(thinning(countThinning,4)==0) then
+     STAND(8:21) = 0 !#!#
+     STAND(23:37) = 0 !#!#
+     STAND(43:44) = 0 !#!#
+ !! calculate litter including residuals from thinned trees
+     S_fol = wf_STKG
+     S_fr = W_froot
+     S_branch = W_branch
+     S_wood = S_wood + W_stem* 0.1 + W_croot !0.1 takes into account of the stem residuals after thinnings
+     STAND(26) = S_fol
+     STAND(27) = S_fr
+     STAND(28) = S_branch
+     STAND(29) = S_wood
+    else
+     if(thinning(countThinning,8)==1.) then
+	if(thinning(countThinning,4) < 2. .and. thinning(countThinning,4) > 0.) then
+	 thinning(countThinning,4) = H * thinning(countThinning,4) 
+	endif
+	if(thinning(countThinning,5) < 2. .and. thinning(countThinning,5) > 0.) then
+	 thinning(countThinning,5) = D * thinning(countThinning,5) 
+	endif
+	if(thinning(countThinning,6) < 1. .and. thinning(countThinning,6) > 0.) then
+	 thinning(countThinning,6) = BA * thinning(countThinning,6) 
+	endif
+	if(thinning(countThinning,7) < 2. .and. thinning(countThinning,7) > 0.) then
+	 thinning(countThinning,7) = Hc * thinning(countThinning,7) 
+	endif
+     endif
+     if (thinning(countThinning,4) /= -999) H = thinning(countThinning,4)
+     if (thinning(countThinning,7) /= -999) Hc = thinning(countThinning,7)
+     if (thinning(countThinning,5) /= -999) D = thinning(countThinning,5) 
+     BA = thinning(countThinning,6)
+     Lc = H - Hc !Lc
+     rc = Lc / (H-1.3) !crown ratio
+     Nold = N 
+     wf_treeKG_old = wf_treeKG
+     W_stem_old = W_stem
+     N = BA/(pi*((D/2/100)**2)) ! N
+     Nthd = Nold-N ! number of cutted trees
+     B = BA/N!(pi*((D/2/100)**2))
+     A = rc * B
+     wf_treeKG = par_rhof * A
 
-     ! V_scrown =  A * (par_betas*Lc)
-     ! V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-     ! W_stem = (V_scrown + V_bole) * N * par_rhow
-     ! RelSize_thinTree = (W_stem/N)/(W_stem_old/Nold)
-     ! V = (V_scrown + V_bole) * N
-     ! wf_STKG = N * wf_treeKG
-     ! hb = par_betab * Lc ** par_x
-     ! Cw = 2 * hb
-! !! calculate litter including residuals from thinned trees
-     ! S_fol = S_fol + wf_treeKG_old * Nthd
-     ! S_fr = S_fr + W_froot * Nthd/Nold
-     ! S_branch = S_branch + W_branch * Nthd/Nold
-     ! S_wood = S_wood + (W_stem_old*0.1 + W_croot) * Nthd/Nold
-! !!update biomasses
-     ! W_froot = par_alfar * wf_STKG	!fine root biomass
-     ! W_croot = W_stem * (beta0 - 1.)	!coarse root biomass
-     ! W_branch = par_rhow * A * Lc * betab * N
+     V_scrown =  A * (par_betas*Lc)
+     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+     W_stem = (V_scrown + V_bole) * N * par_rhow
+     RelSize_thinTree = (W_stem/N)/(W_stem_old/Nold)
+     V = (V_scrown + V_bole) * N
+     wf_STKG = N * wf_treeKG
+     hb = par_betab * Lc ** par_x
+     Cw = 2 * hb
+!! calculate litter including residuals from thinned trees
+     S_fol = S_fol + wf_treeKG_old * Nthd
+     S_fr = S_fr + W_froot * Nthd/Nold
+     S_branch = S_branch + W_branch * Nthd/Nold
+     S_wood = S_wood + (W_stem_old*0.1 + W_croot) * Nthd/Nold
+!!update biomasses
+     W_froot = par_alfar * wf_STKG	!fine root biomass
+     W_croot = W_stem * (beta0 - 1.)	!coarse root biomass
+     W_branch = par_rhow * A * Lc * betab * N
 
-     ! outt(11,ij,2) = STAND_tot(11)
-     ! outt(12,ij,2) = STAND_tot(12)
-     ! outt(13,ij,2) = STAND_tot(13) - BA
-     ! outt(14,ij,2) = STAND_tot(14)
-     ! outt(15,ij,2) = STAND_tot(15)
-     ! outt(16,ij,2) = STAND_tot(16)
-     ! outt(17,ij,2) = Nthd
-     ! outt(18:23,ij,2) = -999 
-     ! outt(24,ij,2) = STAND_tot(24) - W_branch
-     ! outt(25,ij,2) = STAND_tot(25) - W_froot
-     ! outt(26:29,ij,2) = -999 
-     ! outt(30,ij,2) = STAND_tot(30) - V
-     ! outt(31,ij,2) = STAND_tot(31) - W_stem
-     ! outt(32,ij,2) = Nthd * W_croot/N
-     ! outt(33,ij,2) = STAND_tot(33) - wf_STKG
-     ! outt(34,ij,2) = (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
-     ! outt(35,ij,2) = -999; outt(36,ij,2)= -999
+     outt(11,ij,2) = STAND_tot(11)
+     outt(12,ij,2) = STAND_tot(12)
+     outt(13,ij,2) = STAND_tot(13) - BA
+     outt(14,ij,2) = STAND_tot(14)
+     outt(15,ij,2) = STAND_tot(15)
+     outt(16,ij,2) = STAND_tot(16)
+     outt(17,ij,2) = Nthd
+     outt(18:23,ij,2) = -999 
+     outt(24,ij,2) = STAND_tot(24) - W_branch
+     outt(25,ij,2) = STAND_tot(25) - W_froot
+     outt(26:29,ij,2) = -999 
+     outt(30,ij,2) = STAND_tot(30) - V
+     outt(31,ij,2) = STAND_tot(31) - W_stem
+     outt(32,ij,2) = Nthd * W_croot/N
+     outt(33,ij,2) = STAND_tot(33) - wf_STKG
+     outt(34,ij,2) = (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
+     outt(35,ij,2) = -999; outt(36,ij,2)= -999
 
-     ! STAND(11) = H
-     ! STAND(12) = D
-     ! STAND(13) = BA
-     ! STAND(14) = Hc  ! stand Hc
-     ! STAND(15) = Cw
-     ! STAND(16) = Lc  ! stand Lc
-     ! STAND(17) = N
-     ! STAND(26) = S_fol
-     ! STAND(27) = S_fr
-     ! STAND(28) = S_branch
-     ! STAND(29) = S_wood
-     ! STAND(30) = V  ! 
-     ! STAND(31) = W_stem
-     ! STAND(32) = W_croot 
-     ! STAND(33) = wf_STKG
-     ! STAND(34) = wf_treeKG
-     ! STAND(35) = B
-    ! endif
+     STAND(11) = H
+     STAND(12) = D
+     STAND(13) = BA
+     STAND(14) = Hc  ! stand Hc
+     STAND(15) = Cw
+     STAND(16) = Lc  ! stand Lc
+     STAND(17) = N
+     STAND(26) = S_fol
+     STAND(27) = S_fr
+     STAND(28) = S_branch
+     STAND(29) = S_wood
+     STAND(30) = V  ! 
+     STAND(31) = W_stem
+     STAND(32) = W_croot 
+     STAND(33) = wf_STKG
+     STAND(34) = wf_treeKG
+     STAND(35) = B
+    endif
 
-	! countThinning = countThinning + 1
+	countThinning = countThinning + 1
 
-   ! End If
-  ! End If
+   End If
+  End If
 
 	STAND_all(:,ij)=STAND
 end do !!!!end loop species
@@ -749,228 +749,228 @@ end do !!!!end loop species
 !do siteNo = 1, nSites
 
 !!!!test for clearcut!!!!
- ! domSp = maxloc(STAND_all(13,:))
- ! layer = int(domSp(1))
-! if (ClCut == 1.) then
-	! species = int(stand_all(4,domSp(1)))
-	! D_clearcut = inDclct(species)
-	! A_clearcut = inAclct(species)
-	! D = stand_all(12,layer)
-	! age = stand_all(7,layer)
+ domSp = maxloc(STAND_all(13,:))
+ layer = int(domSp(1))
+if (ClCut == 1.) then
+	species = int(stand_all(4,domSp(1)))
+	D_clearcut = inDclct(species)
+	A_clearcut = inAclct(species)
+	D = stand_all(12,layer)
+	age = stand_all(7,layer)
 
- ! if ((D > D_clearcut) .or. (age > A_clearcut)) then
-  ! do ij = 1, nLayers
-   ! outt(6:nVar,ij,2) = stand_all(6:nVar,ij) 
-   ! S_fol = stand_all(33,ij) + stand_all(26,ij)
-   ! S_fr = stand_all(25,ij) + stand_all(27,ij)
-   ! S_branch = stand_all(24,ij) + stand_all(28,ij)
-   ! S_wood = stand_all(31,ij)* 0.1 + stand_all(32,ij) + stand_all(29,ij) !0.1 takes into account of the stem residuals after clearcuts
-   ! stand_all(8:21,ij) = 0.
-   ! stand_all(23:37,ij) = 0 !#!#
-   ! stand_all(43:44,ij) = 0
-   ! stand_all(26,ij) = S_fol
-   ! stand_all(27,ij) = S_fr
-   ! stand_all(28,ij) = S_branch
-   ! stand_all(29,ij) = S_wood
-  ! enddo
- ! endif
-! endif
+ if ((D > D_clearcut) .or. (age > A_clearcut)) then
+  do ij = 1, nLayers
+   outt(6:nVar,ij,2) = stand_all(6:nVar,ij) 
+   S_fol = stand_all(33,ij) + stand_all(26,ij)
+   S_fr = stand_all(25,ij) + stand_all(27,ij)
+   S_branch = stand_all(24,ij) + stand_all(28,ij)
+   S_wood = stand_all(31,ij)* 0.1 + stand_all(32,ij) + stand_all(29,ij) !0.1 takes into account of the stem residuals after clearcuts
+   stand_all(8:21,ij) = 0.
+   stand_all(23:37,ij) = 0 !#!#
+   stand_all(43:44,ij) = 0
+   stand_all(26,ij) = S_fol
+   stand_all(27,ij) = S_fr
+   stand_all(28,ij) = S_branch
+   stand_all(29,ij) = S_wood
+  enddo
+ endif
+endif
 
 !!!!test for thinnings!!!!
  !!!!!!!for coniferous dominated stands!!!!!!
-! if(defaultThin == 1.) then
-! ! sitetype = siteInfo(3)
- ! BA_tot = sum(stand_all(13,:))!+stand_all(13,2)+stand_all(13,3)
- ! BAr = stand_all(13,:)/BA_tot
-! ! BAr_SP = stand_all(13,2)/BA_tot
-! ! BAr_B = stand_all(13,3)/BA_tot
- ! BA_lim = 9999999999.9
- ! BA_thd = 0.
- ! domSp = maxloc(STAND_all(13,:))
- ! H = stand_all(11,domSp(1))
- ! if(H>12.) then
-  ! species = int(stand_all(4,int(domSp(1))))
-  ! if(pCrobas(28,species)==1.) then
-   ! if(sitetype < 3) then
-    ! if(H<20.) then
-     ! BA_lim = -0.0893*H**2. + 4.0071*H - 11.343
-     ! BA_thd = -0.0536*H**2. + 2.7643*H - 9.6857
-    ! else 
-     ! BA_lim = 33.
-     ! BA_thd = 24.
-    ! endif
-   ! endif
-   ! if(sitetype == 3) then
-    ! if(H<20.) then
-     ! BA_lim = -0.125*H**2. + 4.95*H - 20.9
-     ! BA_thd = -0.1071*H**2. + 3.9286*H - 15.771
-    ! else 
-     ! BA_lim = 28.
-     ! BA_thd = 20.
-    ! endif
-   ! endif
-   ! if(sitetype == 4) then
-    ! if(H<20.) then
-     ! BA_lim = -0.1071*H**2. + 4.2286*H - 15.571
-     ! BA_thd = -0.0714*H**2. + 2.7857*H - 9.1143
-    ! else 
-     ! BA_lim = 26.
-     ! BA_thd = 18.
-    ! endif
-   ! endif
-   ! if(sitetype == 5) then
-    ! if(H<20.) then
-     ! BA_lim = -0.0714*H**2. + 2.9857*H - 7.9143
-     ! BA_thd = -0.0714*H**2. + 2.7857*H - 11.114
-    ! else 
-     ! BA_lim = 23.
-     ! BA_thd = 16.
-    ! endif
-   ! endif
-! !!!!!!!for decidous dominated stands!!!!!!
-  ! elseif(pCrobas(28,species)==2.) then
-   ! if(H<20.) then
-    ! BA_lim = -0.0179*H**2. + 1.2214*H + 3.7714
-    ! BA_thd = -0.0536*H**2. + 2.4643*H - 12.886
-   ! else 
-    ! BA_lim = 21.
-    ! BA_thd = 15.
-   ! endif
-  ! endif
- ! endif
- ! if (BA_tot > BA_lim) then
-  ! do ij = 1, nLayers
-! !ij=1
-   ! if(stand_all(17,ij)>0.) then
-    ! STAND_tot = stand_all(:,ij)
-	! species = int(stand_all(4,ij))
-    ! param = pCrobas(:,species)
-    ! par_cR=param(1)
-    ! par_rhow=param(2)
-    ! par_sla =param(3)
-    ! par_k =param(4)
-    ! par_vf0 =param(5)
-    ! par_vr =param(6)
-    ! par_c=param(7)
-    ! par_mf0=param(8)
-    ! par_mr0=param(9)
-    ! par_mw0=param(10)
-    ! par_z=param(11)
-    ! par_beta0=param(12)
-    ! par_betab=param(13)
-    ! par_betas = param(14)
-    ! par_rhof2 = param(15)
-    ! par_s1 = param(16)
-    ! par_kRein = param(17)
-    ! par_s0scale = param(18)
-    ! par_x = param(19)
-    ! par_aETS = param(20)
-    ! par_alfar1 =param(21)
-    ! par_alfar2 =param(22)
-    ! par_alfar3 =param(23)
-    ! par_alfar4 =param(24)
-    ! par_alfar5 =param(25)
-    ! par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
-    ! par_S_branchMod = param(27) !model for branch litter model
-    ! p0_ref = param(29) 
-    ! ETS_ref = param(30)
-    ! par_thetaMax = param(31)
-    ! par_Age0 = param(32)
-    ! par_gamma = param(33)
-    ! par_rhof1 = 0.!param(20)
-    ! par_Cr2 = 0.!param(24)
-    ! par_rhof = par_rhof1 * stand_all(5,ij) + par_rhof2
-    ! BA_tot = BA_thd
-    ! BA = BAr(ij) * BA_thd
-    ! if(par_sarShp==1.) then
-     ! H = stand_all(11,ij) *  (1.2147-0.2086 * (BA/ stand_all(13,ij)))
-     ! D = stand_all(12,ij) * (1.2192 -0.2173 * (BA/ stand_all(13,ij)))
-    ! else
-     ! H = stand_all(11,ij) *  (1.07386 -0.06553 * (BA/ stand_all(13,ij)))
-     ! D = stand_all(12,ij) * (1.1779 -0.1379 * (BA/ stand_all(13,ij)))
-    ! endif
-    ! stand_all(13,ij) = BA
-    ! Nold = stand_all(17,ij)
-    ! N = BA/(pi*((D/2/100)**2))
-    ! Nthd = Nold - N
-    ! Hc = stand_all(14,ij)
-    ! Lc = H - Hc !Lc
-    ! rc = Lc / (H-1.3) !crown ratio
-    ! wf_treeKG_old = stand_all(34,ij)
-    ! W_stem_old = stand_all(31,ij)
-    ! B = BA/N
-    ! A = rc * B
-    ! wf_treeKG = par_rhof * A
-    ! V_scrown =  A * (par_betas*Lc)
-    ! V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-    ! W_stem = (V_scrown + V_bole) * N * par_rhow
-    ! V = (V_scrown + V_bole) * N
-    ! outt(30,ij,2) = outt(30,ij,2) - V
-    ! wf_STKG = N * wf_treeKG
-    ! hb = par_betab * Lc ** par_x
-    ! betab = hb/Lc 
+if(defaultThin == 1.) then
+! sitetype = siteInfo(3)
+ BA_tot = sum(stand_all(13,:))!+stand_all(13,2)+stand_all(13,3)
+ BAr = stand_all(13,:)/BA_tot
+! BAr_SP = stand_all(13,2)/BA_tot
+! BAr_B = stand_all(13,3)/BA_tot
+ BA_lim = 9999999999.9
+ BA_thd = 0.
+ domSp = maxloc(STAND_all(13,:))
+ H = stand_all(11,domSp(1))
+ if(H>12.) then
+  species = int(stand_all(4,int(domSp(1))))
+  if(pCrobas(28,species)==1.) then
+   if(sitetype < 3) then
+    if(H<20.) then
+     BA_lim = -0.0893*H**2. + 4.0071*H - 11.343
+     BA_thd = -0.0536*H**2. + 2.7643*H - 9.6857
+    else 
+     BA_lim = 33.
+     BA_thd = 24.
+    endif
+   endif
+   if(sitetype == 3) then
+    if(H<20.) then
+     BA_lim = -0.125*H**2. + 4.95*H - 20.9
+     BA_thd = -0.1071*H**2. + 3.9286*H - 15.771
+    else 
+     BA_lim = 28.
+     BA_thd = 20.
+    endif
+   endif
+   if(sitetype == 4) then
+    if(H<20.) then
+     BA_lim = -0.1071*H**2. + 4.2286*H - 15.571
+     BA_thd = -0.0714*H**2. + 2.7857*H - 9.1143
+    else 
+     BA_lim = 26.
+     BA_thd = 18.
+    endif
+   endif
+   if(sitetype == 5) then
+    if(H<20.) then
+     BA_lim = -0.0714*H**2. + 2.9857*H - 7.9143
+     BA_thd = -0.0714*H**2. + 2.7857*H - 11.114
+    else 
+     BA_lim = 23.
+     BA_thd = 16.
+    endif
+   endif
+!!!!!!!for decidous dominated stands!!!!!!
+  elseif(pCrobas(28,species)==2.) then
+   if(H<20.) then
+    BA_lim = -0.0179*H**2. + 1.2214*H + 3.7714
+    BA_thd = -0.0536*H**2. + 2.4643*H - 12.886
+   else 
+    BA_lim = 21.
+    BA_thd = 15.
+   endif
+  endif
+ endif
+ if (BA_tot > BA_lim) then
+  do ij = 1, nLayers
+!ij=1
+   if(stand_all(17,ij)>0.) then
+    STAND_tot = stand_all(:,ij)
+	species = int(stand_all(4,ij))
+    param = pCrobas(:,species)
+    par_cR=param(1)
+    par_rhow=param(2)
+    par_sla =param(3)
+    par_k =param(4)
+    par_vf0 =param(5)
+    par_vr =param(6)
+    par_c=param(7)
+    par_mf0=param(8)
+    par_mr0=param(9)
+    par_mw0=param(10)
+    par_z=param(11)
+    par_beta0=param(12)
+    par_betab=param(13)
+    par_betas = param(14)
+    par_rhof2 = param(15)
+    par_s1 = param(16)
+    par_kRein = param(17)
+    par_s0scale = param(18)
+    par_x = param(19)
+    par_aETS = param(20)
+    par_alfar1 =param(21)
+    par_alfar2 =param(22)
+    par_alfar3 =param(23)
+    par_alfar4 =param(24)
+    par_alfar5 =param(25)
+    par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
+    par_S_branchMod = param(27) !model for branch litter model
+    p0_ref = param(29) 
+    ETS_ref = param(30)
+    par_thetaMax = param(31)
+    par_Age0 = param(32)
+    par_gamma = param(33)
+    par_rhof1 = 0.!param(20)
+    par_Cr2 = 0.!param(24)
+    par_rhof = par_rhof1 * stand_all(5,ij) + par_rhof2
+    BA_tot = BA_thd
+    BA = BAr(ij) * BA_thd
+    if(par_sarShp==1.) then
+     H = stand_all(11,ij) *  (1.2147-0.2086 * (BA/ stand_all(13,ij)))
+     D = stand_all(12,ij) * (1.2192 -0.2173 * (BA/ stand_all(13,ij)))
+    else
+     H = stand_all(11,ij) *  (1.07386 -0.06553 * (BA/ stand_all(13,ij)))
+     D = stand_all(12,ij) * (1.1779 -0.1379 * (BA/ stand_all(13,ij)))
+    endif
+    stand_all(13,ij) = BA
+    Nold = stand_all(17,ij)
+    N = BA/(pi*((D/2/100)**2))
+    Nthd = Nold - N
+    Hc = stand_all(14,ij)
+    Lc = H - Hc !Lc
+    rc = Lc / (H-1.3) !crown ratio
+    wf_treeKG_old = stand_all(34,ij)
+    W_stem_old = stand_all(31,ij)
+    B = BA/N
+    A = rc * B
+    wf_treeKG = par_rhof * A
+    V_scrown =  A * (par_betas*Lc)
+    V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+    W_stem = (V_scrown + V_bole) * N * par_rhow
+    V = (V_scrown + V_bole) * N
+    outt(30,ij,2) = outt(30,ij,2) - V
+    wf_STKG = N * wf_treeKG
+    hb = par_betab * Lc ** par_x
+    betab = hb/Lc 
 
-    ! Cw = 2 * hb
-! !! calculate litter including residuals from thinned trees
-    ! S_fol = stand_all(26,ij) + wf_treeKG_old * Nthd
-    ! S_fr = stand_all(27,ij) + stand_all(25,ij) * Nthd/Nold
-    ! S_branch = stand_all(28,ij) + stand_all(24,ij) * Nthd/Nold
-    ! S_wood = stand_all(29,ij) + (W_stem_old*0.1 + stand_all(32,ij)) * Nthd/Nold
-! !!update biomasses
-    ! if (sitetype <= 1) then
-     ! par_alfar = par_alfar1
-    ! else if (sitetype==2) then
-     ! par_alfar = par_alfar2
-    ! else if (sitetype==3) then
-     ! par_alfar = par_alfar3
-    ! else if (sitetype==4) then
-     ! par_alfar = par_alfar4
-    ! else 
-     ! par_alfar = par_alfar5
-    ! end if
+    Cw = 2 * hb
+!! calculate litter including residuals from thinned trees
+    S_fol = stand_all(26,ij) + wf_treeKG_old * Nthd
+    S_fr = stand_all(27,ij) + stand_all(25,ij) * Nthd/Nold
+    S_branch = stand_all(28,ij) + stand_all(24,ij) * Nthd/Nold
+    S_wood = stand_all(29,ij) + (W_stem_old*0.1 + stand_all(32,ij)) * Nthd/Nold
+!!update biomasses
+    if (sitetype <= 1) then
+     par_alfar = par_alfar1
+    else if (sitetype==2) then
+     par_alfar = par_alfar2
+    else if (sitetype==3) then
+     par_alfar = par_alfar3
+    else if (sitetype==4) then
+     par_alfar = par_alfar4
+    else 
+     par_alfar = par_alfar5
+    end if
 
-    ! W_froot = par_alfar * wf_STKG	!fine root biomass
-    ! W_croot = W_stem * (par_beta0 - 1.)	!coarse root biomass
-    ! W_branch = par_rhow * A * Lc * betab * N
+    W_froot = par_alfar * wf_STKG	!fine root biomass
+    W_croot = W_stem * (par_beta0 - 1.)	!coarse root biomass
+    W_branch = par_rhow * A * Lc * betab * N
   
-    ! outt(11,ij,2)= STAND_tot(11)
-    ! outt(12,ij,2)= STAND_tot(12)
-    ! outt(13,ij,2)= STAND_tot(13) - BA
-    ! outt(14,ij,2)= STAND_tot(14)
-    ! outt(15,ij,2)= STAND_tot(15)
-    ! outt(16,ij,2)= STAND_tot(16)
-    ! outt(17,ij,2)= Nthd
-    ! outt(18:23,ij,2)= -999 
-    ! outt(24,ij,2)= STAND_tot(24) - W_branch
-    ! outt(25,ij,2)= STAND_tot(25) - W_froot
-    ! outt(26:29,ij,2)= -999 
-    ! outt(30,ij,2)= STAND_tot(30) - V
-    ! outt(31,ij,2)= STAND_tot(31) - W_stem
-    ! outt(32,ij,2)= Nthd * W_croot/N
-    ! outt(33,ij,2)= STAND_tot(33) - wf_STKG
-    ! outt(34,ij,2)= (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
-    ! outt(35,ij,2)= -999; outt(36,ij,2)= -999
+    outt(11,ij,2)= STAND_tot(11)
+    outt(12,ij,2)= STAND_tot(12)
+    outt(13,ij,2)= STAND_tot(13) - BA
+    outt(14,ij,2)= STAND_tot(14)
+    outt(15,ij,2)= STAND_tot(15)
+    outt(16,ij,2)= STAND_tot(16)
+    outt(17,ij,2)= Nthd
+    outt(18:23,ij,2)= -999 
+    outt(24,ij,2)= STAND_tot(24) - W_branch
+    outt(25,ij,2)= STAND_tot(25) - W_froot
+    outt(26:29,ij,2)= -999 
+    outt(30,ij,2)= STAND_tot(30) - V
+    outt(31,ij,2)= STAND_tot(31) - W_stem
+    outt(32,ij,2)= Nthd * W_croot/N
+    outt(33,ij,2)= STAND_tot(33) - wf_STKG
+    outt(34,ij,2)= (STAND_tot(34)*Nold - wf_treeKG*N)/Nthd
+    outt(35,ij,2)= -999; outt(36,ij,2)= -999
 
-    ! stand_all(11,ij) = H
-    ! stand_all(12,ij) = D
-    ! stand_all(13,ij) = BA
-    ! stand_all(17,ij) = N
-    ! stand_all(26,ij) = S_fol
-    ! stand_all(27,ij) = S_fr
-    ! stand_all(28,ij) = S_branch
-    ! stand_all(29,ij) = S_wood
-    ! stand_all(24,ij) = W_branch
-    ! stand_all(25,ij) = W_froot
-    ! stand_all(30,ij) = V  ! 
-    ! stand_all(31,ij) = W_stem
-    ! stand_all(32,ij) = W_croot 
-    ! stand_all(33,ij) = wf_STKG
-    ! stand_all(34,ij) = wf_treeKG
-    ! stand_all(35,ij) = B
-   ! endif
-  ! enddo
- ! endif
-! endif !default thin
+    stand_all(11,ij) = H
+    stand_all(12,ij) = D
+    stand_all(13,ij) = BA
+    stand_all(17,ij) = N
+    stand_all(26,ij) = S_fol
+    stand_all(27,ij) = S_fr
+    stand_all(28,ij) = S_branch
+    stand_all(29,ij) = S_wood
+    stand_all(24,ij) = W_branch
+    stand_all(25,ij) = W_froot
+    stand_all(30,ij) = V  ! 
+    stand_all(31,ij) = W_stem
+    stand_all(32,ij) = W_croot 
+    stand_all(33,ij) = wf_STKG
+    stand_all(34,ij) = wf_treeKG
+    stand_all(35,ij) = B
+   endif
+  enddo
+ endif
+endif !default thin
 
 outt(:,:,1)=STAND_all
 
