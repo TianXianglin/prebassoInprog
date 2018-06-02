@@ -742,7 +742,7 @@ end do !!!!!!!end loop species
 
 	! STAND_all(:,ij)=STAND
 ! end do !!!!end loop species
- ! end do !!!!end loop inttimes
+ end do !!!!end loop inttimes
 
 
 ! !Perform thinning or defoliation events for this time period using standard management routines!!!!!!!!!!!!!!!!
@@ -998,9 +998,9 @@ end do !!!!!!!end loop species
 
   ! soilCtot(year+1) = sum(soilC(year+1,:,:,:))
  ! endif !end yassoRun if
-! enddo !end year loop
+enddo !end year loop
 
-! !soil and harvested volume outputs
+!soil and harvested volume outputs
 ! modOut(:,37,:,1) = modOut(:,30,:,2)
 
 ! do year = 1,(nYears+1)
