@@ -134,7 +134,7 @@ do ij = 1,maxYears
 	! initVar(i,2,1:nLayers(i)) = output(1,7,1:nLayers(i),1)
 	! initVar(i,3:6,1:nLayers(i)) = output(1,11:14,1:nLayers(i),1)
 	! HarvArea = HarvArea + sum(output(1,37,1:nLayers(i),1))
- ! end do !iz i
+ end do !iz i
 
  ! !!! check if the haverst limit of the area has been reached otherwise clearcut the stands sorted by basal area 
  ! if (HarvArea < HarvLim(ij) .and. HarvLim(ij) /= 0.) then 
