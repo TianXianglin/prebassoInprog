@@ -36,67 +36,60 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
  real (kind=8) :: ClCutX, HarvArea,defaultThinX,maxState(nSites),check(maxYears), thinningX(maxThin,8)
  integer :: maxYearSite = 300,yearX(nSites),Ainit,sitex,ops(1)
 
-!initialize run
+!!!!initialize run
 yearX = 0
-! multiOut = 0.
-! output = 0.
-! open (unit = 7, file = "scores.txt")
+
 do i = 1,nSites
-!! totBA(i) = sum(initVar(i,5,:))
 relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
 enddo
 
 do ij = 1,maxYears
  HarvArea = 0.
-! do i = 1,nSites
  do iz = 1,nSites
 	i=siteOrder(iz,ij)
- ! write(7,*) ij,i
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999.
 	az = 0
 
-	! if(ij > 1) then
-	 ! soilCinOut(i,ij,:,:,1:nLayers(i)) = soilCinOut(i,(ij-1),:,:,1:nLayers(i))
-	! endif
+	if(ij > 1) then
+	 soilCinOut(i,ij,:,:,1:nLayers(i)) = soilCinOut(i,(ij-1),:,:,1:nLayers(i))
+	endif
 	
-! !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
-	! if (HarvLim(ij) > 0. .and. HarvArea >= HarvLim(ij)) then
-	 ! ClCutX = 0.
-	 ! defaultThinX = 0.
-	! endif
-! !!!
-	! climID = siteInfo(i,2)
-	! if(ij==yearX(i))then
-	 ! yearX(i) = 0
+!!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
+	if (HarvLim(ij) > 0. .and. HarvArea >= HarvLim(ij)) then
+	 ClCutX = 0.
+	 defaultThinX = 0.
+	endif
+!!!
+	climID = siteInfo(i,2)
+	if(ij==yearX(i))then
+	 yearX(i) = 0
 	 
-	 ! do ijj = 1,nLayers(i)
-	  ! initVar(i,1,ijj) = multiOut(i,1,4,ijj,1)
-	  ! initVar(i,2,ijj) = initClearcut(i,5)
-	  ! initVar(i,3,ijj) = initClearcut(i,1)
-	  ! initVar(i,4,ijj) = initClearcut(i,2)
-	  ! if(fixBAinitClarcut(i)==1) then
-	   ! initVar(i,5,ijj) = initClearcut(i,3) * initCLcutRatio(i,ijj)
-	  ! else
-	   ! initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
-      ! endif
-	  ! initVar(i,6,ijj) = initClearcut(i,4)
-	  ! do ki = 1,int(initClearcut(i,5)+1)
-	   ! multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
-	  ! enddo !ki
-	 ! enddo !ijj
-	! endif
+	 do ijj = 1,nLayers(i)
+	  initVar(i,1,ijj) = multiOut(i,1,4,ijj,1)
+	  initVar(i,2,ijj) = initClearcut(i,5)
+	  initVar(i,3,ijj) = initClearcut(i,1)
+	  initVar(i,4,ijj) = initClearcut(i,2)
+	  if(fixBAinitClarcut(i)==1) then
+	   initVar(i,5,ijj) = initClearcut(i,3) * initCLcutRatio(i,ijj)
+	  else
+	   initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
+      endif
+	  initVar(i,6,ijj) = initClearcut(i,4)
+	  do ki = 1,int(initClearcut(i,5)+1)
+	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
+	  enddo !ki
+	 enddo !ijj
+	endif
 	
-	! do jj = 1, nThinning(i)
-	 ! if(thinning(i,jj,1) == ij) then
-	  ! az = az + 1
-	  ! thinningX(az,:) = thinning(i,jj,:)
-	  ! thinningX(az,1) = 1.
-	 ! endif
-	! enddo
-
-!	 If (ij == thinning(countThinning(i),1) .and. ij == thinning(countThinning,3)) Then!
+	do jj = 1, nThinning(i)
+	 if(thinning(i,jj,1) == ij) then
+	  az = az + 1
+	  thinningX(az,:) = thinning(i,jj,:)
+	  thinningX(az,1) = 1.
+	 endif
+	enddo
 
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
@@ -141,9 +134,9 @@ do ij = 1,maxYears
 	! initVar(i,2,1:nLayers(i)) = output(1,7,1:nLayers(i),1)
 	! initVar(i,3:6,1:nLayers(i)) = output(1,11:14,1:nLayers(i),1)
 	! HarvArea = HarvArea + sum(output(1,37,1:nLayers(i),1))
- end do !iz i
+ ! end do !iz i
 
- !!! check if the haverst limit of the area has been reached otherwise clearcut the stands sorted by basal area 
+ ! !!! check if the haverst limit of the area has been reached otherwise clearcut the stands sorted by basal area 
  ! if (HarvArea < HarvLim(ij) .and. HarvLim(ij) /= 0.) then 
   ! n = 0
   ! do while(n < nSites .and. HarvArea < HarvLim(ij))
@@ -156,7 +149,7 @@ do ij = 1,maxYears
    ! climID = siteInfo(siteX,2)
 
 ! if(maxState(siteX)>minDharv) then
-   ! !!clearcut!!
+! !!   !!clearcut!!
    ! HarvArea = HarvArea + sum(multiOut(siteX,ij,30,1:nLayers(i),1))
    ! multiOut(siteX,ij,37,:,1) = multiOut(siteX,ij,37,1:nLayers(i),1) + multiOut(siteX,ij,30,1:nLayers(i),1)
    ! do ijj = 1, nLayers(siteX)
@@ -194,12 +187,8 @@ do ij = 1,maxYears
   ! enddo
  ! endif !HarvArea < HarvLim .and. HarvLim /= 0.
 
-
 end do
-! open (unit = 10, file = "soilCtot.txt")
-! write(10,*) soilCtotInOut
-! close(10)
-! close(7)
+
 end subroutine
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
