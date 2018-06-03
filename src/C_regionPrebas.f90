@@ -40,7 +40,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
 yearX = 0
 ! multiOut = 0.
 ! output = 0.
-open (unit = 7, file = "scores.txt")
+! open (unit = 7, file = "scores.txt")
 do i = 1,nSites
 !! totBA(i) = sum(initVar(i,5,:))
 relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
@@ -51,10 +51,10 @@ do ij = 1,maxYears
 ! do i = 1,nSites
  do iz = 1,nSites
 	i=siteOrder(iz,ij)
- write(7,*) ij,i
+ ! write(7,*) ij,i
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
-	thinningX(:,:) = -999
+	thinningX(:,:) = -999.
 	az = 0
 
 	if(ij > 1) then
@@ -167,8 +167,8 @@ if(maxState(siteX)>minDharv) then
     multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + & 
 	multiOut(siteX,ij,32,ijj,1) + multiOut(siteX,ij,29,ijj,1) !0.1 takes into account of the stem residuals after clearcuts
     multiOut(siteX,ij,8:21,ijj,1) = 0.
-    multiOut(siteX,ij,23:36,ijj,1) = 0 !#!#
-    multiOut(siteX,ij,43:44,ijj,1) = 0
+    multiOut(siteX,ij,23:36,ijj,1) = 0. !#!#
+    multiOut(siteX,ij,43:44,ijj,1) = 0.
     multiOut(siteX,ij,38,ijj,1) = sum(multiOut(siteX,1:ij,30,ijj,2)) + &
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
    enddo
@@ -196,10 +196,10 @@ endif !(maxState(i)>minDharv)
 
 
 end do
-open (unit = 10, file = "soilCtot.txt")
-write(10,*) soilCtotInOut
-close(10)
-close(7)
+! open (unit = 10, file = "soilCtot.txt")
+! write(10,*) soilCtotInOut
+! close(10)
+! close(7)
 end subroutine
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
