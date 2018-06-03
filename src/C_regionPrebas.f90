@@ -90,7 +90,7 @@ do ij = 1,maxYears
 	  ! thinningX(az,1) = 1.
 	 ! endif
 	! enddo
-
+output = 0.
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
