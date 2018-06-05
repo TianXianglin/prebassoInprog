@@ -42,7 +42,7 @@ implicit none
  integer :: i, ij, ijj,species,layer ! tree species 1,2,3 = scots pine, norway spruce, birch
 
  real (kind=8) :: p0_ref, ETS_ref
- integer :: time, ki, year,yearX=0,Ainit, countThinning,domSp(1)
+ integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
  real (kind=8) :: step, totBA
 
  real (kind=8) :: stand_all(nVar,nLayers)
@@ -84,7 +84,7 @@ implicit none
 fbAWENH = 0.
 folAWENH = 0.
 stAWENH = 0.
-yearX=0
+yearX = 0
 modOut = 0.
 soilC = 0.
 countThinning = 1
