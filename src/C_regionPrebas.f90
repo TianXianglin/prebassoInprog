@@ -46,7 +46,9 @@ enddo
 do ij = 1,maxYears
  HarvArea = 0.
  do iz = 1,nSites
-	i=siteOrder(iz,ij)
+ 	i=siteOrder(iz,ij)
+! open(10,file="siteYear.txt")
+! write(10,*) ij,i
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999.
@@ -123,12 +125,14 @@ do ij = 1,maxYears
 	  relBA(i,1:nLayers(i)) = multiOut(i,(ij-1),13,1:nLayers(i),1)/sum(multiOut(i,(ij-1),13,1:nLayers(i),1))
 	 endif
 	endif
+! write(10,*) "here1"
 
 	multiOut(i,ij,:,1:nLayers(i),:) = output(1,:,1:nLayers(i),:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
 	enddo !ijj
+! write(10,*) "here2"
 
 	initVar(i,1,1:nLayers(i)) = output(1,4,1:nLayers(i),1)
 	initVar(i,2,1:nLayers(i)) = output(1,7,1:nLayers(i),1)
@@ -136,22 +140,26 @@ do ij = 1,maxYears
 	HarvArea = HarvArea + sum(output(1,37,1:nLayers(i),1))
  end do !iz i
 
+ 
+! write(10,*) "here3"
+
+
  !!! check if the harvest limit of the area has been reached otherwise clearcut the stands sorted by basal area 
- if (HarvArea < HarvLim(ij) .and. HarvLim(ij) /= 0.) then 
+ if (HarvArea < HarvLim(ij)) then 
   n = 0
   do while(n < nSites .and. HarvArea < HarvLim(ij))
    n = n + 1
    do i = 1, nSites
-	maxState(i) = maxval(multiOut(i,ij,12,1:nLayers(i),1))
+	maxState(i) = maxval(multiOut(i,ij,12,1:nLayers(i),1))!!!search for site with highest DBH
    enddo ! i
    ops = maxloc(maxState)
    siteX = int(ops(1))
-   climID = siteInfo(siteX,2)
-
+   climID = int(siteInfo(siteX,2))
 if(maxState(siteX)>minDharv) then
+  ! close(10)
 !!   !!clearcut!!
-   HarvArea = HarvArea + sum(multiOut(siteX,ij,30,1:nLayers(i),1))
-   multiOut(siteX,ij,37,:,1) = multiOut(siteX,ij,37,1:nLayers(i),1) + multiOut(siteX,ij,30,1:nLayers(i),1)
+   HarvArea = HarvArea + sum(multiOut(siteX,ij,30,1:nLayers(siteX),1))
+   multiOut(siteX,ij,37,:,1) = multiOut(siteX,ij,37,1:nLayers(siteX),1) + multiOut(siteX,ij,30,1:nLayers(siteX),1)
    do ijj = 1, nLayers(siteX)
     multiOut(siteX,ij,6:nVar,ijj,2) = multiOut(siteX,ij,6:nVar,ijj,1) 
     multiOut(siteX,ij,26,ijj,1) = multiOut(siteX,ij,33,ijj,1) + multiOut(siteX,ij,26,ijj,1)
@@ -180,14 +188,17 @@ if(maxState(siteX)>minDharv) then
 		sum(multiOut(siteX,(ij-1),13,1:nLayers(siteX),1))
 	 endif
 
-  initVar(siteX,1,:) = 0. !output(1,4,:,1)
-  initVar(siteX,2,:) = 0.!output(1,7,:,1)
-  initVar(siteX,3:6,:) = 0.!output(1,11:14,:,1)
+  !initVar(siteX,1,1:nLayers(siteX)) = 0. !output(1,4,:,1)
+  initVar(siteX,2,1:nLayers(siteX)) = 0.!output(1,7,:,1)
+  initVar(siteX,3:6,1:nLayers(siteX)) = 0.!output(1,11:14,:,1)
 endif !(maxState(i)>minDharv)
-  enddo
+  enddo !end do while
  endif !HarvArea < HarvLim .and. HarvLim /= 0.
-
+! write(10,*) "here4"
 end do
+! close(10)
+! write(10,*) "here5"
+! close(10)
 
 end subroutine
 

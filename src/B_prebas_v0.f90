@@ -80,6 +80,8 @@ implicit none
 !fix parameters
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
+ ! open(2,file="test.txt")
+ ! write(2,*) "ciao",siteInfo(1)
 !###initialize model###!
 fbAWENH = 0.
 folAWENH = 0.
@@ -162,6 +164,8 @@ do year = 1, (nYears)
  ! end do
 
 do ij = 1 , nLayers 		!loop Species
+
+ ! write(2,*) "nLayers",ij, "of", nLayers
 
  STAND=STAND_all(:,ij)
  species = int(stand(4))
@@ -745,6 +749,7 @@ end do !!!!end loop species
 
 !Perform thinning or defoliation events for this time period using standard management routines!!!!!!!!!!!!!!!!
 !do siteNo = 1, nSites
+ ! write(2,*) "before clcut"
 
 !!!!test for clearcut!!!!
  domSp = maxloc(STAND_all(13,:))
@@ -773,6 +778,8 @@ if (ClCut == 1.) then
   enddo
  endif
 endif
+
+! write(2,*) "befire thinnings after CLCUT"
 
 !!!!test for thinnings!!!!
  !!!!!!!for coniferous dominated stands!!!!!!
@@ -970,12 +977,15 @@ if(defaultThin == 1.) then
   enddo
  endif
 endif !default thin
+ ! write(2,*) "after thinnings"
 
 outt(:,:,1)=STAND_all
 
 modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
 
 !!!!run Yasso
+ ! write(2,*) "before yasso"
+ 
  if(yassoRun==1.) then
   do ijj = 1, nLayers
    Lst(ijj) = outt(29,ijj,1)
@@ -994,10 +1004,14 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,3,ijj),folAWENH(ijj,:),litterSize(3,species), &
 	leac,soilC((year+1),:,3,ijj))
   enddo
+ ! write(2,*) "after yasso"
+ 
 
   soilCtot(year+1) = sum(soilC(year+1,:,:,:))
  endif !end yassoRun if
 enddo !end year loop
+
+! write(2,*) "after loop years"
 
 !soil and harvested volume outputs
 modOut(:,37,:,1) = modOut(:,30,:,2)
@@ -1010,24 +1024,37 @@ do year = 1,(nYears+1)
   enddo
 enddo
 
+! write(2,*) "here1"
+
 !compute gross growth
  modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1) 
+
+ ! write(2,*) "here2"
 
 !compute fluxes in g C m−2 day−1
  modOut(:,44,:,1) = modOut(:,44,:,1)*1000. !*1000 coverts units to g C m−2 y−1
  modOut(:,9,:,1) = modOut(:,9,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
  modOut(:,18,:,1) = modOut(:,18,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
 
+ ! write(2,*) "here3"
+
  modOut(2:(nYears+1),45,:,1) = modOut(1:(nYears),39,:,1)/10. - modOut(2:(nYears+1),39,:,1)/10. + &	!/10 coverts units to g C m−2 y−1
 	modOut(2:(nYears+1),26,:,1)/10. + modOut(2:(nYears+1),27,:,1)/10. + &
 	modOut(2:(nYears+1),28,:,1)/10. + modOut(2:(nYears+1),29,:,1)/10.    
 
- modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1) 
+ ! write(2,*) "here4"
+ 
+modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1) 
+
+! write(2,*) "here5"
 
  output = modOut(2:(nYears+1),:,:,:)
  output(:,5:6,:,:) = modOut(1:(nYears),5:6,:,:)
  soilCinOut = soilC(2:(nYears+1),:,:,:)
  soilCtotInOut = soilCtot(2:(nYears+1))
+
+ ! write(2,*) "here6"
+! close(2)
 
 end subroutine
 

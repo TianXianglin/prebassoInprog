@@ -39,7 +39,7 @@ InitMultiSite <- function(nYearsMS,
     initCLcutRatio <- matrix(0.,nSites,max(nLayers))
     for(iz in 1:nSites) initCLcutRatio[iz,1:nLayers[iz]] <- rep(1/nLayers[iz],nLayers[iz])
   }
-  nSp <- siteInfo[,9]
+  # nSp <- siteInfo[,9]
   climIDs <- siteInfo[,2]
   # if(all(is.na(multiInitVar)) & all(is.na(nSp)) nSp <- rep(3,nSites)
   allSp = ncol(pCROBAS)
