@@ -2,7 +2,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 !subroutine bridging  
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine multiPrebas(multiOut,nSites,nClimID,nLayers,nSp,maxYears,maxThin, &
+subroutine multiPrebas(multiOut,nSites,nClimID,nLayers,maxYears,maxThin, &
 		nYears,thinning,pCrobas,allSP,siteInfo, maxNlayers, &
 		nThinning,fAPAR,initClearcut, fixBAinitClearcut,initCLcutRatio,ETSy,P0y, initVar,&
 		weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,&
@@ -11,8 +11,8 @@ subroutine multiPrebas(multiOut,nSites,nClimID,nLayers,nSp,maxYears,maxThin, &
 
 implicit none
 
-integer, parameter :: nVar=46,npar=33!, nSp=3
-integer, intent(in) :: nYears(nSites),nLayers(nSites),nSp(nSites),allSP
+integer, parameter :: nVar=46,npar=33!
+integer, intent(in) :: nYears(nSites),nLayers(nSites),allSP
 integer :: i,climID
 integer, intent(in) :: nSites, maxYears, maxThin,nClimID,maxNlayers
 real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
@@ -47,7 +47,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
 		weatherPRELES(climID,1:nYears(i),:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,1:nYears(i),:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,1:nYears(i),:),&
 		litterSize,soilCtotInOut(i,1:nYears(i)),&
-		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,:,:),yassoRun(i))
+		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,1:(nYears(i)*365),:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
 	  call prebas_v1(nYears(i),nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinning(i,1:nThinning(i),:),output(1:nYears(i),:,1:nLayers(i),:),nThinning(i),maxYearSite,&
@@ -56,7 +56,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5)
 		weatherPRELES(climID,1:nYears(i),:,:),DOY,pPRELES,etmodel, &
 		soilCinOut(i,1:nYears(i),:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,1:nYears(i),:),&
 		litterSize,soilCtotInOut(i,1:nYears(i)),&
-		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,:,:),yassoRun(i))
+		defaultThin(i),ClCut(i),inDclct(i,:),inAclct(i,:),dailyPRELES(i,1:(nYears(i)*365),:),yassoRun(i))
 	endif
 	multiOut(i,:,:,1:nLayers(i),:) = output(:,:,1:nLayers(i),:)
 end do

@@ -148,13 +148,11 @@ do year = 1, (nYears)
  !PHOTOSYNTHESIS MODEL PART 1
  !----------------------------------
 
-
-
   do time = 1, inttimes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       
  ! do ki = 1, nSites
  ! calculate self-thinning using all tree classes
-     Ntot = 1200.!sum(STAND_all(17,:))
+     Ntot = sum(STAND_all(17,:))
      B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed 
      if(Ntot>0.) then
          Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66) 
@@ -166,7 +164,7 @@ do year = 1, (nYears)
 do ij = 1 , nLayers 		!loop Species
 
  STAND=STAND_all(:,ij)
- species = int(stand_all(4,ij))
+ species = int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
@@ -305,7 +303,7 @@ endif
 ! end do !!!!!!!end loop sites
 
  STAND_all(:,ij)=STAND
-end do !!!!!!!end loop species
+end do !!!!!!!end loop layers
 
 !!!calculate species weight for photosynthesis
 !do siteNo = 1, nSites
@@ -350,7 +348,7 @@ endif
 
 do ij = 1 , nLayers
  STAND=STAND_all(:,ij)
- species = int(stand_all(4,ij))
+ species = int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
@@ -752,7 +750,7 @@ end do !!!!end loop species
  domSp = maxloc(STAND_all(13,:))
  layer = int(domSp(1))
 if (ClCut == 1.) then
-	species = int(stand_all(4,domSp(1)))
+	species = int(stand_all(4,layer))
 	D_clearcut = inDclct(species)
 	A_clearcut = inAclct(species)
 	D = stand_all(12,layer)
@@ -787,9 +785,10 @@ if(defaultThin == 1.) then
  BA_lim = 9999999999.9
  BA_thd = 0.
  domSp = maxloc(STAND_all(13,:))
- H = stand_all(11,int(domSp(1)))
+ layer = int(domSp(1))
+ H = stand_all(11,layer)
  if(H>12.) then
-  species = int(stand_all(4,int(domSp(1))))
+  species = int(stand_all(4,layer))
   if(pCrobas(28,species)==1.) then
    if(sitetype < 3.) then
     if(H<20.) then
@@ -843,7 +842,7 @@ if(defaultThin == 1.) then
 !ij=1
    if(stand_all(17,ij)>0.) then
     STAND_tot = stand_all(:,ij)
-	species = int(stand_all(4,ij))
+	species = int(stand(4))
     param = pCrobas(:,species)
     par_cR=param(1)
     par_rhow=param(2)

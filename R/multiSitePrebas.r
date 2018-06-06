@@ -169,7 +169,6 @@ InitMultiSite <- function(nYearsMS,
     nSites = nSites,
     nClimID = nClimID,
     nLayers = nLayers,
-    nSp = nSp,
     maxYears = maxYears,
     maxThin = maxThin,
     nYears = nYearsMS,
@@ -212,7 +211,6 @@ multiPrebas <- function(multiSiteInit){
                      nSites = as.integer(multiSiteInit$nSites),
                      nClimID = as.integer(multiSiteInit$nClimID),
                      nLayers = as.integer(multiSiteInit$nLayers),######
-                     nSp = as.integer(multiSiteInit$nSp),######
                      maxYears = as.integer(multiSiteInit$maxYears),
                      maxThin = as.integer(multiSiteInit$maxThin),
                      nYears = as.integer(multiSiteInit$nYears),
@@ -269,7 +267,6 @@ regionPrebas <- function(multiSiteInit,
                    nSites = as.integer(multiSiteInit$nSites),
                    nClimID = as.integer(multiSiteInit$nClimID),
                    nLayers = as.integer(multiSiteInit$nLayers),######
-                   nSp = as.integer(multiSiteInit$nSp),######
                    maxYears = as.integer(multiSiteInit$maxYears),
                    maxThin = as.integer(multiSiteInit$maxThin),
                    nYears = as.integer(multiSiteInit$nYears),

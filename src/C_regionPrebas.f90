@@ -2,7 +2,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 !subroutine bridging  
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLayers,nSp,maxYears,maxThin, &
+subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLayers,maxYears,maxThin, &
 		nYears,thinning,pCrobas,allSP,siteInfo, maxNlayers, &
 		nThinning,fAPAR,initClearcut,fixBAinitClarcut,initCLcutRatio,ETSy,P0y, initVar,&
 		weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,&
@@ -12,7 +12,7 @@ subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLaye
 implicit none
 
 integer, parameter :: nVar=46,npar=33!, nSp=3
-integer, intent(in) :: nYears(nSites),nLayers(nSites),nSp(nSites),allSP
+integer, intent(in) :: nYears(nSites),nLayers(nSites),allSP
 integer :: i,climID,ij,iz,ijj,ki,n,jj,az
 integer, intent(in) :: nSites, maxYears, maxThin,nClimID,maxNlayers,siteOrder(nSites,maxYears)
 real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYears),minDharv
@@ -92,7 +92,7 @@ do ij = 1,maxYears
 	enddo
 
 	if(prebasVersion(i)==0.) then
-	  call prebas_v0(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
 		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
@@ -100,7 +100,7 @@ do ij = 1,maxYears
 		litterSize,soilCtotInOut(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
-	  call prebas_v1(1,nLayers(i),nSp(i),siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+	  call prebas_v1(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
 		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
@@ -136,7 +136,7 @@ do ij = 1,maxYears
 	HarvArea = HarvArea + sum(output(1,37,1:nLayers(i),1))
  end do !iz i
 
- !!! check if the haverst limit of the area has been reached otherwise clearcut the stands sorted by basal area 
+ !!! check if the harvest limit of the area has been reached otherwise clearcut the stands sorted by basal area 
  if (HarvArea < HarvLim(ij) .and. HarvLim(ij) /= 0.) then 
   n = 0
   do while(n < nSites .and. HarvArea < HarvLim(ij))
