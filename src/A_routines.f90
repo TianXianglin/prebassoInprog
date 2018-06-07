@@ -174,6 +174,7 @@ end do
      
    if(qcTOT1.gt.0.) then
    
+   
 do  i =1,nclass
   	coeff(i)  = qc(i) / qcTOT1 * qcTOT / qcTOT1 ! weight
 end do
