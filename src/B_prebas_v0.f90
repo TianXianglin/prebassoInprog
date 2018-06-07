@@ -118,28 +118,28 @@ pars(27) = siteInfo(7) !Sinit
 
 do year = 1, (nYears)
 write(2,*) "year =", year,"site=",siteInfo(1)
-  ! if(year==yearX)then
-      ! totBA = sum(modOut((year-Ainit-1),13,:,1))
-   ! do ijj = 1,nLayers
-	 ! if(fixBAinitClarcut==1) then
-	  ! modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
-	 ! else
-      ! modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
-     ! endif
-	 ! modOut(year,11,ijj,1) = initClearcut(1)
-     ! modOut(year,12,ijj,1) = initClearcut(2)
-     ! modOut(year,14,ijj,1) = initClearcut(4)
-     ! modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
-     ! modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
-   ! enddo
-   ! do ki = 1,Ainit
-    ! do ijj = 1,nLayers
-     ! modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
-     ! modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
-    ! enddo
-   ! enddo
-    ! yearX = 0
-  ! endif
+  if(year==yearX)then
+      totBA = sum(modOut((year-Ainit-1),13,:,1))
+   do ijj = 1,nLayers
+	 if(fixBAinitClarcut==1) then
+	  modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
+	 else
+      modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
+     endif
+	 modOut(year,11,ijj,1) = initClearcut(1)
+     modOut(year,12,ijj,1) = initClearcut(2)
+     modOut(year,14,ijj,1) = initClearcut(4)
+     modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
+     modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
+   enddo
+   do ki = 1,Ainit
+    do ijj = 1,nLayers
+     modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
+     modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
+    enddo
+   enddo
+    yearX = 0
+  endif
 
   stand_all = modOut(year,:,:,1)
 
