@@ -352,7 +352,7 @@ end do !!!!!!!end loop layers
 
 do ij = 1 , nLayers
  STAND=STAND_all(:,ij)
- species = 1!int(stand(4))
+ species = int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
