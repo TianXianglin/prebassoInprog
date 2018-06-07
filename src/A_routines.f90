@@ -171,41 +171,11 @@ end do
 ! calculate weights - on the basis of qcTOT1 but all downscaled if qcTOT0 < qcTOT1
 !	       
 !do i = 1,nclass
+coeff=0.5
      
-   if(qcTOT1.gt.0.) then
-    coeff = 0.5
-  	! coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
-
-!      	coeff_SP  = qc(2) / qcTOT1 * qcTOT / qcTOT1 ! 
-
-!        coeff_B  = qc(3) / qcTOT1 * qcTOT / qcTOT1  ! 
-
-
-
-!!!!FMadded
-!        qcTOT = qcTOT * (coeff_P+coeff_SP+coeff_B)
-
-!        coeff_P = coeff_P/(coeff_P+coeff_SP+coeff_B)
-!        coeff_SP = coeff_SP/(coeff_P+coeff_SP+coeff_B)
-!        coeff_B = coeff_B/(coeff_P+coeff_SP+coeff_B)
-!!!!
-
-
-!    if(kLAIetot.gt.0.) then
-!       	 coeff_P  = k(1)*LAIe(1) / kLAIetot ! weight
-
-!        	coeff_SP  = k(2)*LAIe(2) / kLAIetot ! 
-           
-!             coeff_B  = k(3)*LAIe(3) / kLAIetot ! 
-
-
-!   else
-!       coeff_P = 1./3.
-!       coeff_SP = 1./3.
-!       coeff_B = 1./3.
-   
-! end do	
-    endif      
+   ! if(qcTOT1.gt.0.) then
+    ! coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
+   ! endif      
 
 
 
