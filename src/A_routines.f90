@@ -173,7 +173,10 @@ end do
 !do i = 1,nclass
      
    if(qcTOT1.gt.0.) then
-  	coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
+   
+do  i =1,nclass
+  	coeff(i)  = qc(i) / qcTOT1 * qcTOT / qcTOT1 ! weight
+end do
 
 !      	coeff_SP  = qc(2) / qcTOT1 * qcTOT / qcTOT1 ! 
 
