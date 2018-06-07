@@ -330,11 +330,11 @@ if (year <= maxYearSite) then
 
    fAPARprel(:) = fAPARsite
    fAPAR(year) = fAPARsite
-   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
-		dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
-		dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
-		dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
-		etmodel)		!type of ET model
+   ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+		! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
+		! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
+		! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
+		! etmodel)		!type of ET model
 
    STAND_all(22,:) = prelesOut(2)  	!ET
    STAND_all(40,:) = prelesOut(15)  	
