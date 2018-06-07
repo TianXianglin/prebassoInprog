@@ -80,8 +80,8 @@ implicit none
 !fix parameters
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
- ! open(2,file="test.txt")
- ! write(2,*) "ciao",siteInfo(1)
+ open(2,file="test.txt")
+ write(2,*) "site = ",siteInfo(1)
 !###initialize model###!
 fbAWENH = 0.
 folAWENH = 0.
@@ -117,7 +117,7 @@ pars(27) = siteInfo(7) !Sinit
 !######!
 
 do year = 1, (nYears)
-  
+write(2,*) "year =", year
   if(year==yearX)then
       totBA = sum(modOut((year-Ainit-1),13,:,1))
    do ijj = 1,nLayers
@@ -165,7 +165,7 @@ do year = 1, (nYears)
 
 do ij = 1 , nLayers 		!loop Species
 
- ! write(2,*) "nLayers",ij, "of", nLayers
+ write(2,*) "nLayers",ij, "of", nLayers
 
  STAND=STAND_all(:,ij)
  species = int(stand(4))
@@ -1053,8 +1053,8 @@ modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1)
  soilCinOut = soilC(2:(nYears+1),:,:,:)
  soilCtotInOut = soilCtot(2:(nYears+1))
 
- ! write(2,*) "here6"
-! close(2)
+ write(2,*) "end"
+ close(2)
 
 end subroutine
 
