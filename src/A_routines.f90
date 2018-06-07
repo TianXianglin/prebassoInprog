@@ -102,30 +102,30 @@ bt(1) = 0.
 ! end do
     
 
-do j=1,nclass
-     	dc = 0.
-        i1 = 0
-        i2 = 0
- 	do i=1,nv
-	    	if(ht(j).eq.l(i)) i1=i
-			if(hc(j).eq.l(i)) i2=i
+! do j=1,nclass
+     	! dc = 0.
+        ! i1 = 0
+        ! i2 = 0
+ 	! do i=1,nv
+	    	! if(ht(j).eq.l(i)) i1=i
+			! if(hc(j).eq.l(i)) i2=i
 
-			if(ii(i)==j) i1 = i
-			if(ii(i) == j+nclass) i2 = i
+			! if(ii(i)==j) i1 = i
+			! if(ii(i) == j+nclass) i2 = i
 
-!				if(ht(j).gt.l(i).and.hc(j).le.l(i)) dc=dc+lt(i)
-	end do
-		e1 = exp(-bt(i1)) - exp(-bt(i2))
-	            b1 = bt(i2) - bt(i1)
+! !				if(ht(j).gt.l(i).and.hc(j).le.l(i)) dc=dc+lt(i)
+	! end do
+		! e1 = exp(-bt(i1)) - exp(-bt(i2))
+	            ! b1 = bt(i2) - bt(i1)
 
- 		if (b1 .ne. 0)  qc(j) = k(j) * laie(j) * e1  / b1 
+ 		! if (b1 .ne. 0)  qc(j) = k(j) * laie(j) * e1  / b1 
 
-		 	btc(j) = bt(i2)
+		 	! btc(j) = bt(i2)
 
-!           MeanLight(j) = 0.5 * (exp(-bt(i1)) + exp(-bt(i2)))
-            MeanLight(j) = exp(-bt(i2))
-end do
-        
+! !           MeanLight(j) = 0.5 * (exp(-bt(i1)) + exp(-bt(i2)))
+            ! MeanLight(j) = exp(-bt(i2))
+! end do
+      MeanLight = 0.5
 
 
 
