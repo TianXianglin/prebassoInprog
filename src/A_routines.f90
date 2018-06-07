@@ -6,7 +6,7 @@ implicit none
 !*****************************************************************************************
  real (kind=8), intent(in) :: pCrobas(npar,nSp)
  real (kind=8), intent(inout) :: STAND_all(nVar,nclass)
- real (kind=8), intent(inout) :: coeff(nclass) , qcTOT
+ real (kind=8), intent(out) :: coeff(nclass) , qcTOT
 !****************************************************************************************
  integer  :: ki
  real (kind=8) :: param(nPar)

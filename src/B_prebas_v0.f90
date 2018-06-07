@@ -39,10 +39,10 @@ implicit none
 ! real (kind=8),DIMENSION(nLayers) :: speciesIDs
 
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
- integer :: i, ij, ijj,species,layer,nSpec! tree species 1,2,3 = scots pine, norway spruce, birch
+ integer :: i, ij, ijj,species,layer ! tree species 1,2,3 = scots pine, norway spruce, birch
 
  real (kind=8) :: p0_ref, ETS_ref
- integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
+ integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1),nSpecies
  real (kind=8) :: step, totBA
 
  real (kind=8) :: stand_all(nVar,nLayers)
@@ -80,9 +80,10 @@ implicit none
 !fix parameters
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
- open(2,file="test.txt")
- write(2,*) "site = ",siteInfo(1)
+ ! open(2,file="test.txt")
+ ! write(2,*) "ciao",siteInfo(1)
 !###initialize model###!
+nSpecies = nSp
 fbAWENH = 0.
 folAWENH = 0.
 stAWENH = 0.
@@ -117,7 +118,7 @@ pars(27) = siteInfo(7) !Sinit
 !######!
 
 do year = 1, (nYears)
-write(2,*) "year =", year,"site=",siteInfo(1)
+  
   if(year==yearX)then
       totBA = sum(modOut((year-Ainit-1),13,:,1))
    do ijj = 1,nLayers
@@ -165,8 +166,8 @@ write(2,*) "year =", year,"site=",siteInfo(1)
 
 do ij = 1 , nLayers 		!loop Species
 
- write(2,*) "nLayers",ij, "of", nLayers,"year=",year
- 
+ ! write(2,*) "nLayers",ij, "of", nLayers
+
  STAND=STAND_all(:,ij)
  species = int(stand(4))
  param = pCrobas(:,species)
@@ -313,10 +314,8 @@ end do !!!!!!!end loop layers
 !do siteNo = 1, nSites
       
 if (year <= maxYearSite) then
-	nSpec = nSp
-   ! call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
+   ! call Ffotos2(STAND_all,nLayers,nSpecies,pCrobas,&
 		! nVar,nPar,MeanLight,coeff,fAPARsite)
-   ! call Ffotos2(nLayers,nSpec,MeanLight,coeff,fAPARsite)
    STAND_all(36,:) = 0.5!MeanLight
    STAND_all(23,:) = 0.5!coeff
 
@@ -1055,8 +1054,8 @@ modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1)
  soilCinOut = soilC(2:(nYears+1),:,:,:)
  soilCtotInOut = soilCtot(2:(nYears+1))
 
- write(2,*) "end"
- close(2)
+ ! write(2,*) "here6"
+! close(2)
 
 end subroutine
 
