@@ -459,20 +459,23 @@ LitterforYassoStSt <- function(x,rot=1,years=NA){
 
 
 
-soilCstst <- function(litter,Tmean,Tamp,Precip,
+soilCstst <- function(litter,Tmean,Tamp,Precip,species, ###species is a vector of species code with length = to nLayers
                       pAWEN = parsAWEN,pYasso=pYAS,
                       t=1,stst=1,soilCin=NA){
+
   if(length(dim(litter))==2){
+    litter <- data.table(litter)
     nLayers <- (ncol(litter)-1)/2
     if(is.na(soilCin)) soilCin <- array(0,dim=c(5,3,nLayers))
     soilC = array(0,dim = c(5,3,nLayers))
 
+    setnames(litter, c(paste("layer", 1:nLayers),paste("litterSize", 1:nLayers),"litType"))
     layersNam <- names(litter[,1:nLayers])
     litterSizeNam <- names(litter[,(nLayers+1):(nLayers*2)])
 
     for(j in 1:nLayers) soilC[,,j] <- matrix(unlist(litter[,
                                     .(list(StStYasso(get(layersNam[j]),
-                                    parsAWEN=pAWEN,spec=initVar[1,j],Tmean,Tamp,Precip,
+                                    parsAWEN=pAWEN,spec=species[j],Tmean,Tamp,Precip,
                                     get(litterSizeNam[j]),`litType`,pYasso,
                                     t=t,stst=stst,soilCin = soilCin[,,j]))),
                                     by=1:nrow(litter)][,2]),5,3)
