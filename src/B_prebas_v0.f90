@@ -392,11 +392,11 @@ do ij = 1 , nLayers
 
 ! do siteNo = 1, nSites  !start site loop
 
-if (year > maxYearSite) then
-  STAND(8:21) = 0. !#!#
-  STAND(23:37) = 0. !#!#
-  STAND(42:44) = 0. !#!#
-else
+! if (year > maxYearSite) then
+  ! STAND(8:21) = 0. !#!#
+  ! STAND(23:37) = 0. !#!#
+  ! STAND(42:44) = 0. !#!#
+! else
 
 ! initialize site variables
 !  sitetype = STAND(3)
@@ -432,17 +432,17 @@ if (N>0.) then
 
 
 !!!!###here starts stand2 subroutine!!!!!!!!!!!#########
-  if (sitetype <= 1.) then
-   par_alfar = par_alfar1
-  else if (sitetype==2.) then
-   par_alfar = par_alfar2
-  else if (sitetype==3.) then
-   par_alfar = par_alfar3
-  else if (sitetype==4.) then
-   par_alfar = par_alfar4
-  else 
+  ! if (sitetype <= 1.) then
+   ! par_alfar = par_alfar1
+  ! else if (sitetype==2.) then
+   ! par_alfar = par_alfar2
+  ! else if (sitetype==3.) then
+   ! par_alfar = par_alfar3
+  ! else if (sitetype==4.) then
+   ! par_alfar = par_alfar4
+  ! else 
    par_alfar = par_alfar5
-  end if
+  ! end if
 
 !relate metabolic and structural parameters to site conditions
   par_mf = par_mf0 * p0 / p0_ref
