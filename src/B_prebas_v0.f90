@@ -1,3 +1,4 @@
+ 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 !subroutine bridging  
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -312,9 +313,10 @@ end do !!!!!!!end loop layers
 !do siteNo = 1, nSites
       
 if (year <= maxYearSite) then
-   nSpec = nSp
-   call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
-		nVar,nPar,MeanLight,coeff,fAPARsite)
+   ! call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
+		! nVar,nPar,MeanLight,coeff,fAPARsite)
+	nSpec = nSp
+   call Ffotos2(nLayers,nSpec,MeanLight,coeff,fAPARsite)
    STAND_all(36,:) = MeanLight
    STAND_all(23,:) = coeff
 
@@ -1059,4 +1061,5 @@ modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1)
 end subroutine
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
