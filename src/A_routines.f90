@@ -103,9 +103,9 @@ end do
     
 
 do j=1,nclass
-     	dc = 0.
-        i1 = 0
-        i2 = 0
+     	dc = 1!0.
+        i1 = 1!0
+        i2 = 1!0
  	do i=1,nv
 	    	if(ht(j).eq.l(i)) i1=i
 			if(hc(j).eq.l(i)) i2=i
