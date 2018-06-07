@@ -304,6 +304,7 @@ else
   STAND(42:44) = 0. !#!#
 endif
 endif
+! end do !!!!!!!end loop sites
 
  STAND_all(:,ij)=STAND
 end do !!!!!!!end loop layers
@@ -311,42 +312,42 @@ end do !!!!!!!end loop layers
 !!!calculate species weight for photosynthesis
 !do siteNo = 1, nSites
       
-! if (year <= maxYearSite) then
-   ! call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
-		! nVar,nPar,MeanLight,coeff,fAPARsite)
-   ! STAND_all(36,:) = MeanLight
-   ! STAND_all(23,:) = coeff
+if (year <= maxYearSite) then
+   call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
+		nVar,nPar,MeanLight,coeff,fAPARsite)
+   STAND_all(36,:) = MeanLight
+   STAND_all(23,:) = coeff
 
-   ! if(fAPARsite == 0. .and. yearX == 0) then
-	! if((nYears-year)<10) then
-	 ! Ainit = nint(6. + 2*3.5 - 0.005*modOut(year,5,1,1) + 2.25)
-	! else
-	 ! Ainit = nint(6. + 2*3.5 - 0.005*(sum(modOut(year:(year+9),5,1,1))/10) + 2.25)
-	! endif
-	! yearX = Ainit + year
-! !	initClearcut(5) = Ainit
-   ! endif
+   if(fAPARsite == 0. .and. yearX == 0) then
+	if((nYears-year)<10) then
+	 Ainit = nint(6. + 2*3.5 - 0.005*modOut(year,5,1,1) + 2.25)
+	else
+	 Ainit = nint(6. + 2*3.5 - 0.005*(sum(modOut(year:(year+9),5,1,1))/10) + 2.25)
+	endif
+	yearX = Ainit + year
+!	initClearcut(5) = Ainit
+   endif
 
-   ! fAPARprel(:) = fAPARsite
-   ! fAPAR(year) = fAPARsite
-   ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
-		! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
-		! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
-		! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
-		! etmodel)		!type of ET model
+   fAPARprel(:) = fAPARsite
+   fAPAR(year) = fAPARsite
+   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+		dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
+		dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
+		dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
+		etmodel)		!type of ET model
 
-   ! STAND_all(22,:) = prelesOut(2)  	!ET
-   ! STAND_all(40,:) = prelesOut(15)  	
-   ! STAND_all(41,:) = prelesOut(16)  	
+   STAND_all(22,:) = prelesOut(2)  	!ET
+   STAND_all(40,:) = prelesOut(15)  	
+   STAND_all(41,:) = prelesOut(16)  	
 
-   ! pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
-   ! pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
-   ! pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
-   ! pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
+   pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
+   pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
+   pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
+   pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
-   ! STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
+   STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
 
-! endif
+endif
 !enddo !! end site loop
 
 do ij = 1 , nLayers
