@@ -23,7 +23,8 @@ implicit none
  real (kind=8) :: apu, b1,  qctot0, qctot1, wwx, dc, e1
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
- 
+
+coeff = 0. 
  do i = 1,nclass
 	 species = int(stand_all(4,i))
      param = pCrobas(:,species)
@@ -173,7 +174,7 @@ end do
 !do i = 1,nclass
      
    if(qcTOT1.gt.0.) then
-  	coeff  = 0.5!qc / qcTOT1 * qcTOT / qcTOT1 ! weight
+  	coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
 
 !      	coeff_SP  = qc(2) / qcTOT1 * qcTOT / qcTOT1 ! 
 
