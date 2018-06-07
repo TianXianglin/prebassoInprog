@@ -103,9 +103,9 @@ end do
     
 
 do j=1,nclass
-     	dc = 1!0.
-        i1 = 1!0
-        i2 = 1!0
+     	dc = 0.
+        i1 = 0
+        i2 = 0
  	do i=1,nv
 	    	if(ht(j).eq.l(i)) i1=i
 			if(hc(j).eq.l(i)) i2=i
@@ -121,7 +121,8 @@ do j=1,nclass
  		if (b1 .ne. 0)  qc(j) = k(j) * laie(j) * e1  / b1 
 
 		 	btc(j) = bt(i2)
-
+i1=1
+i2=1
 !           MeanLight(j) = 0.5 * (exp(-bt(i1)) + exp(-bt(i2)))
             MeanLight(j) = exp(-bt(i2))
 end do
