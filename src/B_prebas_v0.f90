@@ -487,7 +487,7 @@ if (N>0.) then
             g3 = (par_z / (1. + par_z))  *  ((par_rhof + par_rhor)  /  (par_rhow * beta1))
             g4 = 1 + (par_rhow * par_mw * beta2 - par_rhof * par_s1) / g0
             g5 = (par_z / (1. + par_z)) * (1. / (betab + par_betas))
-            dH = 0.5!g1 * (Lc) * ((g2 - (g4 - 1.) * (H-Lc) - H) / (g3 + (g5 - 1.) * (H-Lc) + H))
+            dH = g1 * (Lc) * ((g2 - (g4 - 1.) * (H-Lc) - H) / (g3 + (g5 - 1.) * (H-Lc) + H))
             if(dH < 0.) dH = 0.
         !-----------------------------------
         !crown rise
@@ -536,9 +536,9 @@ endif
     
 !!  Update state variables
       
-          H = H + step * dH
-          A = A + step * dA
-          B = B + step * dB
+          H = H + 0.5
+          A = A + dA
+          B = B + dB
 
       Hc = Hc + step * dHc
       
