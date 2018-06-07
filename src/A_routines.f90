@@ -55,27 +55,27 @@ do  i=1,nclass
 end do 
         
 
-do  i=1,nv-1
-	do j=i+1,nv
-		    	if(l(i).lt.l(j)) then 
-			   		apu = l(i)
-			   		l(i) = l(j)
-			   		l(j) = apu
+! do  i=1,nv-1
+	! do j=i+1,nv
+		    	! if(l(i).lt.l(j)) then 
+			   		! apu = l(i)
+			   		! l(i) = l(j)
+			   		! l(j) = apu
 
-!	ii-table sorts the l-table indeces so that later the corresponding "locations" for hc and ht values can be located
-					iapu = ii(i)
-					ii(i) = ii(j)
-					ii(j) = iapu
-				endif
-	end do
-end do
+! !	ii-table sorts the l-table indeces so that later the corresponding "locations" for hc and ht values can be located
+					! iapu = ii(i)
+					! ii(i) = ii(j)
+					! ii(j) = iapu
+				! endif
+	! end do
+! end do
         
 ! ** end sort
 ! ** calculate effective leaf area for each species in canopy layers determined by heights and hc:s
 ! ** use function wwx to calculate foliage distribution, defined by species
 
-lt(1) = 0.
-bt(1) = 0.
+! lt(1) = 0.
+! bt(1) = 0.
 ! do i=1,nv-1
         
 	! lt(i+1) = 0.
