@@ -10,7 +10,7 @@ implicit none
  real (kind=8), intent(out) :: coeff(nclass) , qcTOT
 !****************************************************************************************
  integer  :: ki
- real (kind=8) :: param(nPar)
+ ! real (kind=8) :: param(nPar)
  real (kind=8) :: ht(nclass),hc(nclass),h(nclass)
  real (kind=8) :: LAIe(nclass),qc(nclass),btc(nclass),LAI(nclass),N(nclass)
  real (kind=8) :: l(2*nclass),vrel(2*nclass,nclass)
