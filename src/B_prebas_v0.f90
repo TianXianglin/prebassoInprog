@@ -168,7 +168,7 @@ do ij = 1 , nLayers 		!loop Species
  write(2,*) "nLayers",ij, "of", nLayers,"year=",year
  
  STAND=STAND_all(:,ij)
- species = 1!int(stand(4))
+ species = int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
