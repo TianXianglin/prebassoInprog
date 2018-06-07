@@ -236,73 +236,73 @@ else
 
 !!compute V for the first year
 
-! if (N>0.) then
+if (N>0.) then
 
-  ! par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
-  ! par_rhof = par_rhof1 * ETS + par_rhof2
-  ! par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
-! !  par_vr = par_vr / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
+  par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
+  par_rhof = par_rhof1 * ETS + par_rhof2
+  par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
+!  par_vr = par_vr / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
   
- ! !calculate derived variables 
-  ! rc = Lc / (H-1.3) !crown ratio
-  ! A = rc * B
-  ! wf_treeKG = par_rhof * A
-  ! par_ksi = wf_treeKG / (Lc ** par_z)
-  ! wf_STKG = wf_treeKG * N !needle mass per STAND in units C
-  ! ppow=1.6075 
+ !calculate derived variables 
+  rc = Lc / (H-1.3) !crown ratio
+  A = rc * B
+  wf_treeKG = par_rhof * A
+  par_ksi = wf_treeKG / (Lc ** par_z)
+  wf_STKG = wf_treeKG * N !needle mass per STAND in units C
+  ppow=1.6075 
   
-  ! V_scrown =  A * (par_betas*Lc)
-  ! V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-  ! V = (V_scrown + V_bole) * N
-  ! if(year==1) then
-   ! modOut(year,30,ij,1) = V
-  ! endif
+  V_scrown =  A * (par_betas*Lc)
+  V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+  V = (V_scrown + V_bole) * N
+  if(year==1) then
+   modOut(year,30,ij,1) = V
+  endif
 
-  ! !Surface area of the crown
-  ! sar_ell= 4. * pi *  (((((Lc/2)**ppow)*((Cw/2)**ppow)+((Lc/2)**ppow)*((Cw/2)**ppow)+((Cw/2)**ppow)*((Cw/2)**ppow))/3)**(1/ppow))!surface area per tree
-  ! sar_con = pi * ((0.8*hb)**2) * (1 + sqrt(1 + 1 / (((0.8*hb) / Lc)**2))) !surface area per tree
-  ! !Ellipsoid for pine and birch, cone for spruce
-  ! if(par_sarShp==1.) then
-   ! sar = sar_ell
-  ! else
-   ! sar = sar_con
-   ! slc = 0.005
-  ! end if
+  !Surface area of the crown
+  sar_ell= 4. * pi *  (((((Lc/2)**ppow)*((Cw/2)**ppow)+((Lc/2)**ppow)*((Cw/2)**ppow)+((Cw/2)**ppow)*((Cw/2)**ppow))/3)**(1/ppow))!surface area per tree
+  sar_con = pi * ((0.8*hb)**2) * (1 + sqrt(1 + 1 / (((0.8*hb) / Lc)**2))) !surface area per tree
+  !Ellipsoid for pine and birch, cone for spruce
+  if(par_sarShp==1.) then
+   sar = sar_ell
+  else
+   sar = sar_con
+   slc = 0.005
+  end if
 
-  ! !specific leaf area ------------------------------------------------
-  ! laPer_sar = wf_treeKG * par_sla / sar !leaf area per tree  /  crown surface area
-  ! keff = 0.4 * (1. - exp( - par_k / 0.4 * laPer_sar)) / laPer_sar !effective extinction coefficient    }
-  ! !projected leaf area on the STAND -----------------------------------
-  ! if (wf_STKG>0.) then
-   ! lproj = par_sla * wf_STKG / 10000.
-  ! else		
-   ! lproj = 0.
-  ! end if
-  ! !weight per tree STAND$species stratum ------------------------------------
-  ! leff= (keff/par_k)*(wf_STKG*par_sla) / 10000. !effective lai
+  !specific leaf area ------------------------------------------------
+  laPer_sar = wf_treeKG * par_sla / sar !leaf area per tree  /  crown surface area
+  keff = 0.4 * (1. - exp( - par_k / 0.4 * laPer_sar)) / laPer_sar !effective extinction coefficient    }
+  !projected leaf area on the STAND -----------------------------------
+  if (wf_STKG>0.) then
+   lproj = par_sla * wf_STKG / 10000.
+  else		
+   lproj = 0.
+  end if
+  !weight per tree STAND$species stratum ------------------------------------
+  leff= (keff/par_k)*(wf_STKG*par_sla) / 10000. !effective lai
  
-  ! STAND(7) = age
-  ! STAND(19) = leff
-  ! STAND(20) = keff
-  ! STAND(21) = lproj
-  ! STAND(23) = weight
-  ! STAND(24) = W_branch
-  ! STAND(25) = W_froot
-  ! STAND(11) = H
-  ! STAND(12) = D
-  ! STAND(13) = BA ! * par_ops2
-  ! STAND(14) = Hc
-  ! STAND(15) = Cw
-  ! STAND(17) = N
-  ! STAND(33) = wf_STKG
-  ! STAND(34) = wf_treeKG
-  ! STAND(35) = B
-  ! STAND(30) = V
-! else
-  ! STAND(8:21) = 0. !#!#
-  ! STAND(23:37) = 0. !#!#
-  ! STAND(42:44) = 0. !#!#
-! endif
+  STAND(7) = age
+  STAND(19) = leff
+  STAND(20) = keff
+  STAND(21) = lproj
+  STAND(23) = weight
+  STAND(24) = W_branch
+  STAND(25) = W_froot
+  STAND(11) = H
+  STAND(12) = D
+  STAND(13) = BA ! * par_ops2
+  STAND(14) = Hc
+  STAND(15) = Cw
+  STAND(17) = N
+  STAND(33) = wf_STKG
+  STAND(34) = wf_treeKG
+  STAND(35) = B
+  STAND(30) = V
+else
+  STAND(8:21) = 0. !#!#
+  STAND(23:37) = 0. !#!#
+  STAND(42:44) = 0. !#!#
+endif
 endif
 
  STAND_all(:,ij)=STAND
