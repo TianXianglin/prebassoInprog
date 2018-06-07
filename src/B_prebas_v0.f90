@@ -1026,32 +1026,32 @@ enddo
 
 ! write(2,*) "here1"
 
-!compute gross growth
- modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1) 
+! !compute gross growth
+ ! modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1) 
 
- ! write(2,*) "here2"
+ ! ! write(2,*) "here2"
 
-!compute fluxes in g C m−2 day−1
- modOut(:,44,:,1) = modOut(:,44,:,1)*1000. !*1000 coverts units to g C m−2 y−1
- modOut(:,9,:,1) = modOut(:,9,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
- modOut(:,18,:,1) = modOut(:,18,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
+! !compute fluxes in g C m−2 day−1
+ ! modOut(:,44,:,1) = modOut(:,44,:,1)*1000. !*1000 coverts units to g C m−2 y−1
+ ! modOut(:,9,:,1) = modOut(:,9,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
+ ! modOut(:,18,:,1) = modOut(:,18,:,1)*1000.    !*1000 coverts units to g C m−2 y−1
 
- ! write(2,*) "here3"
+ ! ! write(2,*) "here3"
 
- modOut(2:(nYears+1),45,:,1) = modOut(1:(nYears),39,:,1)/10. - modOut(2:(nYears+1),39,:,1)/10. + &	!/10 coverts units to g C m−2 y−1
-	modOut(2:(nYears+1),26,:,1)/10. + modOut(2:(nYears+1),27,:,1)/10. + &
-	modOut(2:(nYears+1),28,:,1)/10. + modOut(2:(nYears+1),29,:,1)/10.    
+ ! modOut(2:(nYears+1),45,:,1) = modOut(1:(nYears),39,:,1)/10. - modOut(2:(nYears+1),39,:,1)/10. + &	!/10 coverts units to g C m−2 y−1
+	! modOut(2:(nYears+1),26,:,1)/10. + modOut(2:(nYears+1),27,:,1)/10. + &
+	! modOut(2:(nYears+1),28,:,1)/10. + modOut(2:(nYears+1),29,:,1)/10.    
 
- ! write(2,*) "here4"
+ ! ! write(2,*) "here4"
  
-modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1) 
+! modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1) 
 
-! write(2,*) "here5"
+! ! write(2,*) "here5"
 
- output = modOut(2:(nYears+1),:,:,:)
- output(1:nYears,5:6,1:nLayers,:) = modOut(1:nYears,5:6,1:nLayers,:)
- soilCinOut = soilC(2:(nYears+1),:,:,:)
- soilCtotInOut = soilCtot(2:(nYears+1))
+ ! output = modOut(2:(nYears+1),:,:,:)
+ ! output(:,5:6,:,:) = modOut(1:(nYears),5:6,:,:)
+ ! soilCinOut = soilC(2:(nYears+1),:,:,:)
+ ! soilCtotInOut = soilCtot(2:(nYears+1))
 
  write(2,*) "end"
  close(2)
