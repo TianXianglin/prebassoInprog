@@ -141,26 +141,26 @@ end do
 !
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !
-kLAIetot = 0.
-kLAItot = 0.
-Atot = 0.
-qcTOT1 = 0
-do  i =1,nclass
-	kLAIetot = kLAIetot + k(i) * LAIe(i)
-    kLAItot = kLAItot + k(i) * LAI(i)
-    Atot = Atot + N(i) * pi*(rc(i)**2 )
-	qcTOT1 = qcTOT1 + qc(i)
-end do
+! kLAIetot = 0.
+! kLAItot = 0.
+! Atot = 0.
+! qcTOT1 = 0
+! do  i =1,nclass
+	! kLAIetot = kLAIetot + k(i) * LAIe(i)
+    ! kLAItot = kLAItot + k(i) * LAI(i)
+    ! Atot = Atot + N(i) * pi*(rc(i)**2 )
+	! qcTOT1 = qcTOT1 + qc(i)
+! end do
     
-! calculate LPJ style fAPAR and use the smaller of the two
+! ! calculate LPJ style fAPAR and use the smaller of the two
 	
-     if(Atot > 0. ) then
-         qcTOT0 = (1. - exp(-kLAItot/ Atot)) * Atot
-     else
-         qctot = 0.
-     endif
+     ! if(Atot > 0. ) then
+         ! qcTOT0 = (1. - exp(-kLAItot/ Atot)) * Atot
+     ! else
+         ! qctot = 0.
+     ! endif
      
-     qcTOT = min(qcTOT0,qctot1)
+     ! qcTOT = min(qcTOT0,qctot1)
 !    qctot = qctot1
      
 !     if(stand_P(7) > 150) then
@@ -171,7 +171,8 @@ end do
 ! calculate weights - on the basis of qcTOT1 but all downscaled if qcTOT0 < qcTOT1
 !	       
 !do i = 1,nclass
-coeff=0.5
+
+    coeff=0.5
      
    ! if(qcTOT1.gt.0.) then
     ! coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
