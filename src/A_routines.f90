@@ -1,4 +1,4 @@
-SUBROUTINE Ffotos2(MeanLight,coeff,qcTOT)
+SUBROUTINE Ffotos2(nClass,nSp,nVar,nPar,MeanLight,coeff,qcTOT)
 ! SUBROUTINE Ffotos2(STAND_all,nClass,nSp,pCrobas,nVar,nPar,MeanLight,coeff,qcTOT)
 implicit none
 
