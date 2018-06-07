@@ -51,7 +51,7 @@ implicit none
  real (kind=8) :: soilC((nYears+1),5,3,nLayers),soilCtot((nYears+1)) 
  real (kind=8) :: par_phib,par_phic,par_alfat,par_alfar1,par_alfar2,par_alfar3,par_alfar4
  real (kind=8) :: par_alfar5,par_etab,par_k,par_vf,par_vr,par_sla,par_mf,par_mr,par_mw,par_vf0
- real (kind=8) :: par_z,par_rhos,par_cR, par_x, Light,MeanLight(3),par_mf0,par_mr0,par_mw0
+ real (kind=8) :: par_z,par_rhos,par_cR, par_x, Light,MeanLight(nLayers),par_mf0,par_mr0,par_mw0
  real (kind=8) :: par_sarShp, par_S_branchMod
  real (kind=8) :: par_rhof, par_rhor, par_rhow, par_c, par_beta0, par_betab, par_betas
  real (kind=8) :: par_s1, par_p0, par_ksi, par_cr2,par_kRein,Rein, c_mort

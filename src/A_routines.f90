@@ -25,7 +25,7 @@ implicit none
  real (kind=8) :: pi = acos(-1.)
  
  do i = 1,nclass
-	 species = 1!int(stand_all(4,i))
+	 species = int(stand_all(4,i))
      param = pCrobas(:,species)
      qc(i) = 0.
      
