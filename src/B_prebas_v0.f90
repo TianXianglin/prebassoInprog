@@ -118,33 +118,33 @@ pars(27) = siteInfo(7) !Sinit
 
 do year = 1, (nYears)
 write(2,*) "year =", year,"site=",siteInfo(1)
-  if(year==yearX)then
-      totBA = sum(modOut((year-Ainit-1),13,:,1))
-   do ijj = 1,nLayers
-	 if(fixBAinitClarcut==1) then
-	  modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
-	 else
-      modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
-     endif
-	 modOut(year,11,ijj,1) = initClearcut(1)
-     modOut(year,12,ijj,1) = initClearcut(2)
-     modOut(year,14,ijj,1) = initClearcut(4)
-     modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
-     modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
-   enddo
-   do ki = 1,Ainit
-    do ijj = 1,nLayers
-     modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
-     modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
-    enddo
-   enddo
-    yearX = 0
-  endif
+  ! if(year==yearX)then
+      ! totBA = sum(modOut((year-Ainit-1),13,:,1))
+   ! do ijj = 1,nLayers
+	 ! if(fixBAinitClarcut==1) then
+	  ! modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
+	 ! else
+      ! modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
+     ! endif
+	 ! modOut(year,11,ijj,1) = initClearcut(1)
+     ! modOut(year,12,ijj,1) = initClearcut(2)
+     ! modOut(year,14,ijj,1) = initClearcut(4)
+     ! modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
+     ! modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
+   ! enddo
+   ! do ki = 1,Ainit
+    ! do ijj = 1,nLayers
+     ! modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
+     ! modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
+    ! enddo
+   ! enddo
+    ! yearX = 0
+  ! endif
 
-  stand_all = modOut(year,:,:,1)
+  ! stand_all = modOut(year,:,:,1)
 
-  step = 1. / float(inttimes)
-  outt(:,:,2) = 0.
+  ! step = 1. / float(inttimes)
+  ! outt(:,:,2) = 0.
 
  !----------------------------------
  !PHOTOSYNTHESIS MODEL PART 1
@@ -168,7 +168,7 @@ do ij = 1 , nLayers 		!loop Species
  write(2,*) "nLayers",ij, "of", nLayers,"year=",year
  
  STAND=STAND_all(:,ij)
- species = int(stand(4))
+ species = 1!int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
@@ -315,8 +315,8 @@ end do !!!!!!!end loop layers
 ! if (year <= maxYearSite) then
    ! call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
 		! nVar,nPar,MeanLight,coeff,fAPARsite)
-   ! STAND_all(36,:) = MeanLight
-   ! STAND_all(23,:) = coeff
+   STAND_all(36,:) = MeanLight
+   STAND_all(23,:) = coeff
 
    ! if(fAPARsite == 0. .and. yearX == 0) then
 	! if((nYears-year)<10) then
@@ -328,24 +328,24 @@ end do !!!!!!!end loop layers
 ! !	initClearcut(5) = Ainit
    ! endif
 
-   ! fAPARprel(:) = fAPARsite
-   ! fAPAR(year) = fAPARsite
-   ! ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
-		! ! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
-		! ! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
-		! ! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
-		! ! etmodel)		!type of ET model
+   fAPARprel(:) = fAPARsite
+   fAPAR(year) = fAPARsite
+   ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+		! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
+		! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
+		! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
+		! etmodel)		!type of ET model
 
-   ! STAND_all(22,:) = prelesOut(2)  	!ET
-   ! STAND_all(40,:) = prelesOut(15)  	
-   ! STAND_all(41,:) = prelesOut(16)  	
+   STAND_all(22,:) = prelesOut(2)  	!ET
+   STAND_all(40,:) = prelesOut(15)  	
+   STAND_all(41,:) = prelesOut(16)  	
 
-   ! pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
-   ! pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
-   ! pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
-   ! pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
+   pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
+   pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
+   pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
+   pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
-   ! STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
+   STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
 
 ! endif
 !enddo !! end site loop
@@ -392,11 +392,11 @@ do ij = 1 , nLayers
 
 ! do siteNo = 1, nSites  !start site loop
 
-! if (year > maxYearSite) then
-  ! STAND(8:21) = 0. !#!#
-  ! STAND(23:37) = 0. !#!#
-  ! STAND(42:44) = 0. !#!#
-! else
+if (year > maxYearSite) then
+  STAND(8:21) = 0. !#!#
+  STAND(23:37) = 0. !#!#
+  STAND(42:44) = 0. !#!#
+else
 
 ! initialize site variables
 !  sitetype = STAND(3)
@@ -432,17 +432,17 @@ if (N>0.) then
 
 
 !!!!###here starts stand2 subroutine!!!!!!!!!!!#########
-  ! if (sitetype <= 1.) then
-   ! par_alfar = par_alfar1
-  ! else if (sitetype==2.) then
-   ! par_alfar = par_alfar2
-  ! else if (sitetype==3.) then
-   ! par_alfar = par_alfar3
-  ! else if (sitetype==4.) then
-   ! par_alfar = par_alfar4
-  ! else 
+  if (sitetype <= 1.) then
+   par_alfar = par_alfar1
+  else if (sitetype==2.) then
+   par_alfar = par_alfar2
+  else if (sitetype==3.) then
+   par_alfar = par_alfar3
+  else if (sitetype==4.) then
+   par_alfar = par_alfar4
+  else 
    par_alfar = par_alfar5
-  ! end if
+  end if
 
 !relate metabolic and structural parameters to site conditions
   par_mf = par_mf0 * p0 / p0_ref
