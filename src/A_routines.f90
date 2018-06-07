@@ -5,7 +5,7 @@ implicit none
 
 !*****************************************************************************************
  real (kind=8), intent(in) :: pCrobas(npar,nSp)
- real (kind=8), intent(inout) :: STAND_all(nVar,nclass)
+ real (kind=8), intent(in) :: STAND_all(nVar,nclass)
  real (kind=8), intent(out) :: coeff(nclass) , qcTOT
 !****************************************************************************************
  integer  :: ki
@@ -24,6 +24,7 @@ implicit none
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
  
+ qcTOT=0.5
  ! do i = 1,nclass
 	 ! species = int(stand_all(4,i))
      ! param = pCrobas(:,species)
