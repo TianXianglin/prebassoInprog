@@ -118,28 +118,28 @@ pars(27) = siteInfo(7) !Sinit
 
 do year = 1, (nYears)
 write(2,*) "year =", year,"site=",siteInfo(1)
-  if(year==yearX)then
-      totBA = sum(modOut((year-Ainit-1),13,:,1))
-   do ijj = 1,nLayers
-	 if(fixBAinitClarcut==1) then
-	  modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
-	 else
-      modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
-     endif
-	 modOut(year,11,ijj,1) = initClearcut(1)
-     modOut(year,12,ijj,1) = initClearcut(2)
-     modOut(year,14,ijj,1) = initClearcut(4)
-     modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
-     modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
-   enddo
-   do ki = 1,Ainit
-    do ijj = 1,nLayers
-     modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
-     modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
-    enddo
-   enddo
-    yearX = 0
-  endif
+  ! if(year==yearX)then
+      ! totBA = sum(modOut((year-Ainit-1),13,:,1))
+   ! do ijj = 1,nLayers
+	 ! if(fixBAinitClarcut==1) then
+	  ! modOut(year,13,ijj,1) = initClearcut(3) * initCLcutRatio(ijj)
+	 ! else
+      ! modOut(year,13,ijj,1) = initClearcut(3) * modOut((year-Ainit-1),13,ijj,1)/ totBA
+     ! endif
+	 ! modOut(year,11,ijj,1) = initClearcut(1)
+     ! modOut(year,12,ijj,1) = initClearcut(2)
+     ! modOut(year,14,ijj,1) = initClearcut(4)
+     ! modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
+     ! modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
+   ! enddo
+   ! do ki = 1,Ainit
+    ! do ijj = 1,nLayers
+     ! modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
+     ! modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
+    ! enddo
+   ! enddo
+    ! yearX = 0
+  ! endif
 
   stand_all = modOut(year,:,:,1)
 
@@ -168,7 +168,7 @@ do ij = 1 , nLayers 		!loop Species
  write(2,*) "nLayers",ij, "of", nLayers,"year=",year
  
  STAND=STAND_all(:,ij)
- species = int(stand(4))
+ species = 1!int(stand(4))
  param = pCrobas(:,species)
 
  par_cR=param(1)
@@ -209,102 +209,101 @@ do ij = 1 , nLayers 		!loop Species
 
 ! do siteNo = 1, nSites  !loop sites
 
-if (year > maxYearSite) then
-  STAND(8:21) = 0. !#!#
-  STAND(23:37) = 0. !#!#
-  STAND(42:44) = 0. !#!#
+! if (year > maxYearSite) then
+  ! STAND(8:21) = 0. !#!#
+  ! STAND(23:37) = 0. !#!#
+  ! STAND(42:44) = 0. !#!#
 
-else
-! initialize site variables
-!  sitetype = STAND(3)
+! else
+! ! initialize site variables
+! !  sitetype = STAND(3)
 
-  age = STAND(7)
-  H = STAND(11)
-  D = STAND(12) 
-  BA = STAND(13)
-  Hc = STAND(14)
-  N = BA/(pi*((D/2/100)**2)) 
-  B = BA/N! * par_ops2
-!  Cw = STAND(15)
-  Lc = H - Hc
-  hb = par_betab * Lc ** par_x
-  Cw = 2. * hb
-  STAND(15) = Cw
-  STAND(16) = LC !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TO CHECK !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ETS = STAND(5) !!##!!2
-  Light = STAND(36)
+  ! age = STAND(7)
+  ! H = STAND(11)
+  ! D = STAND(12) 
+  ! BA = STAND(13)
+  ! Hc = STAND(14)
+  ! N = BA/(pi*((D/2/100)**2)) 
+  ! B = BA/N! * par_ops2
+! !  Cw = STAND(15)
+  ! Lc = H - Hc
+  ! hb = par_betab * Lc ** par_x
+  ! Cw = 2. * hb
+  ! STAND(15) = Cw
+  ! STAND(16) = LC !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TO CHECK !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! ETS = STAND(5) !!##!!2
+  ! Light = STAND(36)
 
-!!compute V for the first year
+! !!compute V for the first year
 
-if (N>0.) then
+! ! if (N>0.) then
 
-  par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
-  par_rhof = par_rhof1 * ETS + par_rhof2
-  par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
-!  par_vr = par_vr / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
+  ! ! par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
+  ! ! par_rhof = par_rhof1 * ETS + par_rhof2
+  ! ! par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
+! ! !  par_vr = par_vr / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
   
- !calculate derived variables 
-  rc = Lc / (H-1.3) !crown ratio
-  A = rc * B
-  wf_treeKG = par_rhof * A
-  par_ksi = wf_treeKG / (Lc ** par_z)
-  wf_STKG = wf_treeKG * N !needle mass per STAND in units C
-  ppow=1.6075 
+ ! ! !calculate derived variables 
+  ! ! rc = Lc / (H-1.3) !crown ratio
+  ! ! A = rc * B
+  ! ! wf_treeKG = par_rhof * A
+  ! ! par_ksi = wf_treeKG / (Lc ** par_z)
+  ! ! wf_STKG = wf_treeKG * N !needle mass per STAND in units C
+  ! ! ppow=1.6075 
   
-  V_scrown =  A * (par_betas*Lc)
-  V_bole = (A+B+sqrt(A*B)) * Hc /2.9
-  V = (V_scrown + V_bole) * N
-  if(year==1) then
-   modOut(year,30,ij,1) = V
-  endif
+  ! ! V_scrown =  A * (par_betas*Lc)
+  ! ! V_bole = (A+B+sqrt(A*B)) * Hc /2.9
+  ! ! V = (V_scrown + V_bole) * N
+  ! ! if(year==1) then
+   ! ! modOut(year,30,ij,1) = V
+  ! ! endif
 
-  !Surface area of the crown
-  sar_ell= 4. * pi *  (((((Lc/2)**ppow)*((Cw/2)**ppow)+((Lc/2)**ppow)*((Cw/2)**ppow)+((Cw/2)**ppow)*((Cw/2)**ppow))/3)**(1/ppow))!surface area per tree
-  sar_con = pi * ((0.8*hb)**2) * (1 + sqrt(1 + 1 / (((0.8*hb) / Lc)**2))) !surface area per tree
-  !Ellipsoid for pine and birch, cone for spruce
-  if(par_sarShp==1.) then
-   sar = sar_ell
-  else
-   sar = sar_con
-   slc = 0.005
-  end if
+  ! ! !Surface area of the crown
+  ! ! sar_ell= 4. * pi *  (((((Lc/2)**ppow)*((Cw/2)**ppow)+((Lc/2)**ppow)*((Cw/2)**ppow)+((Cw/2)**ppow)*((Cw/2)**ppow))/3)**(1/ppow))!surface area per tree
+  ! ! sar_con = pi * ((0.8*hb)**2) * (1 + sqrt(1 + 1 / (((0.8*hb) / Lc)**2))) !surface area per tree
+  ! ! !Ellipsoid for pine and birch, cone for spruce
+  ! ! if(par_sarShp==1.) then
+   ! ! sar = sar_ell
+  ! ! else
+   ! ! sar = sar_con
+   ! ! slc = 0.005
+  ! ! end if
 
-  !specific leaf area ------------------------------------------------
-  laPer_sar = wf_treeKG * par_sla / sar !leaf area per tree  /  crown surface area
-  keff = 0.4 * (1. - exp( - par_k / 0.4 * laPer_sar)) / laPer_sar !effective extinction coefficient    }
-  !projected leaf area on the STAND -----------------------------------
-  if (wf_STKG>0.) then
-   lproj = par_sla * wf_STKG / 10000.
-  else		
-   lproj = 0.
-  end if
-  !weight per tree STAND$species stratum ------------------------------------
-  leff= (keff/par_k)*(wf_STKG*par_sla) / 10000. !effective lai
+  ! ! !specific leaf area ------------------------------------------------
+  ! ! laPer_sar = wf_treeKG * par_sla / sar !leaf area per tree  /  crown surface area
+  ! ! keff = 0.4 * (1. - exp( - par_k / 0.4 * laPer_sar)) / laPer_sar !effective extinction coefficient    }
+  ! ! !projected leaf area on the STAND -----------------------------------
+  ! ! if (wf_STKG>0.) then
+   ! ! lproj = par_sla * wf_STKG / 10000.
+  ! ! else		
+   ! ! lproj = 0.
+  ! ! end if
+  ! ! !weight per tree STAND$species stratum ------------------------------------
+  ! ! leff= (keff/par_k)*(wf_STKG*par_sla) / 10000. !effective lai
  
-  STAND(7) = age
-  STAND(19) = leff
-  STAND(20) = keff
-  STAND(21) = lproj
-  STAND(23) = weight
-  STAND(24) = W_branch
-  STAND(25) = W_froot
-  STAND(11) = H
-  STAND(12) = D
-  STAND(13) = BA ! * par_ops2
-  STAND(14) = Hc
-  STAND(15) = Cw
-  STAND(17) = N
-  STAND(33) = wf_STKG
-  STAND(34) = wf_treeKG
-  STAND(35) = B
-  STAND(30) = V
-else
-  STAND(8:21) = 0. !#!#
-  STAND(23:37) = 0. !#!#
-  STAND(42:44) = 0. !#!#
-endif
-endif
-! end do !!!!!!!end loop sites
+  ! ! STAND(7) = age
+  ! ! STAND(19) = leff
+  ! ! STAND(20) = keff
+  ! ! STAND(21) = lproj
+  ! ! STAND(23) = weight
+  ! ! STAND(24) = W_branch
+  ! ! STAND(25) = W_froot
+  ! ! STAND(11) = H
+  ! ! STAND(12) = D
+  ! ! STAND(13) = BA ! * par_ops2
+  ! ! STAND(14) = Hc
+  ! ! STAND(15) = Cw
+  ! ! STAND(17) = N
+  ! ! STAND(33) = wf_STKG
+  ! ! STAND(34) = wf_treeKG
+  ! ! STAND(35) = B
+  ! ! STAND(30) = V
+! ! else
+  ! ! STAND(8:21) = 0. !#!#
+  ! ! STAND(23:37) = 0. !#!#
+  ! ! STAND(42:44) = 0. !#!#
+! ! endif
+! endif
 
  STAND_all(:,ij)=STAND
 end do !!!!!!!end loop layers
@@ -312,42 +311,42 @@ end do !!!!!!!end loop layers
 !!!calculate species weight for photosynthesis
 !do siteNo = 1, nSites
       
-if (year <= maxYearSite) then
-   call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
-		nVar,nPar,MeanLight,coeff,fAPARsite)
-   STAND_all(36,:) = MeanLight
-   STAND_all(23,:) = coeff
+! if (year <= maxYearSite) then
+   ! call Ffotos2(STAND_all,nLayers,nSp,pCrobas,&
+		! nVar,nPar,MeanLight,coeff,fAPARsite)
+   ! STAND_all(36,:) = MeanLight
+   ! STAND_all(23,:) = coeff
 
-   if(fAPARsite == 0. .and. yearX == 0) then
-	if((nYears-year)<10) then
-	 Ainit = nint(6. + 2*3.5 - 0.005*modOut(year,5,1,1) + 2.25)
-	else
-	 Ainit = nint(6. + 2*3.5 - 0.005*(sum(modOut(year:(year+9),5,1,1))/10) + 2.25)
-	endif
-	yearX = Ainit + year
-!	initClearcut(5) = Ainit
-   endif
+   ! if(fAPARsite == 0. .and. yearX == 0) then
+	! if((nYears-year)<10) then
+	 ! Ainit = nint(6. + 2*3.5 - 0.005*modOut(year,5,1,1) + 2.25)
+	! else
+	 ! Ainit = nint(6. + 2*3.5 - 0.005*(sum(modOut(year:(year+9),5,1,1))/10) + 2.25)
+	! endif
+	! yearX = Ainit + year
+! !	initClearcut(5) = Ainit
+   ! endif
 
-   fAPARprel(:) = fAPARsite
-   fAPAR(year) = fAPARsite
-   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
-		dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
-		dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
-		dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
-		etmodel)		!type of ET model
+   ! fAPARprel(:) = fAPARsite
+   ! fAPAR(year) = fAPARsite
+   ! call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+		! dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
+		! dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
+		! dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
+		! etmodel)		!type of ET model
 
-   STAND_all(22,:) = prelesOut(2)  	!ET
-   STAND_all(40,:) = prelesOut(15)  	
-   STAND_all(41,:) = prelesOut(16)  	
+   ! STAND_all(22,:) = prelesOut(2)  	!ET
+   ! STAND_all(40,:) = prelesOut(15)  	
+   ! STAND_all(41,:) = prelesOut(16)  	
 
-   pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
-   pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
-   pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
-   pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
+   ! pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
+   ! pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
+   ! pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
+   ! pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
-   STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
+   ! STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
 
-endif
+! endif
 !enddo !! end site loop
 
 do ij = 1 , nLayers
