@@ -94,23 +94,23 @@ close(10)
 	 endif
 	enddo
 
-	if(prebasVersion(i)==0.) then
-	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
-		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
-		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
-		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
-		litterSize,soilCtotInOut(i,ij),&
-		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
-	elseif(prebasVersion(i)==1.) then
-	  call prebas_v1(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
-		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
-		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
-		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
-		soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
-		litterSize,soilCtotInOut(i,ij),&
-		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
-	endif
+	! if(prebasVersion(i)==0.) then
+	  ! call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+		! thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
+		! fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
+		! weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		! soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
+		! litterSize,soilCtotInOut(i,ij),&
+		! defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
+	! elseif(prebasVersion(i)==1.) then
+	  ! call prebas_v1(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
+		! thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
+		! fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
+		! weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
+		! soilCinOut(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
+		! litterSize,soilCtotInOut(i,ij),&
+		! defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
+	! endif
 	! fAPAR(i,ij) = thinningX(int(az),3)
 	if(sum(output(1,11,1:nLayers(i),1))==0 .and. yearX(i) == 0) then
 	 if((maxYears-ij)<15) then
