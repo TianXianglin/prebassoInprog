@@ -1,8 +1,8 @@
-SUBROUTINE Ffotos2(nClass,MeanLight,coeff,qcTOT)
+SUBROUTINE Ffotos2(nClass,nSp,MeanLight,coeff,qcTOT)
 ! SUBROUTINE Ffotos2(STAND_all,nClass,nSp,pCrobas,nVar,nPar,MeanLight,coeff,qcTOT)
 implicit none
 
- integer, intent(in) :: nclass!,nSp,nVar,nPar
+ integer, intent(in) :: nclass,nSp!,nVar,nPar
 
 !*****************************************************************************************
  ! real (kind=8), intent(in) :: pCrobas(npar,nSp)
