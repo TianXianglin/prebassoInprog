@@ -74,32 +74,32 @@ end do
 ! ** calculate effective leaf area for each species in canopy layers determined by heights and hc:s
 ! ** use function wwx to calculate foliage distribution, defined by species
 
-lt(1) = 0.
-bt(1) = 0.
-do i=1,nv-1
+! lt(1) = 0.
+! bt(1) = 0.
+! do i=1,nv-1
         
-	lt(i+1) = 0.
- 	do j=1,nclass
-		species = j
-		apuJ = wwx(0.0d+0,1.0d+0,ht(j)-hc(j),species)
-		if(l(i).gt.hc(j).and.l(i+1).lt.ht(j)) then
-		if((ht(j)-hc(j)).gt.0.) then
-	                 x1 = (ht(j)-l(i))/(ht(j)-hc(j))
-	                 x2 = (ht(j)-l(i+1))/(ht(j)-hc(j))
-	                else 
-	                 x1=0.
-	                 x2=0.
-	                endif
-	                apuI = wwx(x1,x2,ht(j)-hc(j),species)
-			   		vrel(i+1,j) = apuI / apuJ
-                else
-			   		vrel(i+1,j) = 0.
-                endif     
-                lpt(i+1,j) = k(j) * LAIe(j) * vrel(i+1,j)
-                lt(i+1) = lt(i+1) + lpt(i+1,j)
-	end do
-	 bt(i+1) = bt(i) + lt(i+1)
-end do
+	! lt(i+1) = 0.
+ 	! do j=1,nclass
+		! species = j
+		! apuJ = wwx(0.0d+0,1.0d+0,ht(j)-hc(j),species)
+		! if(l(i).gt.hc(j).and.l(i+1).lt.ht(j)) then
+		! if((ht(j)-hc(j)).gt.0.) then
+	                 ! x1 = (ht(j)-l(i))/(ht(j)-hc(j))
+	                 ! x2 = (ht(j)-l(i+1))/(ht(j)-hc(j))
+	                ! else 
+	                 ! x1=0.
+	                 ! x2=0.
+	                ! endif
+	                ! apuI = wwx(x1,x2,ht(j)-hc(j),species)
+			   		! vrel(i+1,j) = apuI / apuJ
+                ! else
+			   		! vrel(i+1,j) = 0.
+                ! endif     
+                ! lpt(i+1,j) = k(j) * LAIe(j) * vrel(i+1,j)
+                ! lt(i+1) = lt(i+1) + lpt(i+1,j)
+	! end do
+	 ! bt(i+1) = bt(i) + lt(i+1)
+! end do
     
 
 do j=1,nclass
