@@ -1,23 +1,22 @@
-SUBROUTINE Ffotos2(nClass,nSp,MeanLight,coeff,qcTOT)
-! SUBROUTINE Ffotos2(STAND_all,nClass,nSp,pCrobas,nVar,nPar,MeanLight,coeff,qcTOT)
+SUBROUTINE Ffotos2(STAND_all,nClass,nSp,pCrobas,nVar,nPar,MeanLight,coeff,qcTOT)
 implicit none
 
- integer, intent(in) :: nclass,nSp!,nVar,nPar
+ integer, intent(in) :: nclass,nSp,nVar,nPar
 
 !*****************************************************************************************
- ! real (kind=8), intent(in) :: pCrobas(npar,nSp)
- ! real (kind=8), intent(in) :: STAND_all(nVar,nclass)
+ real (kind=8), intent(in) :: pCrobas(npar,nSp)
+ real (kind=8), intent(inout) :: STAND_all(nVar,nclass)
  real (kind=8), intent(out) :: coeff(nclass) , qcTOT
 !****************************************************************************************
  integer  :: ki
- ! real (kind=8) :: param(nPar)
+ real (kind=8) :: param(nPar)
  real (kind=8) :: ht(nclass),hc(nclass),h(nclass)
  real (kind=8) :: LAIe(nclass),qc(nclass),btc(nclass),LAI(nclass),N(nclass)
  real (kind=8) :: l(2*nclass),vrel(2*nclass,nclass)
  real (kind=8) :: lpt(2*nclass,nclass),lt(2*nclass)
  real (kind=8) :: bt(2*nclass), k(nclass), par_betab(nclass), rc(nclass)
  real (kind=8) :: kLAIetot, kLAItot, Atot
- real (kind=8), intent(out) :: MeanLight(nclass)
+ real (kind=8), intent(inout) :: MeanLight(nclass)
  real (kind=8) :: x1,x2,apuJ,apuI
 	   integer :: iclass,i2,i1,species,nv				!!**!! nv defined as integer
        integer :: i, j, ii(2*nclass), iapu
@@ -25,109 +24,108 @@ implicit none
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
  
- qcTOT=0.5
- ! do i = 1,nclass
-	 ! species = int(stand_all(4,i))
-     ! param = pCrobas(:,species)
-     ! qc(i) = 0.
+ do i = 1,nclass
+	 species = int(stand_all(4,i))
+     param = pCrobas(:,species)
+     qc(i) = 0.
      
-     ! ht(i) = STAND_all(11,i)   ! H
-     ! hc(i) = STAND_all(14,i)   ! Hc
-     ! h(i) = ht(i) - hc(i)        ! Lc
-     ! LAIe(i) = STAND_all(19,i) ! leff
-     ! k(i) = PARAM(4)               ! k 
-     ! LAI(i) = STAND_all(33,i) * PARAM(3) / 10000.   ! WF_stand * sla
-     ! par_betab(i) = PARAM(17)   ! betab
-     ! rc(i) = STAND_all(15,i)/2.         ! rc
-     ! N(i) = STAND_all(17,i) / 10000.   ! N per m2
- ! end do
+     ht(i) = STAND_all(11,i)   ! H
+     hc(i) = STAND_all(14,i)   ! Hc
+     h(i) = ht(i) - hc(i)        ! Lc
+     LAIe(i) = STAND_all(19,i) ! leff
+     k(i) = PARAM(4)               ! k 
+     LAI(i) = STAND_all(33,i) * PARAM(3) / 10000.   ! WF_stand * sla
+     par_betab(i) = PARAM(17)   ! betab
+     rc(i) = STAND_all(15,i)/2.         ! rc
+     N(i) = STAND_all(17,i) / 10000.   ! N per m2
+ end do
        
        nv= 2*nclass
 
-! do  i = 1, nv
-		! ii(i) = i
-! end do
+do  i = 1, nv
+		ii(i) = i
+end do
     
 
 ! **  sort tree tops and crown bases in descending order into vector l
 
-! do  i=1,nclass
-	! l(i) = ht(i)
-	! l(i+nclass) = hc(i)
-! end do 
+do  i=1,nclass
+	l(i) = ht(i)
+	l(i+nclass) = hc(i)
+end do 
         
 
-! do  i=1,nv-1
-	! do j=i+1,nv
-		    	! if(l(i).lt.l(j)) then 
-			   		! apu = l(i)
-			   		! l(i) = l(j)
-			   		! l(j) = apu
+do  i=1,nv-1
+	do j=i+1,nv
+		    	if(l(i).lt.l(j)) then 
+			   		apu = l(i)
+			   		l(i) = l(j)
+			   		l(j) = apu
 
-! !	ii-table sorts the l-table indeces so that later the corresponding "locations" for hc and ht values can be located
-					! iapu = ii(i)
-					! ii(i) = ii(j)
-					! ii(j) = iapu
-				! endif
-	! end do
-! end do
+!	ii-table sorts the l-table indeces so that later the corresponding "locations" for hc and ht values can be located
+					iapu = ii(i)
+					ii(i) = ii(j)
+					ii(j) = iapu
+				endif
+	end do
+end do
         
 ! ** end sort
 ! ** calculate effective leaf area for each species in canopy layers determined by heights and hc:s
 ! ** use function wwx to calculate foliage distribution, defined by species
 
-! lt(1) = 0.
-! bt(1) = 0.
-! do i=1,nv-1
+lt(1) = 0.
+bt(1) = 0.
+do i=1,nv-1
         
-	! lt(i+1) = 0.
- 	! do j=1,nclass
-		! species = j
-		! apuJ = wwx(0.0d+0,1.0d+0,ht(j)-hc(j),species)
-		! if(l(i).gt.hc(j).and.l(i+1).lt.ht(j)) then
-		! if((ht(j)-hc(j)).gt.0.) then
-	                 ! x1 = (ht(j)-l(i))/(ht(j)-hc(j))
-	                 ! x2 = (ht(j)-l(i+1))/(ht(j)-hc(j))
-	                ! else 
-	                 ! x1=0.
-	                 ! x2=0.
-	                ! endif
-	                ! apuI = wwx(x1,x2,ht(j)-hc(j),species)
-			   		! vrel(i+1,j) = apuI / apuJ
-                ! else
-			   		! vrel(i+1,j) = 0.
-                ! endif     
-                ! lpt(i+1,j) = k(j) * LAIe(j) * vrel(i+1,j)
-                ! lt(i+1) = lt(i+1) + lpt(i+1,j)
-	! end do
-	 ! bt(i+1) = bt(i) + lt(i+1)
-! end do
+	lt(i+1) = 0.
+ 	do j=1,nclass
+		species = j
+		apuJ = wwx(0.0d+0,1.0d+0,ht(j)-hc(j),species)
+		if(l(i).gt.hc(j).and.l(i+1).lt.ht(j)) then
+		if((ht(j)-hc(j)).gt.0.) then
+	                 x1 = (ht(j)-l(i))/(ht(j)-hc(j))
+	                 x2 = (ht(j)-l(i+1))/(ht(j)-hc(j))
+	                else 
+	                 x1=0.
+	                 x2=0.
+	                endif
+	                apuI = wwx(x1,x2,ht(j)-hc(j),species)
+			   		vrel(i+1,j) = apuI / apuJ
+                else
+			   		vrel(i+1,j) = 0.
+                endif     
+                lpt(i+1,j) = k(j) * LAIe(j) * vrel(i+1,j)
+                lt(i+1) = lt(i+1) + lpt(i+1,j)
+	end do
+	 bt(i+1) = bt(i) + lt(i+1)
+end do
     
 
-! do j=1,nclass
-     	! dc = 0.
-        ! i1 = 0
-        ! i2 = 0
- 	! do i=1,nv
-	    	! if(ht(j).eq.l(i)) i1=i
-			! if(hc(j).eq.l(i)) i2=i
+do j=1,nclass
+     	dc = 0.
+        i1 = 0
+        i2 = 0
+ 	do i=1,nv
+	    	if(ht(j).eq.l(i)) i1=i
+			if(hc(j).eq.l(i)) i2=i
 
-			! if(ii(i)==j) i1 = i
-			! if(ii(i) == j+nclass) i2 = i
+			if(ii(i)==j) i1 = i
+			if(ii(i) == j+nclass) i2 = i
 
-! !				if(ht(j).gt.l(i).and.hc(j).le.l(i)) dc=dc+lt(i)
-	! end do
-		! e1 = exp(-bt(i1)) - exp(-bt(i2))
-	            ! b1 = bt(i2) - bt(i1)
+!				if(ht(j).gt.l(i).and.hc(j).le.l(i)) dc=dc+lt(i)
+	end do
+		e1 = exp(-bt(i1)) - exp(-bt(i2))
+	            b1 = bt(i2) - bt(i1)
 
- 		! if (b1 .ne. 0)  qc(j) = k(j) * laie(j) * e1  / b1 
+ 		if (b1 .ne. 0)  qc(j) = k(j) * laie(j) * e1  / b1 
 
-		 	! btc(j) = bt(i2)
+		 	btc(j) = bt(i2)
 
-! !           MeanLight(j) = 0.5 * (exp(-bt(i1)) + exp(-bt(i2)))
-            ! MeanLight(j) = exp(-bt(i2))
-! end do
-      MeanLight = 0.5
+!           MeanLight(j) = 0.5 * (exp(-bt(i1)) + exp(-bt(i2)))
+            MeanLight(j) = exp(-bt(i2))
+end do
+        
 
 
 
@@ -143,26 +141,26 @@ implicit none
 !
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !
-! kLAIetot = 0.
-! kLAItot = 0.
-! Atot = 0.
-! qcTOT1 = 0
-! do  i =1,nclass
-	! kLAIetot = kLAIetot + k(i) * LAIe(i)
-    ! kLAItot = kLAItot + k(i) * LAI(i)
-    ! Atot = Atot + N(i) * pi*(rc(i)**2 )
-	! qcTOT1 = qcTOT1 + qc(i)
-! end do
+kLAIetot = 0.
+kLAItot = 0.
+Atot = 0.
+qcTOT1 = 0
+do  i =1,nclass
+	kLAIetot = kLAIetot + k(i) * LAIe(i)
+    kLAItot = kLAItot + k(i) * LAI(i)
+    Atot = Atot + N(i) * pi*(rc(i)**2 )
+	qcTOT1 = qcTOT1 + qc(i)
+end do
     
-! ! calculate LPJ style fAPAR and use the smaller of the two
+! calculate LPJ style fAPAR and use the smaller of the two
 	
-     ! if(Atot > 0. ) then
-         ! qcTOT0 = (1. - exp(-kLAItot/ Atot)) * Atot
-     ! else
-         ! qctot = 0.
-     ! endif
+     if(Atot > 0. ) then
+         qcTOT0 = (1. - exp(-kLAItot/ Atot)) * Atot
+     else
+         qctot = 0.
+     endif
      
-     ! qcTOT = min(qcTOT0,qctot1)
+     qcTOT = min(qcTOT0,qctot1)
 !    qctot = qctot1
      
 !     if(stand_P(7) > 150) then
@@ -173,12 +171,40 @@ implicit none
 ! calculate weights - on the basis of qcTOT1 but all downscaled if qcTOT0 < qcTOT1
 !	       
 !do i = 1,nclass
-
-    coeff=0.5
      
-   ! if(qcTOT1.gt.0.) then
-    ! coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
-   ! endif      
+   if(qcTOT1.gt.0.) then
+  	coeff  = qc / qcTOT1 * qcTOT / qcTOT1 ! weight
+
+!      	coeff_SP  = qc(2) / qcTOT1 * qcTOT / qcTOT1 ! 
+
+!        coeff_B  = qc(3) / qcTOT1 * qcTOT / qcTOT1  ! 
+
+
+
+!!!!FMadded
+!        qcTOT = qcTOT * (coeff_P+coeff_SP+coeff_B)
+
+!        coeff_P = coeff_P/(coeff_P+coeff_SP+coeff_B)
+!        coeff_SP = coeff_SP/(coeff_P+coeff_SP+coeff_B)
+!        coeff_B = coeff_B/(coeff_P+coeff_SP+coeff_B)
+!!!!
+
+
+!    if(kLAIetot.gt.0.) then
+!       	 coeff_P  = k(1)*LAIe(1) / kLAIetot ! weight
+
+!        	coeff_SP  = k(2)*LAIe(2) / kLAIetot ! 
+           
+!             coeff_B  = k(3)*LAIe(3) / kLAIetot ! 
+
+
+!   else
+!       coeff_P = 1./3.
+!       coeff_SP = 1./3.
+!       coeff_B = 1./3.
+   
+! end do	
+    endif      
 
 
 
