@@ -316,9 +316,9 @@ if (year <= maxYearSite) then
 	nSpec = nSp
    call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
 		nVar,nPar,MeanLight,coeff,fAPARsite)
-   STAND_all(36,:) = MeanLight
-   STAND_all(23,:) = coeff
-
+   STAND_all(36,:) = 0.5!MeanLight
+   STAND_all(23,:) = 0.8!coeff
+fAPARsite=0.7
    if(fAPARsite == 0. .and. yearX == 0) then
 	if((nYears-year)<10) then
 	 Ainit = nint(6. + 2*3.5 - 0.005*modOut(year,5,1,1) + 2.25)
@@ -487,7 +487,7 @@ if (N>0.) then
             g3 = (par_z / (1. + par_z))  *  ((par_rhof + par_rhor)  /  (par_rhow * beta1))
             g4 = 1 + (par_rhow * par_mw * beta2 - par_rhof * par_s1) / g0
             g5 = (par_z / (1. + par_z)) * (1. / (betab + par_betas))
-            dH = 0.5!g1 * (Lc) * ((g2 - (g4 - 1.) * (H-Lc) - H) / (g3 + (g5 - 1.) * (H-Lc) + H))
+            dH = g1 * (Lc) * ((g2 - (g4 - 1.) * (H-Lc) - H) / (g3 + (g5 - 1.) * (H-Lc) + H))
             if(dH < 0.) dH = 0.
         !-----------------------------------
         !crown rise
@@ -523,11 +523,11 @@ endif
 !     if(time==inttimes) then
       Rein = Reineke / par_kRein
      
-      ! if(Rein > 1.) then
-           ! dN = - 0.02 * N * Rein
-      ! else
+      if(Rein > 1.) then
+           dN = - 0.02 * N * Rein
+      else
            dN = 0. 
-      ! endif
+      endif
       Vold = STAND(30)
       Nold = N 
       if(N < 5.) N = 0.0
