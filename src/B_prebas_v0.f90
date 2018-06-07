@@ -309,7 +309,7 @@ endif
  STAND_all(:,ij)=STAND
 end do !!!!!!!end loop layers
 
-!!!calculate species weight for photosynthesis
+!!!!calculate species weight for photosynthesis
 !do siteNo = 1, nSites
       
 ! if (year <= maxYearSite) then
