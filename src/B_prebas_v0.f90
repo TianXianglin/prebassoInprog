@@ -153,14 +153,14 @@ write(2,*) "year =", year,"site=",siteInfo(1)
   do time = 1, inttimes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       
  ! do ki = 1, nSites
- ! ! calculate self-thinning using all tree classes
-     ! Ntot = sum(STAND_all(17,:))
-     ! B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed 
-     ! if(Ntot>0.) then
-         ! Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66) 
-     ! else
-         ! Reineke = 0.
-     ! endif        
+ ! calculate self-thinning using all tree classes
+     Ntot = sum(STAND_all(17,:))
+     B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed 
+     if(Ntot>0.) then
+         Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66) 
+     else
+         Reineke = 0.
+     endif        
  ! end do
 
 ! do ij = 1 , nLayers 		!loop Species
