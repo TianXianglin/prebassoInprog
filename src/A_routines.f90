@@ -24,35 +24,35 @@ implicit none
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
  
- do i = 1,nclass
-	 species = int(stand_all(4,i))
-     param = pCrobas(:,species)
-     qc(i) = 0.
+ ! do i = 1,nclass
+	 ! species = int(stand_all(4,i))
+     ! param = pCrobas(:,species)
+     ! qc(i) = 0.
      
-     ht(i) = STAND_all(11,i)   ! H
-     hc(i) = STAND_all(14,i)   ! Hc
-     h(i) = ht(i) - hc(i)        ! Lc
-     LAIe(i) = STAND_all(19,i) ! leff
-     k(i) = PARAM(4)               ! k 
-     LAI(i) = STAND_all(33,i) * PARAM(3) / 10000.   ! WF_stand * sla
-     par_betab(i) = PARAM(17)   ! betab
-     rc(i) = STAND_all(15,i)/2.         ! rc
-     N(i) = STAND_all(17,i) / 10000.   ! N per m2
- end do
+     ! ht(i) = STAND_all(11,i)   ! H
+     ! hc(i) = STAND_all(14,i)   ! Hc
+     ! h(i) = ht(i) - hc(i)        ! Lc
+     ! LAIe(i) = STAND_all(19,i) ! leff
+     ! k(i) = PARAM(4)               ! k 
+     ! LAI(i) = STAND_all(33,i) * PARAM(3) / 10000.   ! WF_stand * sla
+     ! par_betab(i) = PARAM(17)   ! betab
+     ! rc(i) = STAND_all(15,i)/2.         ! rc
+     ! N(i) = STAND_all(17,i) / 10000.   ! N per m2
+ ! end do
        
        nv= 2*nclass
 
-do  i = 1, nv
-		ii(i) = i
-end do
+! do  i = 1, nv
+		! ii(i) = i
+! end do
     
 
 ! **  sort tree tops and crown bases in descending order into vector l
 
-do  i=1,nclass
-	l(i) = ht(i)
-	l(i+nclass) = hc(i)
-end do 
+! do  i=1,nclass
+	! l(i) = ht(i)
+	! l(i+nclass) = hc(i)
+! end do 
         
 
 ! do  i=1,nv-1
