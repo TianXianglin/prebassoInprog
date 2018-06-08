@@ -314,8 +314,10 @@ end do !!!!!!!end loop layers
       
 if (year <= maxYearSite) then
 	nSpec = nSp
-    call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
-		nVar,nPar,MeanLight,coeff,fAPARsite)
+    ! call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
+		! nVar,nPar,MeanLight,coeff,fAPARsite)
+	call Ffotos2(nLayers,MeanLight,coeff,fAPARsite)
+   
    STAND_all(36,:) = MeanLight
    STAND_all(23,:) = coeff
 ! fAPARsite=0.7
