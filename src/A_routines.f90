@@ -6,20 +6,20 @@ implicit none
 !*****************************************************************************************
  real (kind=8), intent(in) :: pCrobas(npar,nSp)
  real (kind=8), intent(inout) :: STAND_all(nVar,nclass)
- real (kind=8), intent(inout) :: coeff(10) , qcTOT
+ real (kind=8), intent(inout) :: coeff(nclass) , qcTOT
 !****************************************************************************************
  integer  :: ki
  real (kind=8) :: param(nPar)
- real (kind=8) :: ht(10),hc(10),h(10)
- real (kind=8) :: LAIe(10),qc(10),btc(10),LAI(10),N(10)
- real (kind=8) :: l(2*10),vrel(2*10,10)
- real (kind=8) :: lpt(2*10,10),lt(2*10)
- real (kind=8) :: bt(2*10), k(10), par_betab(10), rc(10)
+ real (kind=8) :: ht(nclass),hc(nclass),h(nclass)
+ real (kind=8) :: LAIe(nclass),qc(nclass),btc(nclass),LAI(nclass),N(nclass)
+ real (kind=8) :: l(2*nclass),vrel(2*nclass,nclass)
+ real (kind=8) :: lpt(2*nclass,nclass),lt(2*nclass)
+ real (kind=8) :: bt(2*nclass), k(nclass), par_betab(nclass), rc(nclass)
  real (kind=8) :: kLAIetot, kLAItot, Atot
- real (kind=8), intent(inout) :: MeanLight(10)
+ real (kind=8), intent(inout) :: MeanLight(nclass)
  real (kind=8) :: x1,x2,apuJ,apuI
 	   integer :: iclass,i2,i1,species,nv				!!**!! nv defined as integer
-       integer :: i, j, ii(2*10), iapu
+       integer :: i, j, ii(2*nclass), iapu
  real (kind=8) :: apu, b1,  qctot0, qctot1, wwx, dc, e1
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
