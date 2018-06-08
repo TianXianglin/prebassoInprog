@@ -120,7 +120,7 @@ do ij = 1,maxYears
 	if(prebasVersion(i)==0.) then
 
 	  if(siteInfo(i,3) < 4.5) then
-	   xx <- int(siteInfo(i,3))
+	   xx = int(siteInfo(i,3))
 	   pCrobasX = pCrobasST(:,:,xx)
 	  endif
 	  if(siteInfo(i,3) > 4.5) then
