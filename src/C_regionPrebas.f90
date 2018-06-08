@@ -47,9 +47,9 @@ do ij = 1,maxYears
  HarvArea = 0.
  do iz = 1,nSites
  	i=siteOrder(iz,ij)
-open(10,file="multiSite.txt")
- write(10,*) "years =",ij, "siteRun = ",iz
-close(10) 
+! open(10,file="multiSite.txt")
+ ! write(10,*) "years =",ij, "siteRun = ",iz
+! close(10) 
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999.
