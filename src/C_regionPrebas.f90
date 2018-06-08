@@ -45,7 +45,7 @@ do i=1,5
 	pCrobasST(:,:,i) = pCrobas
 enddo
 
-if(lukeRuns == 1.) then
+if(lukeRuns > 0.) then
 	pCrobasST(6,2,1) = 1.415
 	pCrobasST(9,2,1) = 0.027
 	pCrobasST(6,2,2) = 1.515
