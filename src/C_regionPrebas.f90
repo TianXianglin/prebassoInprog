@@ -119,7 +119,7 @@ do ij = 1,maxYears
 
 	   xx = int(siteInfo(i,3))
 	   xx = min(5,xx)
-	   xx = max(0,xx)
+	   xx = max(1,xx)
 	   pCrobasX = pCrobasST(:,:,xx)
 
 	if(prebasVersion(i)==0.) then
