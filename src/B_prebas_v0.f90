@@ -39,7 +39,7 @@ implicit none
 ! real (kind=8),DIMENSION(nLayers) :: speciesIDs
 
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
- integer :: i, ij, ijj,species,layer,nSpec! tree species 1,2,3 = scots pine, norway spruce, birch
+ integer :: i, ij, ijj,species,layer,nSpec,ll! tree species 1,2,3 = scots pine, norway spruce, birch
 
  real (kind=8) :: p0_ref, ETS_ref
  integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
@@ -314,9 +314,10 @@ end do !!!!!!!end loop layers
       
 if (year <= maxYearSite) then
 	nSpec = nSp
+	ll = nLayers
     ! call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
 		! nVar,nPar,MeanLight,coeff,fAPARsite)
-	call Ffotos2(nLayers,MeanLight,coeff,fAPARsite)
+	call Ffotos2(ll,MeanLight,coeff,fAPARsite)
    
    STAND_all(36,:) = MeanLight
    STAND_all(23,:) = coeff
