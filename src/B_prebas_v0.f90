@@ -317,7 +317,7 @@ if (year <= maxYearSite) then
 	ll = nLayers
     ! call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
 		! nVar,nPar,MeanLight,coeff,fAPARsite)
-	write(*,*) "nLayers=",nclass,"site=",stand_all(1,1)
+	write(*,*) "site=",stand_all(1,1),"nLayers=",nLayers
    STAND_all(36,:) = 0.5!MeanLight(1:nLayers)
    STAND_all(23,:) = 0.5!coeff(1:nLayers)
 fAPARsite=0.7
