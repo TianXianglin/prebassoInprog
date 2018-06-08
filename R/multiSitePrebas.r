@@ -26,7 +26,8 @@ InitMultiSite <- function(nYearsMS,
                           ClCut = 1.,
                           inDclct = NA,
                           inAclct = NA,
-                          yassoRun = 0){
+                          yassoRun = 0,
+                          lukeRuns){
 
   nSites <- length(nYearsMS)
   if(all(is.na(siteInfo))){
@@ -201,6 +202,7 @@ InitMultiSite <- function(nYearsMS,
     inAclct = inAclct,
     dailyPRELES = array(-999,dim=c(nSites,(maxYears*365),3)),
     yassoRun = yassoRun,
+    lukeRuns = lukeRuns,
     PREBASversion = PREBASversion)
   return(multiSiteInit)
 }
@@ -243,7 +245,8 @@ multiPrebas <- function(multiSiteInit){
                      inAclct=as.matrix(multiSiteInit$inAclct),
                      dailyPRELES = as.array(multiSiteInit$dailyPRELES),
                      yassoRun=as.double(multiSiteInit$yassoRun),
-                     PREBASversion=as.double(multiSiteInit$PREBASversion))
+                     PREBASversion=as.double(multiSiteInit$PREBASversion),
+                     lukeRuns=as.doube(lukeRuns))
   class(prebas) <- "multiPrebas"
   return(prebas)
 }
@@ -299,7 +302,8 @@ regionPrebas <- function(multiSiteInit,
                    inAclct=as.matrix(multiSiteInit$inAclct),
                    dailyPRELES = as.array(multiSiteInit$dailyPRELES),
                    yassoRun=as.double(multiSiteInit$yassoRun),
-                   PREBASversion=as.double(multiSiteInit$PREBASversion))
+                   PREBASversion=as.double(multiSiteInit$PREBASversion),
+                   lukeRuns=as.doube(lukeRuns))
 class(prebas) <- "regionPrebas"
 prebas$totHarv <- apply(prebas$multiOut[,,37,,1],2,sum)
 return(prebas)
