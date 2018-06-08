@@ -317,10 +317,10 @@ if (year <= maxYearSite) then
 	ll = nLayers
     ! call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
 		! nVar,nPar,MeanLight,coeff,fAPARsite)
-	call Ffotos2(ll,MeanLight,coeff,fAPARsite)
+	call Ffotos2(MeanLight,coeff,fAPARsite)
    
-   STAND_all(36,:) = MeanLight
-   STAND_all(23,:) = coeff
+   STAND_all(36,:) = MeanLight(1:nLayers)
+   STAND_all(23,:) = coeff(1:nLayers)
 ! fAPARsite=0.7
    if(fAPARsite == 0. .and. yearX == 0) then
 	if((nYears-year)<10) then
