@@ -6,7 +6,7 @@ implicit none
 !*****************************************************************************************
  real (kind=8), intent(in) :: pCrobas(npar,nSp)
  real (kind=8), intent(inout) :: STAND_all(nVar,nclass)
- real (kind=8), intent(inout) :: coeff(100) , qcTOT
+ real (kind=8), intent(inout) :: coeff(10) , qcTOT
 !****************************************************************************************
  integer  :: ki
  real (kind=8) :: param(nPar)
@@ -16,7 +16,7 @@ implicit none
  real (kind=8) :: lpt(2*10,10),lt(2*10)
  real (kind=8) :: bt(2*10), k(10), par_betab(10), rc(10)
  real (kind=8) :: kLAIetot, kLAItot, Atot
- real (kind=8), intent(inout) :: MeanLight(100)
+ real (kind=8), intent(inout) :: MeanLight(10)
  real (kind=8) :: x1,x2,apuJ,apuI
 	   integer :: iclass,i2,i1,species,nv				!!**!! nv defined as integer
        integer :: i, j, ii(2*10), iapu
