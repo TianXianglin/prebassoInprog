@@ -119,13 +119,8 @@ do ij = 1,maxYears
 
 	if(prebasVersion(i)==0.) then
 
-	  if(siteInfo(i,3) < 4.5) then
-	   xx = int(siteInfo(i,3))
-	   pCrobasX(1:nPar,1:allSp) = pCrobasST(1:nPar,1:allSp,xx)
-	  endif
-	  if(siteInfo(i,3) > 4.5) then
-		 pCrobasX(1:nPar,1:allSp) = pCrobasST(1:nPar,1:allSp,5)
-	  endif
+	   xx = int(min(siteInfo(i,3),5))
+	   pCrobasX = pCrobasST(:,:,xx)
 
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobasX,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
