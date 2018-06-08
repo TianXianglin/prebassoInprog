@@ -119,7 +119,8 @@ do ij = 1,maxYears
 
 	if(prebasVersion(i)==0.) then
 
-	   xx = min(5,int(siteInfo(i,3)))
+	   write(*,*) int(siteInfo(i,3))
+	   xx = int(min(5,int(siteInfo(i,3))))
 	   pCrobasX = pCrobasST(:,:,xx)
 
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobasX,initVar(i,:,1:nLayers(i)),&
