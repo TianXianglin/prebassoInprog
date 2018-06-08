@@ -119,7 +119,6 @@ do ij = 1,maxYears
 
 	if(prebasVersion(i)==0.) then
 
-	   write(*,*) int(siteInfo(i,3))
 	   xx = int(min(5,int(siteInfo(i,3))))
 	   pCrobasX = pCrobasST(:,:,xx)
 
