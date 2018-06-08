@@ -320,8 +320,8 @@ if (year <= maxYearSite) then
 	! write(*,*) "site=",stand_all(1,1),"nLayers=",nLayers
 	! write(*,*) "MeanLight",MeanLight
 	! write(*,*) "coeff",coeff
-   STAND_all(36,:) = MeanLight(1:nLayers)
-   STAND_all(23,:) = coeff(1:nLayers)
+   STAND_all(36,:) = MeanLight
+   STAND_all(23,:) = coeff
 ! fAPARsite=0.7
    if(fAPARsite == 0. .and. yearX == 0) then
 	if((nYears-year)<10) then
