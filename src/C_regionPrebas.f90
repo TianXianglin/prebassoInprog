@@ -117,8 +117,24 @@ do ij = 1,maxYears
 	 endif
 	enddo
 
-	   xx = min(5,int(siteInfo(i,3),4))
-	   pCrobasX = pCrobasST(:,:,xx)
+	 if(siteInfo(i,3)<1.5) then
+	   pCrobasX = pCrobasST(:,:,1)
+	 endif
+	 if(siteInfo(i,3)==2.) then
+	   pCrobasX = pCrobasST(:,:,2)
+	 endif
+	 if(siteInfo(i,3)==3.) then
+	   pCrobasX = pCrobasST(:,:,3)
+	 endif
+	 if(siteInfo(i,3)==4.) then
+	   pCrobasX = pCrobasST(:,:,4)
+	 endif
+	 if(siteInfo(i,3)>4.5) then
+	   pCrobasX = pCrobasST(:,:,5)
+	 endif
+
+ 	   !xx = min(5,int(siteInfo(i,3),4))
+	   !pCrobasX = pCrobasST(:,:,xx)
 
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobasX,initVar(i,:,1:nLayers(i)),&
