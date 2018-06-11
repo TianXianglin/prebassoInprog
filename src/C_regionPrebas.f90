@@ -198,7 +198,7 @@ do ij = 1,maxYears
    ops = maxloc(maxState)
    siteX = int(ops(1))
    climID = int(siteInfo(siteX,2))
-if(maxState(siteX)>minDharv) then
+if(maxState(siteX)>minDharv .and. ClCut(siteX)>=1.) then
   ! close(10)
 !!   !!clearcut!!
    HarvArea = HarvArea + sum(multiOut(siteX,ij,30,1:nLayers(siteX),1))
