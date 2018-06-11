@@ -1,6 +1,6 @@
- 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
-!subroutine bridging  
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!subroutine bridging
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLayers,maxYears,maxThin, &
 		nYears,thinning,pCrobas,allSP,siteInfo, maxNlayers, &
@@ -49,7 +49,7 @@ do ij = 1,maxYears
  	i=siteOrder(iz,ij)
 ! open(10,file="multiSite.txt")
  ! write(10,*) "years =",ij, "siteRun = ",iz
-! close(10) 
+! close(10)
 	ClCutX = ClCut(i)
 	defaultThinX = defaultThin(i)
 	thinningX(:,:) = -999.
@@ -58,7 +58,7 @@ do ij = 1,maxYears
 	if(ij > 1) then
 	 soilCinOut(i,ij,:,:,1:nLayers(i)) = soilCinOut(i,(ij-1),:,:,1:nLayers(i))
 	endif
-	
+
 !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
 	if (HarvLim(ij) > 0. .and. HarvArea >= HarvLim(ij)) then
 	 ClCutX = 0.
@@ -68,7 +68,7 @@ do ij = 1,maxYears
 	climID = siteInfo(i,2)
 	if(ij==yearX(i))then
 	 yearX(i) = 0
-	 
+
 	 do ijj = 1,nLayers(i)
 	  initVar(i,1,ijj) = multiOut(i,1,4,ijj,1)
 	  initVar(i,2,ijj) = initClearcut(i,5)
@@ -85,7 +85,7 @@ do ij = 1,maxYears
 	  enddo !ki
 	 enddo !ijj
 	endif
-	
+
 	do jj = 1, nThinning(i)
 	 if(thinning(i,jj,1) == ij) then
 	  az = az + 1
@@ -141,12 +141,12 @@ do ij = 1,maxYears
 	HarvArea = HarvArea + sum(output(1,37,1:nLayers(i),1))
  end do !iz i
 
- 
+
 ! write(10,*) "here3"
 
 
- !!! check if the harvest limit of the area has been reached otherwise clearcut the stands sorted by basal area 
- if (HarvArea < HarvLim(ij)) then 
+ !!! check if the harvest limit of the area has been reached otherwise clearcut the stands sorted by basal area
+ if (HarvArea < HarvLim(ij)) then
   n = 0
   do while(n < nSites .and. HarvArea < HarvLim(ij))
    n = n + 1
@@ -156,17 +156,17 @@ do ij = 1,maxYears
    ops = maxloc(maxState)
    siteX = int(ops(1))
    climID = int(siteInfo(siteX,2))
-if(maxState(siteX)>minDharv) then
+if(maxState(siteX)>minDharv .and. ClCut(siteX)==1.) then
   ! close(10)
 !!   !!clearcut!!
    HarvArea = HarvArea + sum(multiOut(siteX,ij,30,1:nLayers(siteX),1))
    multiOut(siteX,ij,37,:,1) = multiOut(siteX,ij,37,1:nLayers(siteX),1) + multiOut(siteX,ij,30,1:nLayers(siteX),1)
    do ijj = 1, nLayers(siteX)
-    multiOut(siteX,ij,6:nVar,ijj,2) = multiOut(siteX,ij,6:nVar,ijj,1) 
+    multiOut(siteX,ij,6:nVar,ijj,2) = multiOut(siteX,ij,6:nVar,ijj,1)
     multiOut(siteX,ij,26,ijj,1) = multiOut(siteX,ij,33,ijj,1) + multiOut(siteX,ij,26,ijj,1)
     multiOut(siteX,ij,27,ijj,1) = multiOut(siteX,ij,25,ijj,1) + multiOut(siteX,ij,27,ijj,1)
     multiOut(siteX,ij,28,ijj,1) = multiOut(siteX,ij,24,ijj,1) + multiOut(siteX,ij,28,ijj,1)
-    multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + & 
+    multiOut(siteX,ij,29,ijj,1) = multiOut(siteX,ij,31,ijj,1)* 0.1 + &
 	multiOut(siteX,ij,32,ijj,1) + multiOut(siteX,ij,29,ijj,1) !0.1 takes into account of the stem residuals after clearcuts
     multiOut(siteX,ij,8:21,ijj,1) = 0.
     multiOut(siteX,ij,23:36,ijj,1) = 0. !#!#
@@ -182,10 +182,10 @@ if(maxState(siteX)>minDharv) then
 	 yearX(siteX) = Ainit + ij + 1
 	 initClearcut(siteX,5) = Ainit
 	 if(ij==1) then
-	  relBA(siteX,1:nLayers(siteX)) = initVar(siteX,5,1:nLayers(siteX))/ & 
+	  relBA(siteX,1:nLayers(siteX)) = initVar(siteX,5,1:nLayers(siteX))/ &
 		sum(initVar(siteX,5,1:nLayers(siteX)))
 	 else
-	  relBA(siteX,1:nLayers(siteX)) = multiOut(siteX,(ij-1),13,1:nLayers(siteX),1)/ & 
+	  relBA(siteX,1:nLayers(siteX)) = multiOut(siteX,(ij-1),13,1:nLayers(siteX),1)/ &
 		sum(multiOut(siteX,(ij-1),13,1:nLayers(siteX),1))
 	 endif
 
