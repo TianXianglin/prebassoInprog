@@ -24,6 +24,10 @@ implicit none
 !****************************************************************************************
  real (kind=8) :: pi = acos(-1.)
  
+ MeanLight = 0.
+ coeff = 0.
+ qcTOT = 0.
+ 
  do i = 1,nclass
 	 species = int(stand_all(4,i))
      param = pCrobas(:,species)
