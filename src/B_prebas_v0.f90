@@ -1,6 +1,6 @@
- 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
-!subroutine bridging  
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!subroutine bridging
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output,nThinning,maxYearSite,fAPAR,initClearcut,&
 		fixBAinitClarcut,initCLcutRatio,ETSy,P0y,weatherPRELES,DOY,pPRELES,etmodel, soilCinOut,pYasso,pAWEN,weatherYasso,&
@@ -8,7 +8,7 @@ subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output
 		defaultThin,ClCut,inDclct,inAclct,dailyPRELES,yassoRun)
 
 implicit none
- 
+
  integer, parameter :: nVar=46,npar=33, inttimes = 1!, nSp=3
  real (kind=8), parameter :: pi = 3.1415927, t=1.
  ! logical steadystate_pred= .false.
@@ -48,7 +48,7 @@ implicit none
  real (kind=8) :: stand_all(nVar,nLayers)
  real (kind=8) :: outt(nVar,nLayers,2)
  real (kind=8) :: modOut((nYears+1),nVar,nLayers,2)
- real (kind=8) :: soilC((nYears+1),5,3,nLayers),soilCtot((nYears+1)) 
+ real (kind=8) :: soilC((nYears+1),5,3,nLayers),soilCtot((nYears+1))
  real (kind=8) :: par_phib,par_phic,par_alfat,par_alfar1,par_alfar2,par_alfar3,par_alfar4
  real (kind=8) :: par_alfar5,par_etab,par_k,par_vf,par_vr,par_sla,par_mf,par_mr,par_mw,par_vf0
  real (kind=8) :: par_z,par_rhos,par_cR, par_x, Light,MeanLight(nLayers),par_mf0,par_mr0,par_mw0
@@ -151,22 +151,22 @@ do year = 1, (nYears)
  !----------------------------------
 
   do time = 1, inttimes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      
+
  ! do ki = 1, nSites
  ! calculate self-thinning using all tree classes
      Ntot = sum(STAND_all(17,:))
-     B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed 
+     B = sum(STAND_all(35,:)*STAND_all(17,:))/Ntot   !!!!!!!!!#####changed
      if(Ntot>0.) then
-         Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66) 
+         Reineke = Ntot*(sqrt(B*4/pi)*100./25.)**(1.66)
      else
          Reineke = 0.
-     endif        
+     endif
  ! end do
 
 do ij = 1 , nLayers 		!loop Species
 
  ! write(2,*) "nLayers",ij, "of", nLayers,"year=",year
- 
+
  STAND=STAND_all(:,ij)
  species = int(stand(4))
  param = pCrobas(:,species)
@@ -198,7 +198,7 @@ do ij = 1 , nLayers 		!loop Species
  par_alfar5 = param(25)
  par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
  par_S_branchMod = param(27) !model for branch litter model
- p0_ref = param(29) 
+ p0_ref = param(29)
  ETS_ref = param(30)
  par_thetaMax = param(31)
  par_Age0 = param(32)
@@ -220,10 +220,10 @@ else
 
   age = STAND(7)
   H = STAND(11)
-  D = STAND(12) 
+  D = STAND(12)
   BA = STAND(13)
   Hc = STAND(14)
-  N = BA/(pi*((D/2/100)**2)) 
+  N = BA/(pi*((D/2/100)**2))
   B = BA/N! * par_ops2
 !  Cw = STAND(15)
   Lc = H - Hc
@@ -242,15 +242,15 @@ if (N>0.) then
   par_rhof = par_rhof1 * ETS + par_rhof2
   par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
 !  par_vr = par_vr / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
-  
- !calculate derived variables 
+
+ !calculate derived variables
   rc = Lc / (H-1.3) !crown ratio
   A = rc * B
   wf_treeKG = par_rhof * A
   par_ksi = wf_treeKG / (Lc ** par_z)
   wf_STKG = wf_treeKG * N !needle mass per STAND in units C
-  ppow=1.6075 
-  
+  ppow=1.6075
+
   V_scrown =  A * (par_betas*Lc)
   V_bole = (A+B+sqrt(A*B)) * Hc /2.9
   V = (V_scrown + V_bole) * N
@@ -275,12 +275,12 @@ if (N>0.) then
   !projected leaf area on the STAND -----------------------------------
   if (wf_STKG>0.) then
    lproj = par_sla * wf_STKG / 10000.
-  else		
+  else
    lproj = 0.
   end if
   !weight per tree STAND$species stratum ------------------------------------
   leff= (keff/par_k)*(wf_STKG*par_sla) / 10000. !effective lai
- 
+
   STAND(7) = age
   STAND(19) = leff
   STAND(20) = keff
@@ -311,15 +311,12 @@ end do !!!!!!!end loop layers
 
 !!!calculate species weight for photosynthesis
 !do siteNo = 1, nSites
-      
+
 if (year <= maxYearSite) then
 	nSpec = nSp
 	ll = nLayers
     call Ffotos2(STAND_all,nLayers,nSpec,pCrobas,&
 		nVar,nPar,MeanLight,coeff,fAPARsite)
-	! write(*,*) "site=",stand_all(1,1),"nLayers=",nLayers
-	! write(*,*) "MeanLight",MeanLight
-	! write(*,*) "coeff",coeff
    STAND_all(36,:) = MeanLight
    STAND_all(23,:) = coeff
 ! fAPARsite=0.7
@@ -335,15 +332,15 @@ if (year <= maxYearSite) then
 
    fAPARprel(:) = fAPARsite
    fAPAR(year) = fAPARsite
-   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, & 
+   call preles(weatherPRELES(year,:,:),DOY,fAPARprel,prelesOut, pars, &
 		dailyPRELES((1+((year-1)*365)):(365*year),1), &  !daily GPP
 		dailyPRELES((1+((year-1)*365)):(365*year),2), &  !daily ET
 		dailyPRELES((1+((year-1)*365)):(365*year),3), &  !daily SW
 		etmodel)		!type of ET model
 
    STAND_all(22,:) = prelesOut(2)  	!ET
-   STAND_all(40,:) = prelesOut(15)  	
-   STAND_all(41,:) = prelesOut(16)  	
+   STAND_all(40,:) = prelesOut(15)
+   STAND_all(41,:) = prelesOut(16)
 
    pars(24) = prelesOut(3);siteInfo(4) = prelesOut(3)!SWinit
    pars(25) = prelesOut(13); siteInfo(5) = prelesOut(13) !CWinit
@@ -387,7 +384,7 @@ do ij = 1 , nLayers
  par_alfar5 =param(25)
  par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
  par_S_branchMod = param(27) !model for branch litter model
- p0_ref = param(29) 
+ p0_ref = param(29)
  ETS_ref = param(30)
  par_thetaMax = param(31)
  par_Age0 = param(32)
@@ -421,7 +418,7 @@ else
   lproj = STAND(21)
   p_eff_all = STAND(10) !!##!!2
   weight = STAND(23)
-  
+
   rc = Lc / (H-1.3) !crown ratio
   B = BA / N
   A = rc * B
@@ -445,7 +442,7 @@ if (N>0.) then
    par_alfar = par_alfar3
   else if (sitetype==4.) then
    par_alfar = par_alfar4
-  else 
+  else
    par_alfar = par_alfar5
   end if
 
@@ -453,7 +450,7 @@ if (N>0.) then
   par_mf = par_mf0 * p0 / p0_ref
   par_mr = par_mr0 * p0 / p0_ref
   par_mw = par_mw0 * p0 / p0_ref
- 
+
   par_rhof0 = par_rhof1 * ETS_ref + par_rhof2
   par_rhof = par_rhof1 * ETS + par_rhof2
   par_vf = par_vf0 / (1. + par_aETS * (ETS-ETS_ref)/ETS_ref)
@@ -477,7 +474,7 @@ if (N>0.) then
         !Valentine & Makela 2005. Bridging process - based and empirical approaches to modeling tree growth.
         ! HERE the units are kg / ha
 
-            betab = hb/Lc 
+            betab = hb/Lc
             beta0 = par_beta0
             beta1 = beta0 * (betab + par_betas)
             beta2 = beta0 - beta1
@@ -495,25 +492,25 @@ if (N>0.) then
             if(dH < 0.) dH = 0.
         !-----------------------------------
         !crown rise
-!         if(H - Hc > par_Cr2*100./sqrt(N)) then 
-!        if(2.*hb > 100./sqrt(N) ) then 
-        dHc = par_cR/Light * dH 
+!         if(H - Hc > par_Cr2*100./sqrt(N)) then
+!        if(2.*hb > 100./sqrt(N) ) then
+        dHc = par_cR/Light * dH
 if(time==1)then
       dHcCum = 0.
       dHCum = 0.
 endif
         dHcCum = dHcCum + dHc
         dHCum = dHCum + dH
-!	    else 
+!	    else
 !		dHc = 0  !CAN BE DIFFERENT FROM THE PAPER HARKONEN ET AL. 2013 CANADIAN JOURNAL, SEE THE EQUATION THERE
 !        endif
         if(dHc < 0. )dHc = 0.
- 
+
             !----------------------------------
             !New values for H, Hc and Lc
 
        ! diameter growth
-        
+
             if(Lc > 0.) then
                 dA = par_z*A*(dH-dHc)/Lc
                 dB = par_z * (A / Lc) * dH
@@ -521,31 +518,31 @@ endif
                 dA = 0.
                 dB = 0.
             endif
-            
+
 ! Mortality - use Reineke from above
-!      if((Reineke(siteNo) > par_kRein .OR. Light < par_cR) .and. siteThinning(siteNo) == 0) then ! 
+!      if((Reineke(siteNo) > par_kRein .OR. Light < par_cR) .and. siteThinning(siteNo) == 0) then !
 !     if(time==inttimes) then
       Rein = Reineke / par_kRein
-     
+
       if(Rein > 1.) then
            dN = - 0.02 * N * Rein
       else
-           dN = 0. 
+           dN = 0.
       endif
       Vold = STAND(30)
-      Nold = N 
+      Nold = N
       if(N < 5.) N = 0.0
 
       N = max(0.0, N + step*dN)
-    
+
 !!  Update state variables
-      
+
           H = H + step * dH
           A = A + step * dA
           B = B + step * dB
 
       Hc = Hc + step * dHc
-      
+
 ! Update dependent variables
       wf_treeKG = par_rhof * A
       wf_STKG = N * wf_treeKG
@@ -554,17 +551,17 @@ endif
       Lc = H - Hc
       rc = Lc / (H-1.3)
       if(rc > 0.) B2 = A / rc
-      hb = par_betab * Lc**par_x    
+      hb = par_betab * Lc**par_x
       hb = betab * Lc
-      
-! Here these were calculated for some reason although they were computed from hb before     
+
+! Here these were calculated for some reason although they were computed from hb before
 !            if(species==1) then
 !		Cw = 2*0.386*Lc**0.8268
 !	    else if(species==2) then
 !		Cw = 2*0.4614*Lc**0.5198
 !	    else
 !		Cw = 2*0.2689*Lc
-!	    endif		
+!	    endif
 
 ! more dependent variables (not used in calculation)
       W_wsap = N * par_rhow * A * (beta1 * H + beta2 * Hc)
@@ -599,11 +596,11 @@ endif
       else
 	S_wood = 0.
       endif
-      
+
   age = age + step
 
   STAND(7) = age !#!#
-  STAND(18) = npp 
+  STAND(18) = npp
   STAND(8) = Respi_m /10000.
   STAND(9) = Respi_tot
   STAND(11) = H
@@ -639,11 +636,11 @@ endif
 
   !Perform manual thinning or defoliation events for this time period
 ! If (STAND(13) > 0) then
-  If (countThinning <= nThinning .and. time==inttimes) Then 
+  If (countThinning <= nThinning .and. time==inttimes) Then
    If (year == int(thinning(countThinning,1)) .and. ij == int(thinning(countThinning,3))) Then! .and. siteNo == thinning(countThinning,2)) Then
 	STAND_tot = STAND
 
-!    STAND(11) = 
+!    STAND(11) =
     if(thinning(countThinning,4)==0.) then
      STAND(8:21) = 0. !#!#
      STAND(23:37) = 0. !#!#
@@ -660,25 +657,25 @@ endif
     else
      if(thinning(countThinning,8)==1.) then
 	if(thinning(countThinning,4) < 2. .and. thinning(countThinning,4) > 0.) then
-	 thinning(countThinning,4) = H * thinning(countThinning,4) 
+	 thinning(countThinning,4) = H * thinning(countThinning,4)
 	endif
 	if(thinning(countThinning,5) < 2. .and. thinning(countThinning,5) > 0.) then
-	 thinning(countThinning,5) = D * thinning(countThinning,5) 
+	 thinning(countThinning,5) = D * thinning(countThinning,5)
 	endif
 	if(thinning(countThinning,6) < 1. .and. thinning(countThinning,6) > 0.) then
-	 thinning(countThinning,6) = BA * thinning(countThinning,6) 
+	 thinning(countThinning,6) = BA * thinning(countThinning,6)
 	endif
 	if(thinning(countThinning,7) < 2. .and. thinning(countThinning,7) > 0.) then
-	 thinning(countThinning,7) = Hc * thinning(countThinning,7) 
+	 thinning(countThinning,7) = Hc * thinning(countThinning,7)
 	endif
      endif
      if (thinning(countThinning,4) /= -999.) H = thinning(countThinning,4)
      if (thinning(countThinning,7) /= -999.) Hc = thinning(countThinning,7)
-     if (thinning(countThinning,5) /= -999.) D = thinning(countThinning,5) 
+     if (thinning(countThinning,5) /= -999.) D = thinning(countThinning,5)
      BA = thinning(countThinning,6)
      Lc = H - Hc !Lc
      rc = Lc / (H-1.3) !crown ratio
-     Nold = N 
+     Nold = N
      wf_treeKG_old = wf_treeKG
      W_stem_old = W_stem
      N = BA/(pi*((D/2./100.)**2.)) ! N
@@ -734,9 +731,9 @@ endif
      STAND(27) = S_fr
      STAND(28) = S_branch
      STAND(29) = S_wood
-     STAND(30) = V  ! 
+     STAND(30) = V  !
      STAND(31) = W_stem
-     STAND(32) = W_croot 
+     STAND(32) = W_croot
      STAND(33) = wf_STKG
      STAND(34) = wf_treeKG
      STAND(35) = B
@@ -768,7 +765,7 @@ if (ClCut == 1.) then
 
  if ((D > D_clearcut) .or. (age > A_clearcut)) then
   do ij = 1, nLayers
-   outt(6:nVar,ij,2) = stand_all(6:nVar,ij) 
+   outt(6:nVar,ij,2) = stand_all(6:nVar,ij)
    S_fol = stand_all(33,ij) + stand_all(26,ij)
    S_fr = stand_all(25,ij) + stand_all(27,ij)
    S_branch = stand_all(24,ij) + stand_all(28,ij)
@@ -806,7 +803,7 @@ if(defaultThin == 1.) then
     if(H<20.) then
      BA_lim = -0.0893*H**2. + 4.0071*H - 11.343
      BA_thd = -0.0536*H**2. + 2.7643*H - 9.6857
-    else 
+    else
      BA_lim = 33.
      BA_thd = 24.
     endif
@@ -815,7 +812,7 @@ if(defaultThin == 1.) then
     if(H<20.) then
      BA_lim = -0.125*H**2. + 4.95*H - 20.9
      BA_thd = -0.1071*H**2. + 3.9286*H - 15.771
-    else 
+    else
      BA_lim = 28.
      BA_thd = 20.
     endif
@@ -824,7 +821,7 @@ if(defaultThin == 1.) then
     if(H<20.) then
      BA_lim = -0.1071*H**2. + 4.2286*H - 15.571
      BA_thd = -0.0714*H**2. + 2.7857*H - 9.1143
-    else 
+    else
      BA_lim = 26.
      BA_thd = 18.
     endif
@@ -833,7 +830,7 @@ if(defaultThin == 1.) then
     if(H<20.) then
      BA_lim = -0.0714*H**2. + 2.9857*H - 7.9143
      BA_thd = -0.0714*H**2. + 2.7857*H - 11.114
-    else 
+    else
      BA_lim = 23.
      BA_thd = 16.
     endif
@@ -843,7 +840,7 @@ if(defaultThin == 1.) then
    if(H<20.) then
     BA_lim = -0.0179*H**2. + 1.2214*H + 3.7714
     BA_thd = -0.0536*H**2. + 2.4643*H - 12.886
-   else 
+   else
     BA_lim = 21.
     BA_thd = 15.
    endif
@@ -883,7 +880,7 @@ if(defaultThin == 1.) then
     par_alfar5 =param(25)
     par_sarShp = param(26) !Shape surface area of the crown: 1.= cone; 2.=ellipsoide
     par_S_branchMod = param(27) !model for branch litter model
-    p0_ref = param(29) 
+    p0_ref = param(29)
     ETS_ref = param(30)
     par_thetaMax = param(31)
     par_Age0 = param(32)
@@ -919,7 +916,7 @@ if(defaultThin == 1.) then
     outt(30,ij,2) = outt(30,ij,2) - V
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
-    betab = hb/Lc 
+    betab = hb/Lc
 
     Cw = 2. * hb
 !! calculate litter including residuals from thinned trees
@@ -936,14 +933,14 @@ if(defaultThin == 1.) then
      par_alfar = par_alfar3
     else if (sitetype==4.) then
      par_alfar = par_alfar4
-    else 
+    else
      par_alfar = par_alfar5
     end if
 
     W_froot = par_alfar * wf_STKG	!fine root biomass
     W_croot = W_stem * (par_beta0 - 1.)	!coarse root biomass
     W_branch = par_rhow * A * Lc * betab * N
-  
+
     outt(11,ij,2)= STAND_tot(11)
     outt(12,ij,2)= STAND_tot(12)
     outt(13,ij,2)= STAND_tot(13) - BA
@@ -972,9 +969,9 @@ if(defaultThin == 1.) then
     stand_all(29,ij) = S_wood
     stand_all(24,ij) = W_branch
     stand_all(25,ij) = W_froot
-    stand_all(30,ij) = V  ! 
+    stand_all(30,ij) = V  !
     stand_all(31,ij) = W_stem
-    stand_all(32,ij) = W_croot 
+    stand_all(32,ij) = W_croot
     stand_all(33,ij) = wf_STKG
     stand_all(34,ij) = wf_treeKG
     stand_all(35,ij) = B
@@ -990,13 +987,13 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
 
 !!!!run Yasso
  ! write(2,*) "before yasso"
- 
+
  if(yassoRun==1.) then
   do ijj = 1, nLayers
    Lst(ijj) = outt(29,ijj,1)
    Lb(ijj) =  outt(28,ijj,1)
    Lf(ijj) = outt(26,ijj,1)+outt(27,ijj,1)
-   
+
    species = int(initVar(1,ijj))
    call compAWENH(Lf(ijj),folAWENH(ijj,:),pAWEN(1:4,species))   !!!awen partitioning foliage
    call compAWENH(Lb(ijj),fbAWENH(ijj,:),pAWEN(5:8,species))   !!!awen partitioning branches
@@ -1010,7 +1007,7 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
 	leac,soilC((year+1),:,3,ijj))
   enddo
  ! write(2,*) "after yasso"
- 
+
 
   soilCtot(year+1) = sum(soilC(year+1,:,:,:))
  endif !end yassoRun if
@@ -1032,7 +1029,7 @@ enddo
 ! write(2,*) "here1"
 
 !compute gross growth
- modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1) 
+ modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1)
 
  ! write(2,*) "here2"
 
@@ -1045,11 +1042,11 @@ enddo
 
  modOut(2:(nYears+1),45,:,1) = modOut(1:(nYears),39,:,1)/10. - modOut(2:(nYears+1),39,:,1)/10. + &	!/10 coverts units to g C m−2 y−1
 	modOut(2:(nYears+1),26,:,1)/10. + modOut(2:(nYears+1),27,:,1)/10. + &
-	modOut(2:(nYears+1),28,:,1)/10. + modOut(2:(nYears+1),29,:,1)/10.    
+	modOut(2:(nYears+1),28,:,1)/10. + modOut(2:(nYears+1),29,:,1)/10.
 
  ! write(2,*) "here4"
- 
-modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1) 
+
+modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1)
 
 ! write(2,*) "here5"
 
