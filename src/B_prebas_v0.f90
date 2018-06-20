@@ -1010,7 +1010,7 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
 
 
   soilCtot(year+1) = sum(soilC(year+1,:,:,:))
-  write(*,*) soilCtot(year+1)
+  ! write(*,*) soilCtot(year+1)
  endif !end yassoRun if
 enddo !end year loop
 
