@@ -1053,7 +1053,7 @@ modOut(:,46,:,1) = modOut(:,44,:,1) - modOut(:,9,:,1) - modOut(:,45,:,1)
  output = modOut(2:(nYears+1),:,:,:)
  output(:,5:6,:,:) = modOut(1:(nYears),5:6,:,:)
  soilCinOut = soilC(2:(nYears+1),:,:,:)
- soilCtotInOut = soilCtot(2:(nYears+1))
+ soilCtotInOut = 999!soilCtot(2:(nYears+1))
 
  ! write(2,*) "end"
  ! close(2)
