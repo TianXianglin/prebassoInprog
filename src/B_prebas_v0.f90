@@ -91,6 +91,7 @@ modOut = 0.
 soilC = 0.
 countThinning = 1
 pars = pPRELES
+write(*,*) soilC(1,:,:,:)
 soilC(1,:,:,:) = soilCinout(1,:,:,:)
 pars(24) = siteInfo(4)!SWinit
 pars(25) = siteInfo(5)!CWinit
@@ -1008,7 +1009,6 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
   enddo
  ! write(2,*) "after yasso"
 
-
   soilCtot(year+1) = sum(soilC(year+1,:,:,:))
   ! write(*,*) soilCtot(year+1)
  endif !end yassoRun if
@@ -1024,6 +1024,8 @@ do year = 1,(nYears+1)
 	modOut(year,38,ijj,1) = sum(modOut(1:year,30,ijj,2)) + &
 		sum(modOut(1:year,42,ijj,1)) + modOut(year,30,ijj,1)
 	modOut(year,39,ijj,1) = sum(soilC(year,:,:,ijj))
+	
+	! write(*,*) modOut(year,39,ijj,1)
   enddo
 enddo
 
