@@ -92,7 +92,6 @@ soilC = 0.
 countThinning = 1
 pars = pPRELES
 soilC(1,:,:,:) = soilCinout(1,:,:,:)
- write(*,*) sum(soilC(1,:,:,:))
 pars(24) = siteInfo(4)!SWinit
 pars(25) = siteInfo(5)!CWinit
 pars(26) = siteInfo(6) !SOGinit
