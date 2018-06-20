@@ -55,7 +55,7 @@ do ij = 1,maxYears
 	thinningX(:,:) = -999.
 	az = 0
 
-	if(ij > 1.) then
+	if(ij > 1) then
 	 soilCinOut(i,ij,:,:,1:nLayers(i)) = soilCinOut(i,(ij-1),:,:,1:nLayers(i))
 	endif
 
