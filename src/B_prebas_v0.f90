@@ -31,7 +31,7 @@ implicit none
  real (kind=8), intent(inout) :: siteInfo(7)
  real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
- real (kind=8), intent(inout) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nSp) !litterSize dimensions: treeOrgans,species
+ real (kind=8), intent(in) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nSp) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: prelesOut(16),fAPARsite
  real (kind=8) :: leac=0 !leaching parameter for Yasso
  real (kind=8),DIMENSION(nLayers,5) :: fbAWENH,folAWENH,stAWENH
