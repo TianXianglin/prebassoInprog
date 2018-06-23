@@ -467,7 +467,8 @@ IMPLICIT NONE
     REAL (kind=8),DIMENSION(5),INTENT(IN) :: init ! initial state
     REAL (kind=8),DIMENSION(5),INTENT(IN) :: b ! infall
     REAL (kind=8),DIMENSION(5),INTENT(OUT) :: xt ! the result i.e. x(t)
-    LOGICAL,OPTIONAL,INTENT(IN) :: steadystate_pred ! set to true if ignore 'time' and compute solution 
+    REAL (kind=8),INTENT(IN) :: steadystate_pred ! set to true if ignore 'time' and compute solution 
+    ! LOGICAL,OPTIONAL,INTENT(IN) :: steadystate_pred ! set to true if ignore 'time' and compute solution 
     ! in steady-state conditions (which sould give equal solution as if time is set large enough)
     REAL (kind=8),DIMENSION(5,5) :: A,At,mexpAt
     INTEGER :: i
@@ -479,8 +480,11 @@ IMPLICIT NONE
     LOGICAL :: ss_pred = .FALSE.
 
     ! IF(PRESENT(steadystate_pred)) THEN
-        ss_pred = steadystate_pred
+        ! ss_pred = steadystate_pred
     ! ENDIF
+    IF(steadystate_pred == 1.) THEN
+        ss_pred = .true.
+    ENDIF
 
     !#########################################################################
     ! Compute the coefficient matrix A for the differential equation
