@@ -1000,11 +1000,11 @@ modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
    call compAWENH(Lst(ijj),stAWENH(ijj,:),pAWEN(9:12,species))         !!!awen partitioning stems
 
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,1,ijj),stAWENH(ijj,:),litterSize(1,species), &
-	leac,soilC((year+1),:,1,ijj),1.)
+	leac,soilC((year+1),:,1,ijj),0.)
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,2,ijj),fbAWENH(ijj,:),litterSize(2,species), &
-	leac,soilC((year+1),:,2,ijj),1.)
+	leac,soilC((year+1),:,2,ijj),0.)
    call mod5c(pYasso,t,weatherYasso(year,:),soilC((year),:,3,ijj),folAWENH(ijj,:),litterSize(3,species), &
-	leac,soilC((year+1),:,3,ijj),1.)
+	leac,soilC((year+1),:,3,ijj),0.)
   enddo
  ! write(2,*) "after yasso"
 
