@@ -478,9 +478,9 @@ IMPLICIT NONE
     REAL (kind=8),PARAMETER :: tol = 1E-12
     LOGICAL :: ss_pred = .FALSE.
 
-    IF(PRESENT(steadystate_pred)) THEN
+    ! IF(PRESENT(steadystate_pred)) THEN
         ss_pred = steadystate_pred
-    ENDIF
+    ! ENDIF
 
     !#########################################################################
     ! Compute the coefficient matrix A for the differential equation
