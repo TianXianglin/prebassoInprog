@@ -97,8 +97,9 @@ do ij = 1,maxYears
 	 endif
 	enddo
   if(ij==1) then
-write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
-endif
+   ! write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
+   soilC(i,ij,:,:,:) = soilCinOut(i,ij,:,:,:)
+  endif
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
