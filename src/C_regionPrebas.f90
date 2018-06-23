@@ -33,11 +33,15 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
  real (kind=8), intent(inout) :: soilCinOut(nSites,maxYears,5,3,maxNlayers),soilCtotInOut(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8) :: soilC(nSites,maxYears,5,3,maxNlayers),soilCtot(nSites,maxYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(in) :: pYasso(35), weatherYasso(nClimID,maxYears,3),litterSize(3,allSP) !litterSize dimensions: treeOrgans,species
+ real (kind=8) :: pYassoX(35), weatherYassoX(nClimID,maxYears,3),litterSizeX(3,allSP)
  real (kind=8) :: output(1,nVar,maxNlayers,2),totBA(nSites), relBA(nSites,maxNlayers)
  real (kind=8) :: ClCutX, HarvArea,defaultThinX,maxState(nSites),check(maxYears), thinningX(maxThin,8)
  integer :: maxYearSite = 300,yearX(nSites),Ainit,sitex,ops(1)
 
 !!!!initialize run
+pYassoX = pYasso(35)
+weatherYassoX = weatherYasso
+litterSizeX = litterSize
 yearX = 0.
 soilC = 0.
 soilC(:,1,:,:,:) = soilCinOut(:,1,:,:,:)
@@ -106,16 +110,16 @@ do ij = 1,maxYears
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
 		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
-		soilC(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
-		litterSize,soilCtot(i,ij),&
+		soilC(i,ij,:,:,1:nLayers(i)),pYassoX,pAWEN,weatherYassoX(climID,ij,:),&
+		litterSizeX,soilCtot(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	elseif(prebasVersion(i)==1.) then
 	  call prebas_v1(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
 		fixBAinitClarcut(i),initCLcutRatio(i,1:nLayers(i)),ETSy(climID,ij),P0y(climID,ij),&
 		weatherPRELES(climID,ij,:,:),DOY,pPRELES,etmodel, &
-		soilC(i,ij,:,:,1:nLayers(i)),pYasso,pAWEN,weatherYasso(climID,ij,:),&
-		litterSize,soilCtot(i,ij),&
+		soilC(i,ij,:,:,1:nLayers(i)),pYassoX,pAWEN,weatherYassoX(climID,ij,:),&
+		litterSizeX,soilCtot(i,ij),&
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	endif
 	
