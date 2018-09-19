@@ -148,7 +148,7 @@ endif
 	enddo
 	
 	multiOut(i,ij,1:7,1:nLayers(i),:) = output(1,1:7,1:nLayers(i),:)
-	multiOut(i,ij,8:nVar,1:nLayers(i),:) = output(1,8:nVar,1:nLayers(i),:)
+	multiOut(i,ij,9:nVar,1:nLayers(i),:) = output(1,9:nVar,1:nLayers(i),:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
