@@ -9,7 +9,7 @@ subroutine prebas_v0(nYears,nLayers,nSp,siteInfo,pCrobas,initVar,thinning,output
 
 implicit none
 
- integer, parameter :: nVar=46,npar=33, inttimes = 1!, nSp=3
+ integer, parameter :: nVar=46,npar=37, inttimes = 1!, nSp=3
  real (kind=8), parameter :: pi = 3.1415927, t=1.
  ! logical steadystate_pred= .false.
 !define arguments
@@ -96,6 +96,7 @@ pars(24) = siteInfo(4)!SWinit
 pars(25) = siteInfo(5)!CWinit
 pars(26) = siteInfo(6) !SOGinit
 pars(27) = siteInfo(7) !Sinit
+
 
  do i = 1,nLayers
   modOut(:,4,i,1) = initVar(1,i)  ! assign species
@@ -535,6 +536,16 @@ endif
 
       N = max(0.0, N + step*dN)
 
+	  !!!calculate deadWood using Gompetz function (Makinen et al. 2006)!!!!
+	  ! if(dN<0) then
+	  ! modOut((year+1),8,ij,1) = modOut((year+1),8,ij,1) + Vold* min(1.,-dN*step/Nold)
+	    ! do ijj = 1,(nyears-year)
+			! modOut((year+ijj+1),8,ij,1) = modOut((year+ijj+1),8,ij,1) + (Vold/Nold) * (-dN*step) * &
+				! exp(-exp(pCrobas(34,species) + pCrobas(35,species)*ijj + pCrobas(36,species)*D + 0.))
+		! enddo
+	  ! end if
+	  
+	  
 !!  Update state variables
 
           H = H + step * dH
@@ -601,7 +612,7 @@ endif
 
   STAND(7) = age !#!#
   STAND(18) = npp
-  STAND(8) = Respi_m /10000.
+  !STAND(8) = Respi_m /10000.
   STAND(9) = Respi_tot
   STAND(11) = H
   STAND(12) = D
@@ -983,7 +994,8 @@ endif !default thin
 
 outt(:,:,1)=STAND_all
 
-modOut((year+1),7:nVar,:,:) = outt(7:nVar,:,:)
+modOut((year+1),7,:,:) = outt(7,:,:)
+modOut((year+1),9:nVar,:,:) = outt(9:nVar,:,:)
 
 !!!!run Yasso
  ! write(2,*) "before yasso"
@@ -1023,15 +1035,16 @@ do year = 1,(nYears+1)
 	modOut(year,38,ijj,1) = sum(modOut(1:year,30,ijj,2)) + &
 		sum(modOut(1:year,42,ijj,1)) + modOut(year,30,ijj,1)
 	modOut(year,39,ijj,1) = sum(soilC(year,:,:,ijj))
-	
+
+	if(year > 1.5) then
+	!compute gross growth
+	  modOut(year,43,ijj,1) = modOut(year,38,ijj,1) - modOut((year-1),38,ijj,1)
+	endif
 	! write(*,*) modOut(year,39,ijj,1)
   enddo
 enddo
 
-! write(2,*) "here1"
 
-!compute gross growth
- modOut(2:(nYears+1),43,:,1) = modOut(2:(nYears+1),38,:,1) - modOut(1:(nYears),38,:,1)
 
  ! write(2,*) "here2"
 

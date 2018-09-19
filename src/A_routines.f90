@@ -693,6 +693,20 @@ IMPLICIT NONE
     END SUBROUTINE pivot
 
 
+	
+    ! SUBROUTINE deadWoodV(y,nY,deadVol,dbh, pars)
+        ! ! calculating deadwood volume decay
+        ! IMPLICIT NONE
+        ! INTEGER,intent(in) :: nY
+		! REAL (kind=8),intent(in) :: y(nY),dbh,pars(4)
+		! REAL (kind=8),intent(inout) :: deadVol(nY)
+        ! !parameters
+! !		REAL (kind=8) :: p1 = -2.653,p2 = -2.948,p3 = -3.324,p4 = .055,p5 = .059,p6 = .135,p7 = -0.03
+
+		! !###Gomprtz models
+		! deadVol = exp(-exp(pars(1) + pars(2)*y + pars(3)*dbh + pars(4)))
+	! END SUBROUTINE deadWoodV
+
 
 
 

@@ -11,7 +11,7 @@ subroutine regionPrebas(siteOrder,HarvLim,minDharv,multiOut,nSites,nClimID,nLaye
 
 implicit none
 
-integer, parameter :: nVar=46,npar=33!, nSp=3
+integer, parameter :: nVar=46,npar=37!, nSp=3
 integer, intent(in) :: nYears(nSites),nLayers(nSites),allSP
 integer :: i,climID,ij,iz,ijj,ki,n,jj,az
 integer, intent(in) :: nSites, maxYears, maxThin,nClimID,maxNlayers,siteOrder(nSites,maxYears)
