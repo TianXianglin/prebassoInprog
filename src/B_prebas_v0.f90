@@ -539,10 +539,10 @@ endif
 	  !!!calculate deadWood using Gompetz function (Makinen et al. 2006)!!!!
 	  if(dN<0.) then
 	  modOut((year+1),8,ij,1) = modOut((year+1),8,ij,1) + Vold* min(1.,-dN*step/Nold)
-	    do ijj = 1,(int(nyears-year))
+	    ! do ijj = 1,(int(nyears-year))
 			modOut(int(year+ijj+1),8,ij,1) = 100!modOut(int(year+ijj+1),8,ij,1) + (Vold/Nold) * (-dN*step) * &
 				! exp(-exp(pCrobas(34,species) + pCrobas(35,species)*ijj + pCrobas(36,species)*D + 0.))
-		enddo
+		! enddo
 	  end if
 	  
 	  
