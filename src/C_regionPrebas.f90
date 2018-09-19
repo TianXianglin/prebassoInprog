@@ -142,7 +142,7 @@ endif
 	  jj = int(output(1,4,ijj,1))
 	    do ki = 1,(maxYears-ij)
 			multiOut(i,(ki+ij),8,ijj,1) = multiOut(i,(ki+ij),8,ijj,1) + output(1,8,ijj,1) * &
-				exp(-exp(pCrobas(34,jj) + pCrobas(35,jj)*ijj + pCrobas(36,jj)*5 + 0.))
+				exp(-exp(pCrobas(34,jj) + pCrobas(35,jj)*ijj + pCrobas(36,jj)*output(1,12,ijj,1) + 0.))
 		enddo
 	  end if
 	enddo
