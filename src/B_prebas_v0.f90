@@ -537,7 +537,7 @@ endif
       N = max(0.0, N + step*dN)
 
 	  !!!calculate deadWood using Gompetz function (Makinen et al. 2006)!!!!
-	  if(dN<0) then
+	  if(dN<0.) then
 	  modOut((year+1),8,ij,1) = modOut((year+1),8,ij,1) + Vold* min(1.,-dN*step/Nold)
 	    do ijj = 1,(nyears-year)
 			modOut((year+ijj+1),8,ij,1) = modOut((year+ijj+1),8,ij,1) + (Vold/Nold) * (-dN*step) * &
