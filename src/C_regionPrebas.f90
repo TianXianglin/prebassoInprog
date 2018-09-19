@@ -60,6 +60,7 @@ do ij = 1,maxYears
 
 	if(ij > 1) then
 	 soilC(i,ij,:,:,1:nLayers(i)) = soilC(i,(ij-1),:,:,1:nLayers(i))
+	 output(1,8,1:nLayers(i),1) = multiOut(i,(ij-1),8,1:nLayers(i),1)
 	endif
 
 !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
@@ -99,6 +100,7 @@ do ij = 1,maxYears
   if(ij==1) then
 ! write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
 endif
+	
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
