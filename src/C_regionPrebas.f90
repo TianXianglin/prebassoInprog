@@ -60,7 +60,6 @@ do ij = 1,maxYears
 
 	if(ij > 1) then
 	 soilC(i,ij,:,:,1:nLayers(i)) = soilC(i,(ij-1),:,:,1:nLayers(i))
-	 output(1,8,1:nLayers(i),1) = multiOut(i,(ij-1),8,1:nLayers(i),1)
 	endif
 
 !!!check if the limit has been exceeded if yes no havest (thinning or clearcut will be performed)
@@ -100,7 +99,7 @@ do ij = 1,maxYears
   if(ij==1) then
 ! write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
 endif
-	
+
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
 		thinningX(1:az,:),output(1,:,1:nLayers(i),:),az,maxYearSite,fAPAR(i,ij),initClearcut(i,:),&
@@ -136,8 +135,20 @@ endif
 	endif
 	
 	! write(10,*) "here1"
-
-	multiOut(i,ij,:,1:nLayers(i),:) = output(1,:,1:nLayers(i),:)
+	  !!!calculate deadWood using Gompetz function (Makinen et al. 2006)!!!!
+	do ijj = 1,nLayers(i)
+	  if(output(1,8,ijj,1)>0.) then
+	  multiOut(i,ij,8,ijj,1) = multiOut(i,ij,8,ijj,1) + output(1,8,ijj,1)
+	  jj = int(output(1,4,ijj,1))
+	    do ki = 1,(maxYears-ij)
+			multiOut(i,(ki+ij),8,ijj,1) = multiOut(i,(ki+ij),8,ijj,1) + output(1,8,ijj,1) * &
+				exp(-exp(pCrobas(34,jj) + pCrobas(35,jj)*ijj + pCrobas(36,jj)*output(1,12,ijj,1) + 0.))
+		enddo
+	  end if
+	enddo
+	
+	multiOut(i,ij,1:7,1:nLayers(i),:) = output(1,1:7,1:nLayers(i),:)
+	multiOut(i,ij,8:nVar,1:nLayers(i),:) = output(1,8:nVar,1:nLayers(i),:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)

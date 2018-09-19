@@ -29,7 +29,7 @@ implicit none
  real (kind=8), intent(inout) :: dailyPRELES((nYears*365),3)
  real (kind=8), intent(in) :: initVar(6,nLayers),P0y(nYears),ETSy(nYears),initCLcutRatio(nLayers)!
  real (kind=8), intent(inout) :: siteInfo(7)
- real (kind=8), intent(inout) :: output(nYears,nVar,nLayers,2)
+ real (kind=8), intent(out) :: output(nYears,nVar,nLayers,2)
  real (kind=8), intent(inout) :: soilCinOut(nYears,5,3,nLayers),soilCtotInOut(nYears) !dimensions = nyears,AWENH,treeOrgans(woody,fineWoody,Foliage),species
  real (kind=8), intent(inout) :: pYasso(35), weatherYasso(nYears,3),litterSize(3,nSp) !litterSize dimensions: treeOrgans,species
  real (kind=8) :: prelesOut(16),fAPARsite
@@ -88,7 +88,6 @@ folAWENH = 0.
 stAWENH = 0.
 yearX = 0
 modOut = 0.
-modOut(2,8,:,1) = output(1,8,:,1)
 soilC = 0.
 countThinning = 1
 pars = pPRELES
@@ -541,7 +540,7 @@ endif
 	  if(dN<0.) then
 	  modOut((year+1),8,ij,1) = modOut((year+1),8,ij,1) + Vold* min(1.,-dN*step/Nold)
 	    do ijj = 1,(nyears-year)
-			modOut((year+ijj+1),8,ij,1) = modOut((year+ijj+1),8,ij,1) +(Vold/Nold) * (-dN*step) * &
+			modOut((year+ijj+1),8,ij,1) = modOut((year+ijj+1),8,ij,1) + (Vold/Nold) * (-dN*step) * &
 				exp(-exp(pCrobas(34,species) + pCrobas(35,species)*ijj + pCrobas(36,species)*D + 0.))
 		enddo
 	  end if
