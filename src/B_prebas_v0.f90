@@ -39,7 +39,7 @@ implicit none
 ! real (kind=8),DIMENSION(nLayers) :: speciesIDs
 
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
- integer :: i, ij, ijj,species,layer,nSpec,ll, ops! tree species 1,2,3 = scots pine, norway spruce, birch
+ integer :: i, ij, ijj,species,layer,nSpec,ll! tree species 1,2,3 = scots pine, norway spruce, birch
 
  real (kind=8) :: p0_ref, ETS_ref
  integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
@@ -539,11 +539,11 @@ endif
 	  !!!calculate deadWood using Gompetz function (Makinen et al. 2006)!!!!
 	  if(dN<0.) then
 	  modOut((year+1),8,ij,1) = modOut((year+1),8,ij,1) + Vold* min(1.,-dN*step/Nold)
-	    do ijj = 1,(int(nyears-year))
-			ops = int(year+ijj+1)
-			modOut(ops,8,int(ij),1) = modOut(ops,8,int(ij),1) + (Vold/Nold) * (-dN*step) * &
-				exp(-exp(pCrobas(34,species) + pCrobas(35,species)*ijj + pCrobas(36,species)*D + 0.))
-		enddo
+	  modOut((year+ijj+1),8,ij,1) = 100.
+		! do ijj = 1,(nyears-year)
+			! modOut((year+ijj+1),8,ij,1) = modOut((year+ijj+1),8,ij,1) +(Vold/Nold) * (-dN*step) * &
+				! exp(-exp(pCrobas(34,species) + pCrobas(35,species)*ijj + pCrobas(36,species)*D + 0.))
+		! enddo
 	  end if
 	  
 	  
