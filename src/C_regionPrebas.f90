@@ -96,9 +96,9 @@ do ij = 1,maxYears
 	  thinningX(az,1) = 1.
 	 endif
 	enddo
-  if(ij==1) then
-! write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
-endif
+  ! if(ij==1) then
+   ! write(*,*) sum(soilCinOut(i,ij,:,:,1:nLayers(i)))
+  ! endif
 
 	if(prebasVersion(i)==0.) then
 	  call prebas_v0(1,nLayers(i),allSP,siteInfo(i,:),pCrobas,initVar(i,:,1:nLayers(i)),&
@@ -196,6 +196,13 @@ if(maxState(siteX)>minDharv .and. ClCut(siteX) > 0.) then
     multiOut(siteX,ij,43:44,ijj,1) = 0.
     multiOut(siteX,ij,38,ijj,1) = sum(multiOut(siteX,1:ij,30,ijj,2)) + &
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
+
+	!update age
+	  do ki = 1, min(15,(nyears-year))
+	   multiOut(siteX,(ij+ki),7,ijj,1) = ki !#!#
+	   ! modOut((year+ki),4,ij,1) = initVar(1,ij) !#!#
+	  enddo
+
    enddo
 	 if((maxYears-ij)<10) then
 	  Ainit = nint(6 + 2*3.5 - 0.005*ETSy(climID,ij) + 2.25)
