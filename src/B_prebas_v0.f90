@@ -133,12 +133,12 @@ do year = 1, (nYears)
      modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
      modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
    enddo
-   do ki = 1,Ainit
-    do ijj = 1,nLayers
-     modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
-     modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
-    enddo
-   enddo
+   ! do ki = 1,Ainit
+    ! do ijj = 1,nLayers
+     ! modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
+     ! modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
+    ! enddo
+   ! enddo
     yearX = 0
   endif
 
@@ -788,9 +788,10 @@ if (ClCut == 1.) then
    stand_all(27,ij) = S_fr
    stand_all(28,ij) = S_branch
    stand_all(29,ij) = S_wood
-
+!!update age
   do ki = 1, min(20,(nyears-year))
    modOut((year+ki),7,ij,1) = ki !#!#
+   modOut((year+ki),4,ij,1) = initVar(1,ij) !#!#
   enddo
 
   enddo
