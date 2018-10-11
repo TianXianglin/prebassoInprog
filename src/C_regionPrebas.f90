@@ -83,9 +83,9 @@ do ij = 1,maxYears
 	   initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
       endif
 	  initVar(i,6,ijj) = initClearcut(i,4)
-	  ! do ki = 1,int(initClearcut(i,5)+1)
-	   ! multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
-	  ! enddo !ki
+	  do ki = 1,int(initClearcut(i,5)+1)
+	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
+	  enddo !ki
 	 enddo !ijj
 	endif
 
@@ -127,18 +127,14 @@ endif
 	 endif
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
-	!!!set age after clearcut
-     do ki = 1, min(20,(maxYears-ij))
-      multiOut(i,(ij+ki),7,1:nLayers(i),1) = ki !#!#
-     enddo
+	! !!!set age after clearcut
+     ! do ki = 1, min(20,(maxYears-ij))
+      ! multiOut(i,(ij+ki),7,1:nLayers(i),1) = ki !#!#
+     ! enddo
 	  
 	 if(ij==1) then
 	  relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
-	 else
-	  relBA(i,1:nLayers(i)) = multiOut(i,(ij-1),13,1:nLayers(i),1)/sum(multiOut(i,(ij-1),13,1:nLayers(i),1))
 	 endif
-	else
-	 multiOut(i,ij,7,1:nLayers(i),:) = output(1,7,1:nLayers(i),:)
 	endif
 	
 	! write(10,*) "here1"
@@ -154,7 +150,7 @@ endif
 	  end if
 	enddo
 	
-	multiOut(i,ij,1:6,1:nLayers(i),:) = output(1,1:6,1:nLayers(i),:)
+	multiOut(i,ij,1:7,1:nLayers(i),:) = output(1,1:7,1:nLayers(i),:)
 	multiOut(i,ij,9:nVar,1:nLayers(i),:) = output(1,9:nVar,1:nLayers(i),:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
