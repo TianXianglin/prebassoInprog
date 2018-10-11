@@ -198,7 +198,7 @@ if(maxState(siteX)>minDharv .and. ClCut(siteX) > 0.) then
 		sum(multiOut(siteX,1:ij,42,ijj,1)) + multiOut(siteX,ij,30,ijj,1)
 
 	!update age
-	  do ki = 1, min(15,(nyears-year))
+	  do ki = 1, min(15,(maxYears-ij))
 	   multiOut(siteX,(ij+ki),7,ijj,1) = ki !#!#
 	   ! modOut((year+ki),4,ij,1) = initVar(1,ij) !#!#
 	  enddo
