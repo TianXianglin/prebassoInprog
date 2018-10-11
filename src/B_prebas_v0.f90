@@ -121,7 +121,7 @@ do year = 1, (nYears)
 
 
   if(year==int(min(yearX,nYears))) then
-   Ainit = int(min(Ainit, Ainit + yearX - nYears))
+   Ainit = int(min(Ainit, Ainit + nYears - yearX))
       totBA = sum(modOut((year-Ainit-1),13,:,1))
    do ijj = 1,nLayers
 	 if(fixBAinitClarcut==1) then
@@ -135,7 +135,7 @@ do year = 1, (nYears)
      modOut(year,17,ijj,1) = modOut(year,13,ijj,1)/(pi*((modOut(year,12,ijj,1)/2/100)**2))
      modOut(year,35,ijj,1) = modOut(year,13,ijj,1) / modOut(year,17,ijj,1)
    enddo
-   do ki = 1,Ainit
+   do ki = 1,int(Ainit)
     do ijj = 1,nLayers
      modOut((year-Ainit+ki),7,ijj,1) = ki !#!#
      modOut((year-Ainit+ki),4,ijj,1) = initVar(1,ijj) !#!#
