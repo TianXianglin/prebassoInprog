@@ -118,8 +118,10 @@ pars(27) = siteInfo(7) !Sinit
 !######!
 
 do year = 1, (nYears)
-! write(2,*) "year =", year,"site=",siteInfo(1)
-  if(year==yearX)then
+
+
+  if(year==int(min(yearX,nYears))) then
+   Ainit = int(min(Ainit, Ainit + yearX - nYears))
       totBA = sum(modOut((year-Ainit-1),13,:,1))
    do ijj = 1,nLayers
 	 if(fixBAinitClarcut==1) then

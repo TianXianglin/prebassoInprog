@@ -13,7 +13,7 @@ implicit none
 
 integer, parameter :: nVar=46,npar=37!, nSp=3
 integer, intent(in) :: nYears(nSites),nLayers(nSites),allSP
-integer :: i,climID,ij,iz,ijj,ki,n,jj,az,ageX
+integer :: i,climID,ij,iz,ijj,ki,n,jj,az
 integer, intent(in) :: nSites, maxYears, maxThin,nClimID,maxNlayers,siteOrder(nSites,maxYears)
 real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYears),minDharv
  integer, intent(in) :: DOY(365),etmodel
@@ -70,7 +70,7 @@ do ij = 1,maxYears
 !!!
 	climID = siteInfo(i,2)
 	if(ij==int(min(yearX(i),maxYears)))then
-	 ageX = int(min(initClearcut(i,5), initClearcut(i,5) + yearX(i) - maxYears))
+	 initClearcut(i,5) = int(min(initClearcut(i,5), initClearcut(i,5) + yearX(i) - maxYears))
 	 yearX(i) = 0
 
 	 do ijj = 1,nLayers(i)
@@ -84,8 +84,8 @@ do ij = 1,maxYears
 	   initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
       endif
 	  initVar(i,6,ijj) = initClearcut(i,4)
-	  do ki = 1,(ageX+1)
-	   multiOut(i,int(ij-ageX+ki-1),7,ijj,1) = ki !#!#
+	  do ki = 1,(initClearcut(i,5)+1)
+	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
 	  enddo !ki
 	 enddo !ijj
 	endif
