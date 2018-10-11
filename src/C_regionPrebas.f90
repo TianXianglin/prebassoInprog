@@ -129,13 +129,11 @@ do ij = 1,maxYears
 	 endif
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
-	! !!!set age after clearcut
-     ! do ki = 1, min(20,(maxYears-ij))
-      ! multiOut(i,(ij+ki),7,1:nLayers(i),1) = ki !#!#
-     ! enddo
-	  
 	 if(ij==1) then
 	  relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
+	  	 else
+	  relBA(i,1:nLayers(i)) = output(1,13,1:nLayers(i),1)/ &
+		sum(output(1,13,1:nLayers(i),1))
 	 endif
 	endif
 	
