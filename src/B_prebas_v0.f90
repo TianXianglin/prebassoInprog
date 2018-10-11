@@ -788,6 +788,11 @@ if (ClCut == 1.) then
    stand_all(27,ij) = S_fr
    stand_all(28,ij) = S_branch
    stand_all(29,ij) = S_wood
+
+  do ki = 1, min(20,(nyears-year))
+   modOut((year+ki),7,ij,1) = ki !#!#
+  enddo
+
   enddo
  endif
 endif
