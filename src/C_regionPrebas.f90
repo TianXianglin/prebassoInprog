@@ -84,7 +84,7 @@ do ij = 1,maxYears
 	   initVar(i,5,ijj) = initClearcut(i,3) * relBA(i,ijj)
       endif
 	  initVar(i,6,ijj) = initClearcut(i,4)
-	  do ki = 1,(initClearcut(i,5)+1)
+	  do ki = 1,int(initClearcut(i,5)+1)
 	   multiOut(i,int(ij-initClearcut(i,5)+ki-1),7,ijj,1) = ki !#!#
 	  enddo !ki
 	 enddo !ijj
