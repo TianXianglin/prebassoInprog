@@ -118,8 +118,6 @@ endif
 		defaultThinX,ClCutX,inDclct(i,:),inAclct(i,:),dailyPRELES(i,(((ij-1)*365)+1):(ij*365),:),yassoRun(i))
 	endif
 	
-	multiOut(i,ij,1:7,1:nLayers(i),:) = output(1,1:7,1:nLayers(i),:)
-	multiOut(i,ij,9:nVar,1:nLayers(i),:) = output(1,9:nVar,1:nLayers(i),:)
 	! if clearcut occur initialize initVar and age
 	if(sum(output(1,11,1:nLayers(i),1))==0 .and. yearX(i) == 0) then
 	 if((maxYears-ij)<15) then
@@ -129,8 +127,7 @@ endif
 	 endif
 	 yearX(i) = Ainit + ij + 1
 	 initClearcut(i,5) = Ainit
-
-	 !!!set age after clearcut
+	!!!set age after clearcut
      do ki = 1, min(20,(maxYears-ij))
       multiOut(i,(ij+ki),7,1:nLayers(i),1) = ki !#!#
      enddo
@@ -140,6 +137,8 @@ endif
 	 else
 	  relBA(i,1:nLayers(i)) = multiOut(i,(ij-1),13,1:nLayers(i),1)/sum(multiOut(i,(ij-1),13,1:nLayers(i),1))
 	 endif
+	else
+	 multiOut(i,ij,7,1:nLayers(i),:) = output(1,7,1:nLayers(i),:)
 	endif
 	
 	! write(10,*) "here1"
@@ -155,6 +154,8 @@ endif
 	  end if
 	enddo
 	
+	multiOut(i,ij,1:6,1:nLayers(i),:) = output(1,1:6,1:nLayers(i),:)
+	multiOut(i,ij,9:nVar,1:nLayers(i),:) = output(1,9:nVar,1:nLayers(i),:)
 	do ijj = 1,nLayers(i)
 	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
 		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
