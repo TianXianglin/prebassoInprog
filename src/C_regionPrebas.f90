@@ -131,9 +131,6 @@ do ij = 1,maxYears
 	 initClearcut(i,5) = Ainit
 	 if(ij==1) then
 	  relBA(i,1:nLayers(i)) = initVar(i,5,1:nLayers(i))/sum(initVar(i,5,1:nLayers(i)))
-	  	 else
-	  relBA(i,1:nLayers(i)) = output(1,13,1:nLayers(i),1)/ &
-		sum(output(1,13,1:nLayers(i),1))
 	 endif
 	endif
 	
