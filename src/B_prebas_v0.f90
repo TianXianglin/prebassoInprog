@@ -918,7 +918,7 @@ if(defaultThin == 1.) then
     endif
     stand_all(13,ij) = BA
     Nold = stand_all(17,ij)
-    N = BA/(pi*((D/2/100)**2))
+    N = BA/(pi*((D/2./100.)**2.))
     Nthd = Nold - N
     Hc = stand_all(14,ij)
     Lc = H - Hc !Lc
@@ -932,7 +932,7 @@ if(defaultThin == 1.) then
     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
     W_stem = (V_scrown + V_bole) * N * par_rhow
     V = (V_scrown + V_bole) * N
-    outt(30,ij,2) = outt(30,ij,2) - V
+    ! outt(30,ij,2) = outt(30,ij,2) - V
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
     betab = hb/Lc
