@@ -870,7 +870,7 @@ if(defaultThin == 1.) then
 !ij=1
    if(stand_all(17,ij)>0.) then
     STAND_tot = stand_all(:,ij)
-	species = int(stand(4))
+	species = int(stand_all(4,ij))
     param = pCrobas(:,species)
     par_cR=param(1)
     par_rhow=param(2)
