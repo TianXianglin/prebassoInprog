@@ -932,7 +932,7 @@ if(defaultThin == 1.) then
     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
     W_stem = (V_scrown + V_bole) * N * par_rhow
     V = (V_scrown + V_bole) * N
-    outt(30,ij,2) = outt(30,ij,1) - V   !!!!!check!!!!!
+    ! outt(30,ij,2) = outt(30,ij,1) - V   !!!!!check!!!!!
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
     betab = hb/Lc
@@ -971,7 +971,7 @@ if(defaultThin == 1.) then
     outt(24,ij,2)= STAND_tot(24) - W_branch
     outt(25,ij,2)= STAND_tot(25) - W_froot
     outt(26:29,ij,2)= -999.
-    outt(30,ij,2)= STAND_tot(30) - V
+    outt(30,ij,2)= stand_all(30,ij) - V
     outt(31,ij,2)= STAND_tot(31) - W_stem
     outt(32,ij,2)= Nthd * W_croot/N
     outt(33,ij,2)= STAND_tot(33) - wf_STKG
