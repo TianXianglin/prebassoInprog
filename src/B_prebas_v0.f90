@@ -928,10 +928,10 @@ if(defaultThin == 1.) then
     B = BA/N
     A = rc * B
     wf_treeKG = par_rhof * A
-    V_scrown =  A * (0.38*Lc)
+    V_scrown =  A * (par_betas*Lc)
     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
     W_stem = (V_scrown + V_bole) * N * par_rhow
-    V = (V_scrown + V_bole) * N
+    V = (V_scrown + V_bole) * N*0.7
     ! outt(30,ij,2) = outt(30,ij,1) - V   !!!!!check!!!!!
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
