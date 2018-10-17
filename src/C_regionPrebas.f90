@@ -150,10 +150,16 @@ do ij = 1,maxYears
 	
 	multiOut(i,ij,1:7,1:nLayers(i),:) = output(1,1:7,1:nLayers(i),:)
 	multiOut(i,ij,9:nVar,1:nLayers(i),:) = output(1,9:nVar,1:nLayers(i),:)
-	do ijj = 1,nLayers(i)
-	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
-		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
-	enddo !ijj
+	! do ijj = 1,nLayers(i)
+	  ! multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
+		! sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
+		
+	  ! if(ij > 1.5) then
+	! !compute gross growth
+	   ! multiOut(i,ij,43,ijj,1) = multiOut(i,ij,38,ijj,1) - multiOut(i,(ij-1),38,ijj,1)
+	  ! endif
+
+	! enddo !ijj
 ! write(10,*) "here2"
 
 	initVar(i,1,1:nLayers(i)) = output(1,4,1:nLayers(i),1)
@@ -218,6 +224,20 @@ endif !(maxState(i)>minDharv)
  endif !HarvArea < HarvLim .and. HarvLim /= 0.
 ! write(10,*) "here4"
 end do
+do i = 1,nSites
+  do ij = 1, maxYears 
+	do ijj = 1,nLayers(i)
+	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
+		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
+		
+	  if(ij > 1.5) then
+	!compute gross growth
+	   multiOut(i,ij,43,ijj,1) = multiOut(i,ij,38,ijj,1) - multiOut(i,(ij-1),38,ijj,1)
+	  endif
+
+	enddo !ijj
+  enddo
+enddo	
 ! close(10)
 ! write(10,*) "here5"
 ! close(10)
