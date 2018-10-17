@@ -38,6 +38,7 @@ real (kind=8), intent(in) :: weatherPRELES(nClimID,maxYears,365,5),HarvLim(maxYe
  integer :: maxYearSite = 300,yearX(nSites),Ainit,sitex,ops(1)
 
 !!!!initialize run
+multiOut = 0.
 yearX = 0.
 soilC = soilCinOut
 soilCtot = soilCtotInOut
