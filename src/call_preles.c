@@ -155,7 +155,7 @@ void call_preles(// INPUTS
   Canopywater[0] = *CWinit;
   SOG[0] = *SOGinit;
   S[0] = *Sinit;
-LOGFLAG=-1;
+
   FILE *flog=NULL;
   if (*LOGFLAG > 0.5) {
     flog = fopen("preles.log", "w"); // EXCEPTION LOGGING
