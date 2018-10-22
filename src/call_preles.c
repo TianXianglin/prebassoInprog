@@ -195,12 +195,12 @@ void call_preles(// INPUTS
 
 
 
-    if (flog) {
-      fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
-      fclose(flog);
-    } else {
-      //exit(1);
-    }           
+    // if (flog) {
+      // fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
+      // fclose(flog);
+    // } else {
+      // //exit(1);
+    // }           
   }
 
 
