@@ -155,7 +155,7 @@ void call_preles(// INPUTS
   Canopywater[0] = *CWinit;
   SOG[0] = *SOGinit;
   S[0] = *Sinit;
-
+LOGFLAG=-1;
   FILE *flog=NULL;
   if (*LOGFLAG > 0.5) {
     flog = fopen("preles.log", "w"); // EXCEPTION LOGGING
@@ -195,12 +195,12 @@ void call_preles(// INPUTS
 
 
 
-    // if (flog) {
-      // fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
-      // fclose(flog);
-    // } else {
-      // //exit(1);
-    // }           
+    if (flog) {
+      fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
+      fclose(flog);
+    } else {
+      //exit(1);
+    }           
   }
 
 
