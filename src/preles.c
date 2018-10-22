@@ -66,7 +66,7 @@ int preles(int NofDays,
   //extern double fCO2_model_mean(double CO2, double bCO2 ) ;
   
   
-  // FILE *flog=NULL;
+  FILE *flog=NULL;
   // flog = fopen("preles.log", "a"); // EXCEPTION LOGGING
   
   if (LOGFLAG > 0.5) fprintf(flog, "  Stepped into preles()");
