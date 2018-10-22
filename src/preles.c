@@ -68,6 +68,7 @@ int preles(int NofDays,
   
   FILE *flog=NULL;
   flog = fopen("preles.log", "a"); // EXCEPTION LOGGING
+  LOGFLAG = -1
   
   if (LOGFLAG > 0.5) fprintf(flog, "  Stepped into preles()");
   
