@@ -35,8 +35,7 @@ int preles(int NofDays,
 		      double *fE, double A,
 		      double fWgpp, p2 GPP_par,  //double fCO2mean, 
 		      double CO2, 
-		      // FILE *flog, int LOGFLAG, int etmodel, 
-		      int LOGFLAG, int etmodel, 
+		      int LOGFLAG, int etmodel, // FILE *flog, int LOGFLAG, int etmodel, 
 		      double *transp, 
 		      double *evap, double *fWE);
   
@@ -165,7 +164,7 @@ int preles(int NofDays,
 
     GPPfun(&GPP[i], &gpp380, I, D, CO2[i], theta, fAPAR[i], fS[i],
 		    GPP_par, Site_par,  &fD[i], &fW[i], &fEgpp, 
-		    flog, LOGFLAG );
+		    LOGFLAG );
 
     // if (LOGFLAG > 1.5) 
       // fprintf(flog, 
