@@ -252,7 +252,7 @@ int preles(int NofDays,
   // if (LOGFLAG > 1.5) 
     // fprintf(flog, 
 	    // "   preles(): looped all days, closing preles.log, exiting...\n");
-  if (flog) fclose(flog);
+  // if (flog) fclose(flog);
   return(0);
 }
     
