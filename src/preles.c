@@ -35,7 +35,8 @@ int preles(int NofDays,
 		      double *fE, double A,
 		      double fWgpp, p2 GPP_par,  //double fCO2mean, 
 		      double CO2, 
-		      FILE *flog, int LOGFLAG, int etmodel, 
+		      // FILE *flog, int LOGFLAG, int etmodel, 
+		      int LOGFLAG, int etmodel, 
 		      double *transp, 
 		      double *evap, double *fWE);
   
@@ -56,7 +57,8 @@ int preles(int NofDays,
 		     double theta, 
 		     double fAPAR, double fSsub, 
 		     p2 GPP_par, p1 Site_par, double *fD, double *fW,
-	      double *fE, FILE *flog, int LOGFLAG);
+	      // double *fE, FILE *flog, int LOGFLAG);
+		  double *fE, int LOGFLAG);
     
   //extern double fCO2_VPD_exponent(double CO2, double xCO2 ) ;
 

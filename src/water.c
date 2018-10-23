@@ -10,7 +10,8 @@ double ETfun(double D, double theta, double ppfd, double fAPAR, double T,
              double *fE, double A,
              double fWgpp,  p2 GPP_par,  //double fCO2mean, 
 	     double CO2, 
-	     FILE *flog, int LOGFLAG, int etmodel, double *transp, 
+	     int LOGFLAG, int etmodel, double *transp, 
+	     // FILE *flog, int LOGFLAG, int etmodel, double *transp, 
 	     double *evap, double *fWE) {
 
   extern double fCO2_ET_model_mean(double CO2, p2 GPP_par );

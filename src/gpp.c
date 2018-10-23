@@ -91,7 +91,8 @@ void GPPfun(double *gpp, double *gpp380,
 	      double ppfd,  double D, double CO2, double theta, 
 	      double fAPAR, double fSsub, 
               p2 GPP_par, p1 Site_par, double *fD, double *fW,
-	      double *fE, FILE *flog, int LOGFLAG) {
+	      double *fE,  int LOGFLAG) {
+		  // double *fE, FILE *flog, int LOGFLAG) {
 
     extern double fCO2_model_mean(double CO2, p2 b ) ;
     //    extern double fCO2_VPD_exponent(double CO2, double xCO2 ) ;
