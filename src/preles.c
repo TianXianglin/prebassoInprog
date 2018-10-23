@@ -213,7 +213,7 @@ int preles(int NofDays,
 		  fW[i], // soil water constrain of GPP at 380 ppm
 		  GPP_par, //fCO2_ET_model_mean(CO2[i], GPP_par),
 		  CO2[i], 
-		  flog, LOGFLAG, etmodel, 
+		  LOGFLAG, etmodel, 
 		  &transp[i], 
 		  &evap[i], &fWE[i]);                     
     
