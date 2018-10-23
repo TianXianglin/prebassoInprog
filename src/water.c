@@ -66,9 +66,9 @@ double ETfun(double D, double theta, double ppfd, double fAPAR, double T,
 
   if (D < 0.01) D=0.01;
 
-  if (LOGFLAG > 1.5)
-    fprintf(flog, "   ETfun(): CO2mean=%lf\tat CO2=%lf\n", 
-	    fCO2mean, CO2);
+  // if (LOGFLAG > 1.5)
+    // fprintf(flog, "   ETfun(): CO2mean=%lf\tat CO2=%lf\n", 
+	    // fCO2mean, CO2);
   
   if (etmodel == -1) {
     *transp = D * ET_par.beta*A/pow(D, ET_par.kappa) *
@@ -107,13 +107,13 @@ double ETfun(double D, double theta, double ppfd, double fAPAR, double T,
 	ET_par.chi * (1-fAPAR) *  fWsub * ppfd;
     }
 
-  if (LOGFLAG > 2.5)
-    fprintf(flog, "      ETfun(): Model=%d\nD\t%lf\nET_par.beta\t%lf\nA\t%lf\npow(D, ET_par.kappa)\t%lf\npow(fWgpp, ET_par.nu)\t%lf\nfWgpp\t%lf\nET_par.nu\t%lf\nfCO2mean\t%lf\nCO2\t%lf\nET_par.chi\t%lf\ns/(s+psychom)\t%lf\n1-fAPAR\t%lf\nfWsum\t%lf\nppfd\t%lf\n-->et\t%lf\n",	    
-	    etmodel, D, ET_par.beta, A, pow(D, ET_par.kappa), 
-	    pow(fWgpp, ET_par.nu), fWgpp, ET_par.nu,
-	    fCO2mean, 
-	    CO2,
-	    ET_par.chi ,   s / (s + psychom), 1-fAPAR, fWsub,  ppfd, et);
+  // if (LOGFLAG > 2.5)
+    // fprintf(flog, "      ETfun(): Model=%d\nD\t%lf\nET_par.beta\t%lf\nA\t%lf\npow(D, ET_par.kappa)\t%lf\npow(fWgpp, ET_par.nu)\t%lf\nfWgpp\t%lf\nET_par.nu\t%lf\nfCO2mean\t%lf\nCO2\t%lf\nET_par.chi\t%lf\ns/(s+psychom)\t%lf\n1-fAPAR\t%lf\nfWsum\t%lf\nppfd\t%lf\n-->et\t%lf\n",	    
+	    // etmodel, D, ET_par.beta, A, pow(D, ET_par.kappa), 
+	    // pow(fWgpp, ET_par.nu), fWgpp, ET_par.nu,
+	    // fCO2mean, 
+	    // CO2,
+	    // ET_par.chi ,   s / (s + psychom), 1-fAPAR, fWsub,  ppfd, et);
 
   
   return(et);

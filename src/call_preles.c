@@ -156,25 +156,25 @@ void call_preles(// INPUTS
   SOG[0] = *SOGinit;
   S[0] = *Sinit;
 
-  FILE *flog=NULL;
-  if (*LOGFLAG > 0.5) {
-    flog = fopen("preles.log", "w"); // EXCEPTION LOGGING
-    if (flog) {
-      fprintf(flog, "call_preles(): First day weather:\nDOY=%d\tPPFD=%lf\tT=%lf\tVPD=%lf\tP=%lf\tCO2=%lf\n"
-	      "fAPAR=%lf\tSW=%lf\tCW=%lf\tSOG=%lf\tS=%lf\n",
-	      day[0], PAR[0], TAir[0], VPD[0], Precip[0],  CO2[0],fAPAR[0], 
-	      SW[0], Canopywater[0], SOG[0], S[0]);
-      if (*LOGFLAG > 1.5) 
-	fprintf(flog, 
-		"call_preles(): Parameters: N=%i\tparGGP.beta=%lf\tparET.chi=%lf\tparSnowRain.SnowThreshold=%lf\tetmodel=%d\nLOGFLAG=%d parGPP.t0=%lf\n",
-		*NofDays, parGPP.beta, parET.chi, parSnowRain.SnowThreshold, *etmodel, 
-		*LOGFLAG, parGPP.t0);
+  // FILE *flog=NULL;
+  // if (*LOGFLAG > 0.5) {
+    // flog = fopen("preles.log", "w"); // EXCEPTION LOGGING
+    // if (flog) {
+      // fprintf(flog, "call_preles(): First day weather:\nDOY=%d\tPPFD=%lf\tT=%lf\tVPD=%lf\tP=%lf\tCO2=%lf\n"
+	      // "fAPAR=%lf\tSW=%lf\tCW=%lf\tSOG=%lf\tS=%lf\n",
+	      // day[0], PAR[0], TAir[0], VPD[0], Precip[0],  CO2[0],fAPAR[0], 
+	      // SW[0], Canopywater[0], SOG[0], S[0]);
+      // if (*LOGFLAG > 1.5) 
+	// fprintf(flog, 
+		// "call_preles(): Parameters: N=%i\tparGGP.beta=%lf\tparET.chi=%lf\tparSnowRain.SnowThreshold=%lf\tetmodel=%d\nLOGFLAG=%d parGPP.t0=%lf\n",
+		// *NofDays, parGPP.beta, parET.chi, parSnowRain.SnowThreshold, *etmodel, 
+		// *LOGFLAG, parGPP.t0);
       
-    }  else {
-      //exit(1);
-    }
-    fclose(flog);
-  }
+    // }  else {
+      // //exit(1);
+    // }
+    // fclose(flog);
+  // }
   
   /* Call the workhorse function ------------------------------------------ */
   int notinf = 0;
@@ -190,17 +190,17 @@ void call_preles(// INPUTS
 		  GPPmeas, ETmeas, SWmeas, S, *LOGFLAG, *NofDays, day, 
 		  transp, evap, fWE);
                                 
-  if (*LOGFLAG > 0.5) {
-    flog = fopen("preles.log", "a"); // EXCEPTION LOGGING 
+  // if (*LOGFLAG > 0.5) {
+    // flog = fopen("preles.log", "a"); // EXCEPTION LOGGING 
 
 
 
-    if (flog) {
-      fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
-      fclose(flog);
-    } else {
-      //exit(1);
-    }           
+    // if (flog) {
+      // fprintf(flog,  "call_preles(): preles() returned code %d...finishing\n", notinf);
+      // fclose(flog);
+    // } else {
+      // //exit(1);
+    // }           
   }
 
 

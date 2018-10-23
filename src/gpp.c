@@ -128,10 +128,10 @@ void GPPfun(double *gpp, double *gpp380,
     *gpp = *gpp380 * fCO2;
 
     
-    if (LOGFLAG > 1.5) 
-      fprintf(flog, 
-	      "   gpp(): Modifiers: fAPAR %lf\tfSsub %lf\t fLsub %lf\t fDsub %lf\t fWsub %lf\tfEsub %lf\t fCO2 %lf\n                    gpp380 %lf\t gpp %lf\n",
-	      fAPAR, fSsub, fLsub, fDsub, fWsub, fEsub, fCO2, *gpp380, *gpp);
+    // if (LOGFLAG > 1.5) 
+      // fprintf(flog, 
+	      // "   gpp(): Modifiers: fAPAR %lf\tfSsub %lf\t fLsub %lf\t fDsub %lf\t fWsub %lf\tfEsub %lf\t fCO2 %lf\n                    gpp380 %lf\t gpp %lf\n",
+	      // fAPAR, fSsub, fLsub, fDsub, fWsub, fEsub, fCO2, *gpp380, *gpp);
 
 
 
