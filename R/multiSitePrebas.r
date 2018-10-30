@@ -305,7 +305,7 @@ regionPrebas <- function(multiSiteInit,
                    PREBASversion=as.double(multiSiteInit$PREBASversion),
                    lukeRuns=as.double(multiSiteInit$lukeRuns))
 class(prebas) <- "regionPrebas"
-if(maxNlayers>1){
+if(prebas$maxNlayers>1){
     prebas$totHarv <- apply(prebas$multiOut[,,37,,1],2,sum)
   }else{
     prebas$totHarv <- prebas$multiOut[,,37,,1]
