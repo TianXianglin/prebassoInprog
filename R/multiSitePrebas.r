@@ -305,7 +305,7 @@ regionPrebas <- function(multiSiteInit,
                    PREBASversion=as.double(multiSiteInit$PREBASversion),
                    lukeRuns=as.double(multiSiteInit$lukeRuns))
 class(prebas) <- "regionPrebas"
-if(!is.null(prebas$multiOut[,,37,,1],2,sum)){
+if(!is.null(prebas$multiOut[,,37,,1])){
     prebas$totHarv <- apply(prebas$multiOut[,,37,,1],2,sum)
   }else{
     prebas$totHarv <- prebas$multiOut[,,37,,1]
