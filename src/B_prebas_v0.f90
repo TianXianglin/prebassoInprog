@@ -1043,7 +1043,7 @@ do year = 1,(nYears+1)
 	! modOut(year,38,ijj,1) = sum(modOut(1:year,30,ijj,2)) + &
 		! sum(modOut(1:year,42,ijj,1)) + modOut(year,30,ijj,1)
 	modOut(year,39,ijj,1) = sum(soilC(year,:,:,ijj))
-	modOut(year,38,ijj,1) = pCrobas(2,integer(modOut(year,4,ijj,1)) * modOut(year,37,ijj,1)
+	modOut(year,38,ijj,1) = pCrobas(2,integer(modOut(year,4,ijj,1))) * modOut(year,37,ijj,1)
 	if(year > 1.5) then
 	!compute gross growth
 	  modOut(year,43,ijj,1) = modOut(year,30,ijj,1) - modOut((year-1),30,ijj,1) + &
