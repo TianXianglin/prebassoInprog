@@ -932,7 +932,7 @@ if(defaultThin == 1.) then
     V_bole = (A+B+sqrt(A*B)) * Hc /2.9
     W_stem = (V_scrown + V_bole) * N * par_rhow
     V = (V_scrown + V_bole) * N
-    ! outt(30,ij,2) = outt(30,ij,2) - V
+	! outt(30,ij,2) = outt(30,ij,2) - V
     wf_STKG = N * wf_treeKG
     hb = par_betab * Lc ** par_x
     betab = hb/Lc
@@ -1040,13 +1040,14 @@ modOut(:,37,:,1) = modOut(:,30,:,2)
 
 do year = 1,(nYears+1)
   do ijj = 1, nLayers
-	modOut(year,38,ijj,1) = sum(modOut(1:year,30,ijj,2)) + &
-		sum(modOut(1:year,42,ijj,1)) + modOut(year,30,ijj,1)
+	! modOut(year,38,ijj,1) = sum(modOut(1:year,30,ijj,2)) + &
+		! sum(modOut(1:year,42,ijj,1)) + modOut(year,30,ijj,1)
 	modOut(year,39,ijj,1) = sum(soilC(year,:,:,ijj))
-
+	modOut(year,38,ijj,1) = pCrobas(2,integer(modOut(year,4,ijj,1)) * modOut(year,37,ijj,1)
 	if(year > 1.5) then
 	!compute gross growth
-	  modOut(year,43,ijj,1) = modOut(year,38,ijj,1) - modOut((year-1),38,ijj,1)
+	  modOut(year,43,ijj,1) = modOut(year,30,ijj,1) - modOut((year-1),30,ijj,1) + &
+				modOut(year,42,ijj,1) + modOut(year,37,ijj,1)
 	endif
 	! write(*,*) modOut(year,39,ijj,1)
   enddo

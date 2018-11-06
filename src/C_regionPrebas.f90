@@ -227,12 +227,13 @@ end do
 do i = 1,nSites
   do ij = 1, maxYears 
 	do ijj = 1,nLayers(i)
-	  multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
-		sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
+	  ! multiOut(i,ij,38,ijj,1) = sum(multiOut(i,1:ij,30,ijj,2)) + &
+		! sum(multiOut(i,1:ij,42,ijj,1)) + multiOut(i,ij,30,ijj,1)
 		
 	  if(ij > 1.5) then
 	!compute gross growth
-	   multiOut(i,ij,43,ijj,1) = multiOut(i,ij,38,ijj,1) - multiOut(i,(ij-1),38,ijj,1)
+	   multiOut(i,ij,43,ijj,1) = multiOut(i,ij,30,ijj,1) - multiOut(i,(ij-1),30,ijj,1) + & 
+			multiOut(i,ij,37,ijj,1) + multiOut(i,ij,42,ijj,1)
 	  endif
 
 	enddo !ijj
