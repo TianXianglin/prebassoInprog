@@ -83,7 +83,7 @@ implicit none
  avP0 = sum(P0y)/nYears
  avETS = sum(ETSy)/nYears
   open(2,file="test.txt")
-  write(*,*) "avP0", avP0
+  write(2,*) "avP0", avP0
 !###initialize model###!
 fbAWENH = 0.
 folAWENH = 0.
