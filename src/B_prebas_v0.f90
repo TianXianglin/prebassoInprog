@@ -352,7 +352,7 @@ if (year <= maxYearSite) then
    pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
    pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
-   STAND_all(10,:) = prelesOut(1)/1000.! Photosynthesis in g C m-2 (converted to kg C m-2)
+   STAND_all(10,:) = prelesOut(1)/1000.*avP0/P0y(year)! Photosynthesis in g C m-2 (converted to kg C m-2)
 
 endif
 !enddo !! end site loop
@@ -421,7 +421,7 @@ else
   leff = STAND(19)
   keff = STAND(20)
   lproj = STAND(21)
-  p_eff_all = STAND(10)*avP0/P0y(year) !!##!!2
+  p_eff_all = STAND(10) !!##!!2
   weight = STAND(23)
 
   rc = Lc / (H-1.3) !crown ratio
