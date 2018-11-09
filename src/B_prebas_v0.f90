@@ -41,7 +41,7 @@ implicit none
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
  integer :: i, ij, ijj,species,layer,nSpec,ll! tree species 1,2,3 = scots pine, norway spruce, birch
 
- real (kind=8) :: p0_ref, ETS_ref
+ real (kind=8) :: p0_ref, ETS_ref,avP0,avETS
  integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
  real (kind=8) :: step, totBA
 
@@ -80,6 +80,8 @@ implicit none
 !fix parameters
  real (kind=8) :: qcTOT0,Atot,fAPARprel(365)
 
+ avP0 = sum(P0y)/nYears
+ avETS = sum(ETSy)/nYears
  ! open(2,file="test.txt")
  ! write(2,*) "site = ",siteInfo(1)
 !###initialize model###!
@@ -102,8 +104,8 @@ pars(27) = siteInfo(7) !Sinit
   modOut(:,4,i,1) = initVar(1,i)  ! assign species
   modOut(:,7,i,1) = initVar(2,i) ! assign initAge !age can be made species specific assigning different ages to different species
   modOut(1,39,i,1) = sum(soilC(1,:,:,i)) !assign initial soilC
-  modOut(:,5,i,1) = ETSy	! assign ETS
-  modOut(:,6,i,1) = P0y		! assign P0
+  modOut(:,5,i,1) = avETS	! assign ETS
+  modOut(:,6,i,1) = avP0		! assign P0
  enddo
  modOut(:,1,:,1) = siteInfo(1); modOut(:,2,:,1) = siteInfo(2)	!! assign siteID and climID
  modOut(1,11,:,1) = initVar(3,:)
@@ -419,7 +421,7 @@ else
   leff = STAND(19)
   keff = STAND(20)
   lproj = STAND(21)
-  p_eff_all = STAND(10) !!##!!2
+  p_eff_all = STAND(10)*avP0/P0y(year) !!##!!2
   weight = STAND(23)
 
   rc = Lc / (H-1.3) !crown ratio
