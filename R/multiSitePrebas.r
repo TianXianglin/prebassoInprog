@@ -27,7 +27,9 @@ InitMultiSite <- function(nYearsMS,
                           inDclct = NA,
                           inAclct = NA,
                           yassoRun = 0,
-                          lukeRuns){
+                          lukeRuns,
+                          smoothP0 = 1,
+                          smoothETS = 1){
 
   nSites <- length(nYearsMS)
   if(all(is.na(siteInfo))){
@@ -96,6 +98,7 @@ InitMultiSite <- function(nYearsMS,
                                                 which(is.na(multiInitClearCut[sitesClimID,5])),round(Ainit))
   }
   ETSthres <- 1000; ETSmean <- rowMeans(multiETS)
+  if(smoothETS==1.) multiETS <- matrix(rowMeans(multiETS),nClimID,maxYears)
 
   ####process clearcut
   for(i in 1: nSites){
@@ -140,7 +143,7 @@ InitMultiSite <- function(nYearsMS,
   ### compute P0
   ###if P0 is not provided use preles to compute P0
   if(all(is.na(multiP0))){
-    multiP0 <- matrix(NA,nClimID,maxYears)
+    multiP0 <- array(NA,dim=c(nClimID,maxYears,2))
     for(climID in 1:nClimID){
       nYearsX <- max(nYearsMS[which(climIDs==climID)])
       P0 <- PRELES(DOY=rep(1:365,nYearsX),PAR=PAR[climID,1:(365*nYearsX)],
@@ -148,8 +151,10 @@ InitMultiSite <- function(nYearsMS,
                    Precip=Precip[climID,1:(365*nYearsX)],CO2=rep(380,(365*nYearsX)),
                    fAPAR=rep(1,(365*nYearsX)),LOGFLAG=0,p=pPRELES)$GPP
       P0 <- matrix(P0,365,nYearsX)
-      multiP0[climID,(1:nYearsX)] <- colSums(P0)
-    }}
+      multiP0[climID,(1:nYearsX),1] <- colSums(P0)
+    }
+    multiP0[,,2] <- ifelse(smoothP0==1,apply(multiP0[,,1],1,mean),multiP0[,,1])
+  }
 
   if (all(is.na(multiInitVar))){
     multiInitVar <- array(NA,dim=c(nSites,6,maxNlayers))
