@@ -153,7 +153,10 @@ InitMultiSite <- function(nYearsMS,
       P0 <- matrix(P0,365,nYearsX)
       multiP0[climID,(1:nYearsX),1] <- colSums(P0)
     }
-    multiP0[,,2] <- ifelse(smoothP0==1,apply(multiP0[,,1],1,mean),multiP0[,,1])
+    if(smoothP0==1){
+      multiP0[,,2] <- matrix(rowMeans(multiP0[,,1]),75,maxYears,byrow = F)} else{
+      multiP0[,,2] <- multiP0[,,1]
+      }
   }
 
   if (all(is.na(multiInitVar))){
