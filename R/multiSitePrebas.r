@@ -232,7 +232,7 @@ multiPrebas <- function(multiSiteInit){
                      fixBAinitClearcut = as.double(multiSiteInit$fixBAinitClarcut),
                      initCLcutRatio = as.matrix(multiSiteInit$initCLcutRatio),
                      ETSy=as.matrix(multiSiteInit$ETSy),
-                     P0y=as.matrix(multiSiteInit$P0y),
+                     P0y=as.array(multiSiteInit$P0y),
                      multiInitVar=as.array(multiSiteInit$multiInitVar),
                      weather=as.array(multiSiteInit$weather),
                      DOY= as.integer(multiSiteInit$DOY),
