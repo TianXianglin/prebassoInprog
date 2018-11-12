@@ -154,9 +154,10 @@ InitMultiSite <- function(nYearsMS,
       multiP0[climID,(1:nYearsX),1] <- colSums(P0)
     }
     if(smoothP0==1){
-      multiP0[,,2] <- matrix(rowMeans(multiP0[,,1]),75,maxYears,byrow = F)} else{
+      multiP0[,,2] <- 1200#matrix(rowMeans(multiP0[,,1]),75,maxYears,byrow = F)
+    } else{
       multiP0[,,2] <- multiP0[,,1]
-      }
+    }
   }
 
   if (all(is.na(multiInitVar))){
@@ -211,7 +212,9 @@ InitMultiSite <- function(nYearsMS,
     dailyPRELES = array(-999,dim=c(nSites,(maxYears*365),3)),
     yassoRun = yassoRun,
     lukeRuns = lukeRuns,
-    PREBASversion = PREBASversion)
+    PREBASversion = PREBASversion,
+    smoothP0 = smoothP0,
+    smoothETS = smoothETS)
   return(multiSiteInit)
 }
 
