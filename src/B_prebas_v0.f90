@@ -623,7 +623,7 @@ endif
   STAND(13) = BA
   STAND(14) = Hc
   STAND(15) = Cw
-  STAND(16) = Lc
+  STAND(16) = P0yX(year,2)/P0yX(year,1)
   STAND(17) = N
   STAND(24) = W_branch
   STAND(25) = W_froot
