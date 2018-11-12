@@ -41,7 +41,7 @@ implicit none
  real (kind=8) :: STAND(nVar),STAND_tot(nVar),param(npar)!, output(nYear,nSites,nVar)
  integer :: i, ij, ijj,species,layer,nSpec,ll! tree species 1,2,3 = scots pine, norway spruce, birch
 
- real (kind=8) :: p0_ref, ETS_ref,P0yX(nYears)
+ real (kind=8) :: p0_ref, ETS_ref,P0yX(nYears,2)
  integer :: time, ki, year,yearX,Ainit, countThinning,domSp(1)
  real (kind=8) :: step, totBA
 
@@ -98,14 +98,14 @@ pars(24) = siteInfo(4)!SWinit
 pars(25) = siteInfo(5)!CWinit
 pars(26) = siteInfo(6) !SOGinit
 pars(27) = siteInfo(7) !Sinit
-P0yX = P0y(:,2)
+P0yX = P0y
 
  do i = 1,nLayers
   modOut(:,4,i,1) = initVar(1,i)  ! assign species
   modOut(:,7,i,1) = initVar(2,i) ! assign initAge !age can be made species specific assigning different ages to different species
   modOut(1,39,i,1) = sum(soilC(1,:,:,i)) !assign initial soilC
   modOut(:,5,i,1) = ETSy! assign ETS
-  modOut(:,6,i,1) = P0yX	! assign P0
+  modOut(:,6,i,1) = P0yX(:,2)	! assign P0
  enddo
  modOut(:,1,:,1) = siteInfo(1); modOut(:,2,:,1) = siteInfo(2)	!! assign siteID and climID
  modOut(1,11,:,1) = initVar(3,:)
@@ -352,7 +352,7 @@ if (year <= maxYearSite) then
    pars(26) = prelesOut(4); siteInfo(6) = prelesOut(4) !SOGinit
    pars(27) = prelesOut(14); siteInfo(7) = prelesOut(14) !Sinit
 
-   STAND_all(10,:) = prelesOut(1)/1000.*P0y(year,2)/P0y(year,1)! Photosynthesis in g C m-2 (converted to kg C m-2)
+   STAND_all(10,:) = prelesOut(1)/1000.*P0yX(year,2)/P0yX(year,1)! Photosynthesis in g C m-2 (converted to kg C m-2)
 
 endif
 !enddo !! end site loop
