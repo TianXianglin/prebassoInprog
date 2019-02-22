@@ -105,7 +105,7 @@ pars(27) = siteInfo(7) !Sinit
   modOut(:,7,i,1) = initVar(2,i) ! assign initAge !age can be made species specific assigning different ages to different species
   modOut(1,39,i,1) = sum(soilC(1,:,:,i)) !assign initial soilC
   modOut(:,5,i,1) = avETS	! assign ETS
-  modOut(:,6,i,1) = avP0	! assign P0
+  modOut(:,6,i,1) = P0y		! assign P0
  enddo
  modOut(:,1,:,1) = siteInfo(1); modOut(:,2,:,1) = siteInfo(2)	!! assign siteID and climID
  modOut(1,11,:,1) = initVar(3,:)
